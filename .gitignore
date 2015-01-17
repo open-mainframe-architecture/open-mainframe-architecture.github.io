@@ -42,13 +42,3 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-
-# npm
-npm-debug.log
-
-# Node.js
-node_modules
-
-# Eclipse stuff
-.settings
-.project
