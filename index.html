@@ -207,7 +207,7 @@ The direction of an arrow depicts the flow of delta requests. Terminal and appli
 welcome service
         </p>
         <p>
-The welcome service establishes first contact between a terminal and an open mainframe. A terminal visits this service when a browser navigates to a <dfn>welcome URL</dfn>. The service determines the deployed application that is registered at the welcome URL. This application is instructed to create a new instance, which computes the initial model of a user interface. The terminal presents this user interface in the web browser.
+The welcome service establishes first contact between a terminal and an open mainframe. A terminal visits this service when a browser navigates to a <dfn>welcome URL</dfn>. The service finds the deployed application that should handle the welcome request. This application is instructed to create a new instance, which computes the initial model of a user interface. The terminal presents this user interface in the web browser.
         </p>
         <p>
 The new instance session in the backend is paired with the new terminal session in the frontend. A <dfn>session pair</dfn> synchronizes the same model, albeit in opposite directions. The terminal session controls the client side of the model whereas the instance session controls the server side.
@@ -953,7 +953,7 @@ The HTTP client does not abort the posted &#x03b4;(n) when the other side takes 
       <li>
         <span class="delta-side">this</span> <span class="delta-message">expect &#x03b4;(n+1)<br/>&larr;</span> <span class="delta-side">other</span>
         <p>
-Every subsequent poll response reveals the production of &#x03b4;(n+1) takes an increasing amount of time, beause the <code>after</code> field of the session status is decreasing as time passes by.
+Every subsequent poll response reveals the production of &#x03b4;(n+1) takes an increasing amount of time, because the <code>after</code> field of the session status is decreasing as time passes by.
         </p>
       </li>
       <li>
