@@ -596,7 +596,7 @@ A record field is optionally annotated to specify field characteristics in a del
   bar: number
 }</pre>
     <p>
-An <code>@event</code> annotation specifies an event field. A record value does not represent event fields in JSON. The annotation value is <code>client</code> or <code>server</code>. In the next example, field <code>bar</code> is a server event field. The server reports an occurence of this event in a delta response. Field type <code>none</code> implies an occurence is unstructured. The client is informed about an occurence, but the reported event does not provide any additional information.
+An <code>@event</code> annotation specifies an event field. A record value does not unmarshal event fields in a JSON representation. The annotation value is <code>client</code> or <code>server</code>. In the next example, field <code>bar</code> is a server event field. The server reports an occurence of this event in a delta response. Field type <code>none</code> implies an occurence is unstructured. The client is informed about an occurence, but the reported event does not provide any additional information.
     </p>
 <pre>Foo: {
   bar: none @event=server 
@@ -671,7 +671,7 @@ A <code>Delta.Action</code> occurs in some part of the model. The field <code>pa
   path: [string | number]
 }</pre>
     <p>
-A <code>Delta.Assign</code> action mutates a value in the model. A <code>Delta.Signal</code> action reports a client or server event in the model. Both assignments and events must be properly typed. The path of an action infers what type of value can be assigned or what type of event can be reported. For example, if the path leads to an element of a list in the model, the value to assign must be a member of the inferred element type.
+A <code>Delta.Assign</code> action mutates a value in the model. A <code>Delta.Signal</code> action reports a client or server event in the model. Both assignments and signals must be properly typed. The path of an action infers what type of value can be assigned or what type of event can be reported. For example, if the path leads to an element of a list in the model, the value to assign must be a member of the inferred element type.
     </p>
 <pre>Delta.Assign: Delta.Action + {
   value: Any
