@@ -24,7 +24,7 @@ pre {
   font-style: italic;
 }
 .pattern {
-  font-style: italic;
+  font-weight: bold;
 }
 .figure {
   padding: 1em;
@@ -139,7 +139,7 @@ pre {
 The open mainframe architecture (oma) is an application architecture that revives old ideas. A terminal presents the user interface of a remote application. A mainframe hosts these applications for connected terminals. The strict separation between presenting a user interface on a terminal and processing user interactions on a mainframe simplifies application management, because applications are never installed on terminals. The solution furthermore improves security. Sensitive information is not lost when somebody steals a terminal. Terminals are useless devices without a mainframe.
     </p>
     <p>
-An open mainframe differs from a traditional mainframe in one important aspect. An open mainframe doesn't host applications for terminals. Applications run autonomously in the backend tier of oma. Terminals populate the frontend tier. An open mainframe in the middle acts as a router between frontend terminals and backend applications. A backend application must be deployed on a mainframe. When a terminal starts a deployed application, the application instantiates itself. The new application instance processes all user interactions that the terminal reports.
+An open mainframe differs from a traditional mainframe in one important aspect. An open mainframe doesn't host applications for terminals. Applications run autonomously in the backend tier of oma. Terminals populate the frontend tier. An open mainframe in the middle acts as a router between frontend terminals and backend applications. A backend application must be deployed on a mainframe. When a terminal starts a deployed application, the application creates an instance. The new application instance processes all user interactions that the terminal reports.
     </p>
     <p>
 Backend applications and their instances are not concerned with the presentation logic of user interfaces. Frontend terminals don't care about the application logic that processes user interactions. Traditional and open mainframes provide the same separation of presentation and application concerns. Although oma adds an extra middle tier with routing logic to improve scalability, this does not affect the primary separation of concerns. The next figure shows the three tiers of oma.
@@ -188,7 +188,7 @@ Backend applications and their instances are not concerned with the presentation
       </div>
     </div>
     <p>
-Traditional mainframes relied on proprietary technologies, but oma relies on open web standards. A frontend terminal is a modern web browser that presents the user interface of an application instance. This instance is an HTTP client in the backend that processes user interactions for the terminal. A backend application is an HTTP client that manages the deployment on an open mainframe. Web servers of an open mainframe provide the following web services for frontend and backend clients.
+Unlike traditional mainframes that relied on proprietary technologies, oma relies on public web standards. A frontend terminal is a modern web browser that presents the user interface of an application instance. This instance is an HTTP client in the backend that processes user interactions for the terminal. A backend application is an HTTP client that manages the deployment on an open mainframe. An open mainframe provides the following web services for frontend and backend clients.
     </p>
     <ul>
       <li>
@@ -207,7 +207,7 @@ The direction of an arrow depicts the flow of delta requests. Terminal and appli
 welcome service
         </p>
         <p>
-The welcome service establishes first contact between a terminal and an open mainframe. A terminal visits this service when a browser navigates to a <dfn>welcome URL</dfn>. The service finds the deployed application that should handle the welcome request. This application is instructed to create a new instance, which computes the initial model of a user interface. The terminal presents this user interface in the web browser.
+The welcome service establishes first contact between a terminal and an open mainframe. A terminal visits this service when a browser navigates to a <dfn>welcome URL</dfn>. The service finds the deployed application that handles the welcome request. This application is instructed to create a new instance, which computes the initial model of a user interface. The terminal presents this user interface in the web browser.
         </p>
         <p>
 The new instance session in the backend is paired with the new terminal session in the frontend. A <dfn>session pair</dfn> synchronizes the same model, albeit in opposite directions. The terminal session controls the client side of the model whereas the instance session controls the server side.
@@ -221,7 +221,7 @@ deploy service
 The deploy service deploys backend applications on an open mainframe. The service receives an HTTP POST request with a meticulous description of an application deployment. This description is consulted by the mainframe when it welcomes a terminal.
         </p>
         <p>
-The service supports two forms of deployment. The <dfn>light deployment</dfn> of a backend application is fully described by a JSON object. In a <dfn>heavy deployment</dfn>, the application uploads a source archive that accompanies a JSON object. The assets in the archive are compiled and published in a directory on a frontend web server. Both forms of deployment eventually result in the creation of an application session. The mainframe employs this session to instruct the backend application to create new instances, when terminals start the application.
+The service supports two forms of deployment. In a <dfn>light deployment</dfn>, a backend application is fully described by a JSON object. In a <dfn>heavy deployment</dfn>, an application uploads a source archive that accompanies a JSON object. The assets in the archive are compiled and published in a directory on a frontend web server. Both forms of deployment eventually result in the creation of an application session. The mainframe employs this session to instruct the backend application to create new instances, when terminals start the application.
         </p>
       </li>
       <li>
@@ -464,27 +464,27 @@ A delta session exports a <dfn>typespace</dfn> that binds names to type expressi
 The definitions in a typespace must be closed under evaluation. Every type variable in an expression must be bound to a macro argument. Every type name must be bound to a macro or expression in the typespace. Cyclic definitions are not supported, e.g. a macro cannot apply itself, neither directly nor indirectly. The complete grammar of type definitions is given below in EBNF notation.
     </p>
 <pre>TypeDef     =  TypeMacro | TypeExpr
-TypeMacro   =  <span class="literal">'('</span> TypeArg {<span class="literal">','</span> TypeArg} <span class="literal">')'</span> TypeExpr
-TypeArg     =  TYPEVAR <span class="literal">'='</span> TypeExpr
-TypeExpr    =  TypeExpr<sub>1</sub> [<span class="literal">'?'</span>]
-TypeExpr<sub>1</sub>   =  TypeExpr<sub>2</sub> {<span class="literal">'|'</span> TypeExpr<sub>2</sub>}
-TypeExpr<sub>2</sub>   =  TypeExpr<sub>3</sub> {<span class="literal">'+'</span> TypeExpr<sub>3</sub>}
-TypeExpr<sub>3</sub>   =  TypeExpr<sub>4</sub> | TYPEVAR | TYPENAME [<span class="literal">'('</span> TypeExpr {<span class="literal">','</span> TypeExpr} <span class="literal">')'</span>]
-TypeExpr<sub>4</sub>   =  <span class="literal">'*'</span> | BasicType | EnumType | ListType | DictType | RecordType
-BasicType   =  <span class="literal">'none'</span> | <span class="literal">'boolean'</span> | <span class="literal">'number'</span> | <span class="literal">'string'</span>
-EnumType    =  CHOICE {<span class="literal">'_'</span> CHOICE}
-ListType    =  <span class="literal">'['</span> TypeExpr <span class="literal">']'</span>
-DictType    =  <span class="literal">'&lt;'</span> TypeExpr <span class="literal">'&gt;'</span>
-RecordType  =  <span class="literal">'{'</span> [Field {<span class="literal">','</span> Field}] <span class="literal">'}'</span>
-Field       =  FIELDNAME <span class="literal">':'</span> TypeExpr {Annotation}
-Annotation  =  <span class="literal">'@'</span> FIELDNAME <span class="literal">'='</span> FIELDNAME</pre>
+TypeMacro   =  <span class="literal">"("</span> TypeArg {<span class="literal">","</span> TypeArg} <span class="literal">")"</span> TypeExpr
+TypeArg     =  <span class="pattern">VARIABLE</span> <span class="literal">"="</span> TypeExpr
+TypeExpr    =  TypeExpr<sub>1</sub> [<span class="literal">"?"</span>]
+TypeExpr<sub>1</sub>   =  TypeExpr<sub>2</sub> {<span class="literal">"|"</span> TypeExpr<sub>2</sub>}
+TypeExpr<sub>2</sub>   =  TypeExpr<sub>3</sub> {<span class="literal">"+"</span> TypeExpr<sub>3</sub>}
+TypeExpr<sub>3</sub>   =  TypeExpr<sub>4</sub> | <span class="pattern">VARIABLE</span> | <span class="pattern">NAME</span> [<span class="literal">"("</span> TypeExpr {<span class="literal">","</span> TypeExpr} <span class="literal">")"</span>]
+TypeExpr<sub>4</sub>   =  <span class="literal">"*"</span> | BasicType | EnumType | ListType | DictType | RecordType
+BasicType   =  <span class="literal">"none"</span> | <span class="literal">"boolean"</span> | <span class="literal">"number"</span> | <span class="literal">"string"</span>
+EnumType    =  <span class="pattern">CHOICE</span> {<span class="literal">"_"</span> <span class="pattern">CHOICE</span>}
+ListType    =  <span class="literal">"["</span> TypeExpr <span class="literal">"]"</span>
+DictType    =  <span class="literal">"&lt;"</span> TypeExpr <span class="literal">"&gt;"</span>
+RecordType  =  <span class="literal">"{"</span> [Field {<span class="literal">","</span> Field}] <span class="literal">"}"</span>
+Field       =  <span class="pattern">FIELD</span> <span class="literal">":"</span> TypeExpr {Annotation}
+Annotation  =  <span class="literal">"@"</span> <span class="pattern">FIELD</span> <span class="literal">"="</span> <span class="pattern">FIELD</span></pre>
     <p>
 The grammar tokens are defined by the following regular expressions.
     </p>
-<pre>TYPEVAR    [<span class="literal">A</span>-<span class="literal">Z</span>]
-TYPENAME   [<span class="literal">A</span>-<span class="literal">Z</span>][<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]+(<span class="literal">.</span>[<span class="literal">A</span>-<span class="literal">Z</span>][<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]+)*
-FIELDNAME  [<span class="literal">a</span>-<span class="literal">z</span>][<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]*
-CHOICE     <span class="literal">"</span>[<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]+<span class="literal">"</span></pre>
+<pre><span class="pattern">NAME</span>      [<span class="literal">A</span>-<span class="literal">Z</span>][<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]+(<span class="literal">.</span>[<span class="literal">A</span>-<span class="literal">Z</span>][<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]+)*
+<span class="pattern">FIELD</span>     [<span class="literal">a</span>-<span class="literal">z</span>][<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]*
+<span class="pattern">VARIABLE</span>  [<span class="literal">A</span>-<span class="literal">Z</span>]
+<span class="pattern">CHOICE</span>    <span class="literal">"</span>[<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]+<span class="literal">"</span></pre>
     <h3>JavaScript configuration</h3>
     <p>
 Data types are defined in module configurations. The following JavaScript extract shows the definitions of standard type names in oma. Data type <code>Any</code> matches any type, including optional ones. Data type <code>Flag</code> is a boolean-like type, where <span class="literal">null</span> stands for false and <span class="literal">"y"</span> for true. Data type <code>Text</code> avoids end-of-line problems in textual data. Newline characters <span class="literal">"\n"</span>, <span class="literal">"\r"</span> or combinations of these characters are treated as whitespace characters, not as line separators. A new line of textual data is represented as an additional string in the list. The standard macros <code>List</code>, <code>Dict</code> and <code>Maybe</code> construct list, dictionary and optional types. For example, <code>Maybe(number)</code> is a more verbose way to express <code>number?</code>. When a macro is evaluated without actual arguments, the formal arguments are bound to their default types. The expression <code>List</code> is a shorthand for <code>List(Any)</code>.
@@ -522,7 +522,7 @@ An optional <code>none</code> type is nonsensical. An optional value is either <
     <p>
 Type addition <code>S</code> combines the fields of record types <code>T</code> and <code>U</code>. If a field is defined in both <code>T</code> and <code>U</code>, the field definition from <code>U</code> ends up in addition <code>S</code>. The field of <code>U</code> is said to refine the inherited field of <code>T</code>. The refined field type is independent from the inherited field type.
     </p>
-<pre><span class="rule-condition">S = T + U</span><span class="rule-conclusion">S = { &hellip; fields from T and U &hellip; }</span></pre>
+<pre><span class="rule-condition">S = T + U</span><span class="rule-conclusion">S = { fields from T and not in U, &hellip;, fields from U, &hellip; }</span></pre>
     <p>
 A <code>none</code> alternative lifts a union type to an optional type. The optional type is a more concise shorthand for the union type. Union types should not have a <code>none</code> alternative. The optional type is always preferred over the union type.
     </p>
