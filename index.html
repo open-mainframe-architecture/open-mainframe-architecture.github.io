@@ -136,13 +136,13 @@ pre {
   <body>
     <h1>Introduction</h1>
     <p>
-The open mainframe architecture (oma) is an application architecture that revives old ideas. A terminal presents the user interface of a remote application. A mainframe hosts these applications for connected terminals. The strict separation between presenting a user interface on a terminal and processing user interactions on a mainframe simplifies application management, because applications are never installed on terminals. The solution furthermore improves security. Sensitive information is not lost when somebody steals a terminal. Terminals are useless devices without a mainframe.
+The open mainframe architecture (oma) is an application architecture that revives old ideas. A terminal presents the user interface of a remote application. A mainframe hosts these applications for connected terminals. Application management is easy when the presentation of a user interface is separated from the processing of user interactions, because applications only need to be installed on a mainframe, not on terminals. The solution furthermore improves security. Sensitive information is not lost when somebody steals a terminal. Terminals are useless devices without a mainframe.
     </p>
     <p>
-An open mainframe differs from a traditional mainframe in one important aspect. An open mainframe doesn't host applications for terminals. Applications run autonomously in the backend tier of oma. Terminals populate the frontend tier. An open mainframe in the middle acts as a router between frontend terminals and backend applications. A backend application must be deployed on a mainframe. When a terminal starts a deployed application, the application creates an instance. The new application instance processes all user interactions that the terminal reports.
+An open mainframe differs from a traditional mainframe in one important aspect. An open mainframe doesn't host applications for terminals. Applications run autonomously in the backend tier of oma. A backend application is deployed on a mainframe to enable terminals to start the application. Terminals populate the frontend tier. An open mainframe in the middle acts as a router between frontend terminals and backend applications. When a terminal starts a deployed application, the application creates an instance. The new application instance processes all user interactions that the terminal reports.
     </p>
     <p>
-Backend applications and their instances are not concerned with the presentation logic of user interfaces. Frontend terminals don't care about the application logic that processes user interactions. Traditional and open mainframes provide the same separation of presentation and application concerns. Although oma adds an extra middle tier with routing logic to improve scalability, this does not affect the primary separation of concerns. The next figure shows the three tiers of oma.
+Backend applications and their instances are not concerned with the presentation logic of user interfaces. Frontend terminals don't care about the application logic that processes user interactions. Traditional and open mainframes provide the same separation of presentation and application concerns. Although oma adds an extra middle tier with routing logic to improve scalability, this does not affect the primary separation of concerns.
     </p>
     <div class="figure">
       <div class="inline">
@@ -210,7 +210,7 @@ welcome service
 The welcome service establishes first contact between a terminal and an open mainframe. A terminal visits this service when a browser navigates to a <dfn>welcome URL</dfn>. The service finds the deployed application that handles the welcome request. This application is instructed to create a new instance, which computes the initial model of a user interface. The terminal presents this user interface in the web browser.
         </p>
         <p>
-The new instance session in the backend is paired with the new terminal session in the frontend. A <dfn>session pair</dfn> synchronizes the same model, albeit in opposite directions. The terminal session controls the client side of the model whereas the instance session controls the server side.
+The new instance session in the backend is paired with the new terminal session in the frontend. A <dfn>session pair</dfn> synchronizes the same model, albeit in opposite directions. The terminal session controls the client side of the model whereas the instance session controls the server side. The open mainframe merely relays delta messages of the session pair from the client to the server side, and back again.
         </p>
       </li>
       <li>
