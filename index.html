@@ -245,7 +245,7 @@ Components in a perfect architecture are black boxes with hidden implementations
       </li>
     </ul>
     <p>
-The open mainframe architecture leverages the success of HTTP, offloading many responsibilities to existing products. Common problems like HTTPS encryption, serving static files and load balancing have already been solved in hardware and software products. The challenge is to encorporate these products in the infrastructure of oma as smoothly as possible. Reliance on HTTP for all communication between tiers ensures HTTP-based products work equally well in both frontend and backend networks.
+The open mainframe architecture offloads many responsibilities to existing products to leverage the success of HTTP. Common problems like HTTPS encryption, serving static files and load balancing have already been solved in hardware and software products. The challenge is to encorporate these products in the infrastructure of oma as smoothly as possible. Reliance on HTTP for all communication between tiers ensures HTTP-based products work equally well in both frontend and backend networks.
     </p>
     <p>
 Browsers are converging towards an impressive set of web standards. The HTML5 standards cover a wide range a devices, from mobile smartphones to desktop computers. Backend applications are able to optimize the user experience for different types of devices, because an application instance processes user interactions for a particular terminal device. The open mainframe architecture deliberately does not attempt to unify terminal devices. It is up to applications to exploit device capabilities in user interfaces. 
@@ -258,7 +258,7 @@ The remainder of this chapter explains the philosophy behind oma in more detail.
     </p>
     <h2>Typed JSON</h2>
     <p>
-The open mainframe architecture augments JSON with a type system to enforce rules about structure. The type system introduces a simple definition language to create data types, which describe basic, list, dictionary and record values. A type specifies how to marshal and unmarshal data values in JSON. The data definition language promotes reuse of type definitions. Type macros construct parameterized types. Type additions merge the fields of record types.
+The open mainframe architecture augments JSON with a type system to enforce rules about structure. The type system introduces a simple definition language to create data types, which describe basic, list, dictionary and record values. A type specifies how to marshal and unmarshal data values in JSON. The data definition language promotes reuse of type definitions.
     </p>
     <p>
 Typed JSON is an essential ingredient of oma, because data types form the glue between architectural components. The dynamic type of a value must be preserved when values are communicated over the network.
@@ -280,16 +280,16 @@ Applications are the responsibility of teams. An application architecture should
 Frontend developers are responsible for the manifestations of abstract user-interface elements in a browser environment. Backend developers write application logic to control abstract user interfaces. The modular organization of assets streamlines cooperation between these developers in a team. They have to agree which module versions are bundled in an application deployment. The <dfn>application image</dfn> of a deployment lists all modules that a terminal may need to load when it starts the application.
     </p>
     <p>
-Developers have their own testing needs. A backend developer probably does not change the application image while testing new application logic. It might even be possible to edit, compile and test an application without redeploying it, depending on the implementation language and development environment. A frontend developer redeploys the same application logic over and over again, but with different images, to test new manifestations in a browser environment. The sources of these manifestations are conveniently uploaded in heavy deployments.
+A backend developer probably does not change the application image while testing new application logic. It might even be possible to edit, compile and test an application without redeploying it, depending on the implementation language and development environment. A frontend developer redeploys the same application logic over and over again, but with different images, to test new manifestations in a browser environment. The sources of these manifestations are conveniently uploaded in heavy deployments.
     </p>
     <p>
 Frontend and backend developers can deploy their test applications on a remote mainframe. The impact of oma on development environments should be negligible. Developers are not forced to install a variety of tools on their local machines to test their creations. They need to post the request for a heavy or light deployment to a mainframe, an easy feat in most programming languages. After successful deployment, developers start the test application by navigating a web browser to a welcome URL.
     </p>
     <p>
-The early stages of an application's lifecycle focus on frantic development, but at some point, an application deployment should be production-ready. Other disciplines in the team are responsible for maintenance of the production site. Although developers still continue to work on the product, new developments can only reach the production site, if they pass a slew of quality assurance tests. To satisfy the needs of QA team members, an architecture must support concurrent deployments of different application versions, e.g. an alpha release. URL-based navigation of terminals tackles this issue in oma. As long as an application deployment is reachable at some welcome URL, users can start the appropriate application version in a terminal and test it.
+The early stages of an application's lifecycle focus on frantic development, but at some point, an application deployment should be production-ready. Other disciplines in the team are responsible for maintenance of the production site. Although developers still continue to work on the product, new developments can only reach the production site, if they pass a slew of quality assurance tests. To satisfy the needs of QA team members, an architecture must support concurrent deployments of different application versions. URL-based navigation of terminals tackles this issue in oma. As long as an application deployment is reachable at some welcome URL, users can start the appropriate application version in a terminal and test it.
     </p>
     <p>
-The open mainframe architecture stresses the importance of a scalable network infrastructure. Team members that manage the network infrastructure are not confronted with a myriad of protocols and technologies, because all communication between tiers is based on HTTP. Large Internet companies have demonstrated that HTTP, and HTTPS, can scale to handle millions of connections. The following figure shows the network topology of a typical production site in oma. An arrow is the initiation of a TCP connection between networks. The mainframe network is a demilitarized zone (DMZ), separated from frontend and backend networks. The frontend firewall filters connections from the Internet, it handles encryption of HTTPS connections and it serves static assets. Other HTTP requests from the Internet are forwarded to an address, or multiple addresses, in the mainframe network. Backend firewalls similarly filter, forward and balance HTTP requests from networks where deployed applications are running.
+The open mainframe architecture stresses the importance of a scalable network infrastructure. Team members that manage the network infrastructure are not confronted with a myriad of protocols and technologies, because all communication between tiers is based on HTTP. Large Internet companies demonstrate every day that HTTP, and HTTPS, can scale to handle millions of connections. The following figure shows the network topology of a typical production site in oma. An arrow is the initiation of a TCP connection between networks. The mainframe network is a demilitarized zone (DMZ), separated from frontend and backend networks. The frontend firewall filters connections from the Internet, it handles encryption of HTTPS connections and it serves static assets. Other HTTP requests from the Internet are forwarded to an address, or multiple addresses, in the mainframe network. Backend firewalls similarly filter, forward and balance HTTP requests from networks where deployed applications are running.
     </p>
     <table class="network-stack">
       <tbody>
@@ -379,7 +379,7 @@ Local network<sub>2</sub>
 In the beginning, a mainframe was a mysterious machine in large banks and insurance companies. Terminals were primitive input devices, e.g. teletypewriters, which offered a poor user experience. Monochrome monitors with keyboards improved the experience, although a happy user was still not an important design goal. Most users were employees that accepted how an application worked, no matter how stupid it may have been. Unhappy users are unlikely to complain when their jobs are at stake.
     </p>
     <p>
-The advent of personal computing changed the IT industry. The PC offered a rich user experience at an affordable price. New technologies, e.g. the mouse, paved the way for advanced graphical user interfaces. The competitive PC market forced companies to innovate. Unhappy users are likely to switch to a competitor when they feel they wasted money on an inferior product.
+The advent of personal computing changed the IT industry. The PC offered a rich user experience at an affordable price. New technologies, e.g. the mouse, paved the way for advanced graphical user interfaces. The competitive PC market forced companies to innovate. Unhappy customers are likely to switch to a competitor when they feel they wasted money on an inferior product.
     </p>
     <p>
 Application management was a nightmare for organizations, because every PC on a network is equipped with its own operating system and application versions. The desire to centralize application management collides with the personal freedom to install applications. It's impossible to have both. An organization is likely to run into situations where the complexity of application management has a negative impact on the user experience, e.g. incompatibilities between versions.
@@ -391,7 +391,7 @@ Web applications were the obvious compromise. A web browser, installed on every 
 Web standards slowly evolve to encorporate the latest technologies. It's an unfortunate consequence of the standardization process. Web standards were unable to keep up with the speed of the mobile revolution. Web applications that worked well in a browser on a PC, were hardly usable on mobile devices. The bad experience explains why users prefer native apps. Although the management of native apps on mobile devices is delegated to app stores of vendors, the distribution of a new app version is not as easy as upgrading a web application. Native app management is more complex, but many organizations take this for granted, because they fear unhappy users. 
     </p>
     <p>
-A hybrid solution that fetches and presents HTML snippets inside native apps, combines the best of both worlds. The native app is responsible for an intuitive integration with the mobile device OS, while the snippets are easy to manage and to upgrade on web servers. It is a new equilibrium that keeps users and organizations happy.
+A hybrid solution that fetches and presents snippets from the web inside native apps, combines the best of both worlds. The native app is responsible for an intuitive integration with the mobile device OS, while the snippets are easy to manage and to upgrade on web servers. It is a new equilibrium that keeps users and organizations happy.
     </p>
     <p>
 The short history of application architectures is an important lesson for oma. A universal application that offers a good user experience across client devices, now and in the future, is unrealistic. Many devices have capabilities that cannot be simulated on other types of devices. Applications should optimize the user experience on popular client devices, if they want to keep users on these devices happy. The open mainframe architecture encourages applications to experiment with device-specific features that are captured in emerging web standards. Developers have to design suitable data abstractions for a new web technology, because the effects of the technology must be expressed in terms of delta actions in a session model. Frontend developers write modules to manifest these abstractions in a browser environment. Backend developers include the modules in the images of deployed applications. When the terminal has the right device features, the abstractions should appear in the session model to improve the user interface.
@@ -427,7 +427,7 @@ An optional type, denoted with a closing question mark, adds <span class="litera
       </li>
       <li>
         <p>
-A wildcard type, denoted with an asterisk, matches types without a <span class="literal"><code>null</code></span> member. An optional wildcard type <code>*?</code> matches any type.
+A wildcard type, denoted with an asterisk, matches all types without a <span class="literal"><code>null</code></span> member. An optional wildcard type <code>*?</code> matches any type.
         </p>
       </li>
       <li>
@@ -458,7 +458,7 @@ A union type contains type alternatives, separated by vertical bars. A member of
     </ul>
     <h3>Data definition language</h3>
     <p>
-A delta session exports a <dfn>typespace</dfn> that binds names to type expressions and macros. A <dfn>type expression</dfn> is evaluated in a typespace. A <dfn>type macro</dfn> is a template that needs one or more type parameters to evaluate the resulting data type. Both sides of a session parse and evaluate the expressions and macros of the typespace to establish a common vocabulary for model synchronization. Typespaces add a convenient level of indirection to organize and to reuse type definitions.
+A delta session exports a <dfn>typespace</dfn> that binds names to type expressions and macros. A <dfn>type expression</dfn> is evaluated in a typespace. A <dfn>type macro</dfn> is a template that needs one or more type parameters to evaluate the resulting data type. Both sides of a session parse and evaluate the expressions and macros of the typespace to establish a common vocabulary for model synchronization. Typespaces add a convenient level of indirection to organize and to reuse type definitions, for example type additions to merge the fields of record types.
     </p>
     <p>
 The definitions in a typespace must be closed under evaluation. Every type variable in an expression must be bound to a macro argument. Every type name must be bound to a macro or expression in the typespace. Cyclic definitions are not supported, e.g. a macro cannot apply itself, neither directly nor indirectly. The complete grammar of type definitions is given below in EBNF notation.
@@ -479,7 +479,7 @@ RecordType  =  <span class="literal">"{"</span> [Field {<span class="literal">",
 Field       =  <span class="pattern">FIELD</span> <span class="literal">":"</span> TypeExpr {Annotation}
 Annotation  =  <span class="literal">"@"</span> <span class="pattern">FIELD</span> <span class="literal">"="</span> <span class="pattern">FIELD</span></pre>
     <p>
-The grammar tokens are defined by the following regular expressions.
+The token patterns are defined by the following regular expressions.
     </p>
 <pre><span class="pattern">NAME</span>      [<span class="literal">A</span>-<span class="literal">Z</span>][<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]+(<span class="literal">.</span>[<span class="literal">A</span>-<span class="literal">Z</span>][<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]+)*
 <span class="pattern">FIELD</span>     [<span class="literal">a</span>-<span class="literal">z</span>][<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]*
@@ -520,7 +520,7 @@ An optional <code>none</code> type is nonsensical. An optional value is either <
     </p>
 <pre><span class="rule-condition">S = none?</span><span class="rule-conclusion">S = none</span></pre>
     <p>
-Type addition <code>S</code> combines the fields of record types <code>T</code> and <code>U</code>. If a field is defined in both <code>T</code> and <code>U</code>, the field definition from <code>U</code> ends up in addition <code>S</code>. The field of <code>U</code> is said to refine the inherited field of <code>T</code>. The refined field type is independent from the inherited field type.
+Type addition <code>S</code> combines the fields of record types <code>T</code> and <code>U</code>. If a field is defined in both <code>T</code> and <code>U</code>, the field definition from <code>U</code> ends up in addition <code>S</code>. The field of <code>U</code> is said to refine the inherited field of <code>T</code>. The refined field type is not restricted by the inherited field type.
     </p>
 <pre><span class="rule-condition">S = T + U</span><span class="rule-conclusion">S = { fields from T and not in U, &hellip;, fields from U, &hellip; }</span></pre>
     <p>
@@ -528,7 +528,7 @@ A <code>none</code> alternative lifts a union type to an optional type. The opti
     </p>
 <pre><span class="rule-condition">S = T | none</span><span class="rule-conclusion">S = T?</span></pre>
     <p>
-A wildcard alternative lifts a union type to a wildcard type. Union types cannot have a wildcard alternative. Other rules may lift the wildcard result further to an optional wildcard type, i.e. <code>Any</code>.
+A wildcard alternative lifts a union type to a wildcard type. Union types cannot have a wildcard alternative.
     </p>
 <pre><span class="rule-condition">S = T | *</span><span class="rule-conclusion">S = *</span></pre>
     <p>
@@ -542,7 +542,7 @@ A union type flattens alternatives. Union types should not have nested union alt
     <p>
 A union type merges enumeration alternatives. The distinct choices of enumeration alternatives are merged in one enumeration type. At most one enumeration alternative is allowed in a union type.
     </p>
-<pre><span class="rule-condition">S = T | U<br/>T = "t<sub>1</sub>"_"t<sub>2</sub>" &hellip; _"t<sub>m</sub>"<br/>U = "u<sub>1</sub>"_"u<sub>2</sub>" &hellip; _"u<sub>n</sub>"</span><span class="rule-conclusion">S = "t<sub>1</sub>"_"t<sub>2</sub>" &hellip; _"t<sub>m</sub>"_"u<sub>1</sub>"_"u<sub>2</sub>" &hellip; _"u<sub>n</sub>"</span></pre>
+<pre><span class="rule-condition">S = T | "u<sub>1</sub>"_"u<sub>2</sub>" &hellip; _"u<sub>n</sub>"<br/>T = "t<sub>1</sub>"_"t<sub>2</sub>" &hellip; _"t<sub>m</sub>"</span><span class="rule-conclusion">S = "t<sub>1</sub>"_"t<sub>2</sub>" &hellip; _"t<sub>m</sub>"_"u<sub>1</sub>"_"u<sub>2</sub>" &hellip; _"u<sub>n</sub>"</span></pre>
     <p>
 An enumeration alternative is pointless, if basic type <code>string</code> is another alternative, because an enumeration is a subtype of <code>string</code>.
     </p>
@@ -590,13 +590,13 @@ The marshal function of an inferred union type produces the compact representati
     </p>
     <h3>Delta annotations</h3>
     <p>
-A record field is optionally annotated to specify field characteristics in a delta session. A field without delta annotations is a data field that the server side can update. When a session model is a record value of type <code>Foo</code> in the next example, the server side can send an action in a delta response that assigns a new number to field <code>bar</code>. The client side can only read the number in the model.
+A record field is annotated to specify field characteristics in a delta session. A field without delta annotations is a data field that the server side can update. When a session model is a record value of type <code>Foo</code> in the next example, the server side can send an action in a delta response that assigns a new number to field <code>bar</code>. The client side can only read the number in the model.
     </p>
 <pre>Foo: {
   bar: number
 }</pre>
     <p>
-An <code>@event</code> annotation specifies an event field. A record value does not unmarshal event fields in a JSON representation. The annotation value is <code>client</code> or <code>server</code>. In the next example, field <code>bar</code> is a server event field. The server reports an occurence of this event in a delta response. Field type <code>none</code> implies an occurence is unstructured. The client is informed about an occurence, but the reported event does not provide any additional information.
+An <code>@event</code> annotation specifies an event field. A record value does not marshal event fields in a JSON representation. The annotation value is <code>client</code> or <code>server</code>. In the next example, field <code>bar</code> is a server event field. The server reports an occurence of this event in a delta response. Field type <code>none</code> implies an occurence is unstructured. The client is informed about an occurence, but the reported event does not provide any additional information.
     </p>
 <pre>Foo: {
   bar: none @event=server 
@@ -671,7 +671,7 @@ A <code>Delta.Action</code> occurs in some part of the model. The field <code>pa
   path: [string | number]
 }</pre>
     <p>
-A <code>Delta.Assign</code> action mutates a value in the model. A <code>Delta.Signal</code> action reports a client or server event in the model. Both assignments and signals must be properly typed. The path of an action infers what type of value can be assigned or what type of event can be reported. For example, if the path leads to an element of a list in the model, the value to assign must be a member of the inferred element type.
+A <code>Delta.Assign</code> action mutates a value in the model. A <code>Delta.Signal</code> action reports a client or server event in the model. Both assignments and signals must be properly typed. The path of an action infers what type of value can be assigned or what type of event can be signalled. For example, if the path leads to an element of a list in the model, the value to assign must be a member of the inferred element type.
     </p>
 <pre>Delta.Assign: Delta.Action + {
   value: Any
@@ -711,13 +711,15 @@ An HTTP client polls a delta session to inspect the current session status. The 
 }</pre>
     <h4><code>GET &hellip;/model</code></h4>
     <p>
-An HTTP client sends a request to this resource to obtain the definition of data type <code>Delta.Model</code>, which describes the root value of a delta session. This type name is used in standard types, but it lacks a standard definition. The client should cache the HTTP response with the textual source of a type definition. Although the model of a session can represent anything, e.g. a client and server can theoretically share a basic integer, a model is often a record value. The record value is the starting point to access and to manipulate the model of a session.
+An HTTP client sends a request to this resource to obtain the definition of data type <code>Delta.Model</code>, which describes the root value of a delta session. This type name is used in standard types, but it lacks a standard definition. The client should cache the HTTP response with the textual source of a type definition. The model of a session holds a list, dictionary or record value. This composed value is the starting point to access and to manipulate the session model.
     </p>
     <h4><code>GET &hellip;/dump</code></h4>
     <p>
 A dump operation returns the complete state of a session. An HTTP client should not cache the response with the compact representation of a <code>Delta.Dump</code> record. The record combines the status of a session with the root value. A dump enables the client to restore the session model. A browser must restore the model of a terminal session after a page refresh has destroyed the old model.
     </p>
-<pre>Delta.Dump: Delta.Status + {
+<pre>Delta.Dump: Delta.Status + Delta.Root
+Delta.Root:Delta.Root
+Delta.Root:  {
   root: Delta.Model
 }</pre>
     <h4><code>GET &hellip;/types</code></h4>
@@ -770,7 +772,7 @@ The visualization of file uploads in user interfaces of terminals is a responsib
 The coordination with delta events enables the server side to create a pipe for an uploading client, but a similar coordination cannot be realized for a downloading client. A terminal cannot tell when a browser actually sends an HTTP request to download a file, because it depends on unknown factors, e.g. the volatile state of the browser cache. The URL of a downloaded file would furthermore be confined to a terminal session. Terminals would not be able to share a cache with files, even if the terminals belong to the same user.
     </p>
     <p>
-A delta session maintains a directory with cached files. Unlike a binary pipe with a paired reader and writer, a cache has many readers and one writer. Frontend terminals download files from the cache of a backend application. The application populates the cache with files that cannot be published in public library bundles. Cached files have dynamically generated and/or sensitive content, for example financial reports.
+A delta session can maintain a directory with cached files. Unlike a binary pipe with a paired reader and writer, a cache has many readers and one writer. Frontend terminals download files from the cache of a backend application. The application fills the cache with files that cannot be published in public library bundles. Cached files have dynamically generated and/or sensitive content, for example financial reports.
     </p>
     <p>
 When an HTTP client attempts to download a cached file, the mainframe authenticates the client. The mainframe verifies the request originates from a browser whose user is running the application. If not, the mainframe informs the HTTP client the resource could not be found. If the request is authentic, the user must be authorized to access the cached file. Authorization is coordinated with delta events in the model of an application session. The mainframe generates a download event that describes users accessing files. The event conveys a dictionary value that maps file names to <code>Delta.Access</code> records. The boolean field <code>cached</code> is set if the accessed file is present in the cache. The field <code>guests</code> identifies the users that are attempting to download the file.
@@ -791,7 +793,7 @@ The mainframe can purge cache entries, but it does not maintain a history of pur
     </p>
     <h4><code>POST &hellip;/alloc</code></h4>
     <p>
-A backend application posts an HTTP request to this resource, when it wants to add a file to the cache. The textual body of the HTTP response is the name of a new cache entry. The allocated name allows a backend application to derive the URL of a cached file before the file content has been copied to the cache.
+A backend application posts an HTTP request to this resource, when it wants to add a file to the cache. The request body encodes the compact JSON representation of a <code>Delta.Blob</code>. The textual body of the HTTP response is the name of a new cache entry. The allocated name allows a backend application to derive the URL of a cached file before the file content has been copied to the cache.
     </p>
     <h4><code>GET &hellip;/file/&hellip;</code></h4>
     <p>
@@ -1432,7 +1434,7 @@ The welcome service of an open mainframe serves the HTTP request of a browser th
 Many web applications use cryptic URLs to store all kinds of state, e.g. session identifiers, application names and release versions. Although oma uses these ugly URLs internally as well, a welcome URL deserves special attention, because it involves a user expectation. A user that bookmarks a welcome URL in a browser, expects to see a similar user interface when the bookmark is activated later on. The user is definitely not interested in expired sessions or version mismatches. The open mainframe architecture treats a welcome URL as a contract with end users. Welcome URLs are first and foremost intended to offer a good user experience.
     </p>
     <p>
-When a browser navigates to a welcome URL, the welcome service has to decide which deployed application is responsible for the user interface of a terminal. An application deployment subscribes itself to prefixes of welcome URLs that it wishes to associate with the application. The welcome service examines these subscriptions to link a welcome URL to a deployed application. If the path of a welcome URL matches multiple subscriptions, the subscription of the most recently deployed application wins the conflict.
+When a browser navigates to a welcome URL, the welcome service has to decide which deployed application is responsible for the user interface of a terminal. An application deployment subscribes itself to prefixes of welcome URLs that it wishes to associate with the application. The welcome service examines these subscriptions to link a welcome request to a deployed application. If the path of a welcome URL matches multiple subscriptions, the subscription of the most recently deployed application wins the conflict.
     </p>
     <p>
 The subscription mechanism simplifies application management in oma. An application subscribes to welcome URLs that seem suitable for the particular type of deployment. Suppose a webshop application is deployed on a production site. This deployment welcomes terminals that visit URLs like <code>shirt/search</code>, which are meaningful to end users. When a developer deploys the same webshop application on a test site, the deployment subscribes to welcome URLs that start with <code>_/app/AiQ9x/</code>. The ugliness does not disappoint a user in this case, because the developer is well aware the URLs belong to a temporary deployment.
@@ -1471,10 +1473,10 @@ These welcome URLs are suitable for developers. They deploy and test many applic
 When the welcome service knows which backend application is subscribed at a welcome URL, the service generates an HTML document for the browser. The HTML document should not contain sensitive information, e.g. a descriptive title of the domain entity, because the welcome service does not authenticate the welcome request. Everybody receives the same welcome response for a welcome URL, as long as the same application deployment remains subscribed at the given URL.
     </p>
     <p>
-The generated HTML document is the first stage to boot a terminal. In the second stage, the terminal loads all assets it requires to present the user interface of an application instance. In the final stage, the terminal opens the terminal session to obtain the model of the user interace. The end user expects a visual clue that the application is running in the browser, before the terminal manifests the session model and presents the user interface in the last stage. This is especially important on mobile networks with significant latencies. The HTML document is treated as a splash screen that postpones the execution of JavaScript files. The browser first loads other resources that specify the initial appearance of the application. 
+The generated HTML document is the first stage to boot a terminal. In the second stage, the terminal loads all assets it requires to present the user interface of an application instance. In the final stage, the terminal opens the terminal session to obtain the model of the user interace. The end user however expects a visual clue that the application is running in the browser, before the terminal manifests the session model and presents the user interface in the last stage. This is especially important on mobile networks with significant latencies. The HTML document is treated as a splash screen that postpones the execution of JavaScript files. The browser first loads other resources that specify the initial appearance of the application. 
     </p>
     <p>
-The next example shows a typical welcome response. The head section contains links to CSS style sheets. The body section contains the <dfn>display element</dfn> where the user interface of the session model will be manifested in the DOM later on. Until that happens, the display element presents the splash content. The body section ends with several script tags, which initialize the runtime environment of the terminal. In the last inline script, the loader of the runtime environment installs the application image. One of the modules in the application image opens or restores the terminal session whose model is manifested in the DOM.
+The next example shows a typical welcome response. The head section contains links to CSS style sheets. Small style sheets can even be inlined in the head section to save another HTTP request, although it also increases the size of the welcome response. The body section contains the <dfn>display element</dfn> where the user interface of the session model will be manifested in the DOM later on. Until that happens, the display element presents the splash content. The body section ends with several script tags, which initialize the runtime environment of the terminal. In the last inline script, the loader of the runtime environment installs the application image. One of the modules in the application image opens or restores the terminal session whose model is manifested in the DOM.
     </p>
 <pre>&lt;!doctype html&gt;
 &lt;html&gt;
@@ -1548,20 +1550,25 @@ The last stage of a booting terminal manifests the session model to present a us
 A booting terminal retrieves its session URL from the HTML5 session storage. Armed with the URL, the terminal sends an HTTP request to get a JSON dump of the session. The dump reveals the complete state of a user interface, which the terminal should present in the browser. If the terminal is restoring an existing session, the user interface continues in the state where the terminal left the application the last time. If the terminal has just opened a new session, the user interface is in an indeterminate state. The application instance has computed an initial user interface for the terminal without knowledge of device features. The initial user interface is part of delta response &#x03b4;(0), but the terminal reports supported device features in delta request &#x03b4;(1). When the application instance produces &#x03b4;(0), it doesn't know whether the terminal device is a mobile smartphone with touch support, a laptop with keyboard and mouse support, or some other device. Session values whose manifestations rely on specific device features must appear in delta response &#x03b4;(2) or later.
     </p>
     <p>
-When the session dump is available, the terminal waits for the installation of the application image to finish. This ensures the terminal has loaded all modules, which are required to manifest the session model. The next example is a JavaScript extract of a module configuration that binds data types to manifestation classes. The configuration keys are type names, and the values are class names. If the dynamic type of a new session value is bound to a manifestation class, an object of this class is created.
+When the session dump is available, the terminal waits for the installation of the application image to finish. This ensures the terminal has loaded all modules, which are required to manifest the session model. The next example is a JavaScript extract of a module configuration that binds data types to manifestation classes. The configuration keys are type names, and the values are class names. If the dynamic type of a new session value is bound to a manifestation class, an object of this class is created. The new manifestation object implements the intended behavior of the session value in the browser environment, e.g. button and slider controls in the browser DOM that represent abstract session values.
     </p>
 <pre><span class="keyword">function</span> configure(module) {
   &hellip;
   module.manifest = {
-    <span class="literal">'UI.Button'</span>: <span class="literal">'Foo.Toolkit.Button'</span>,
-    <span class="literal">'UI.Slider'</span>: <span class="literal">'Foo.Toolkit.Slider'</span>,
+    <span class="literal">'UI.Button'</span>: <span class="literal">'Ext.Dixmix.Toolkit.Button'</span>,
+    <span class="literal">'UI.Slider'</span>: <span class="literal">'Ext.Dixmix.Toolkit.Slider'</span>,
     &hellip;
   }
 }</pre>
-    <p>
-A manifestation object is initialized with a parent manifestation, a path element and a data value. The parent manifestation and path element designate the full path from the root to the new manifestation in the session model. The data value of a new manifestation may result in the recursive creation of more manifestations. Manifestations create a hierarchy that shadows the structure of session values. Unlike a session value, a manifestation is aware of its location in the model.
-    </p>
     <h1>Deploy service</h1>
+    <p>
+A backend application contacts the deploy service of an open mainframe to enable frontend terminals to start the application. This chapter explains what the mainframe expects from a backend application to achieve successful deployment.
+    </p>
+    <h2>HTTP resources</h2>
+    <p>
+The deploy service covers HTTP resources in frontend and backend networks.
+    </p>
+    <h2>Application image</h2>
     <h1>Library service</h1>
     <h1>Diagnostics service</h1>
     <h1>Abstract user interface</h1>
