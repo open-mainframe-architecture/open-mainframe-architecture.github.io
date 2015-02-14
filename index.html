@@ -1550,16 +1550,8 @@ The last stage of a booting terminal manifests the session model to present a us
 A booting terminal retrieves its session URL from the HTML5 session storage. Armed with the URL, the terminal sends an HTTP request to get a JSON dump of the session. The dump reveals the complete state of a user interface, which the terminal should present in the browser. If the terminal is restoring an existing session, the user interface continues in the state where the terminal left the application the last time. If the terminal has just opened a new session, the user interface is in an indeterminate state. The application instance has computed an initial user interface for the terminal without knowledge of device features. The initial user interface is part of delta response &#x03b4;(0), but the terminal reports supported device features in delta request &#x03b4;(1). When the application instance produces &#x03b4;(0), it doesn't know whether the terminal device is a mobile smartphone with touch support, a laptop with keyboard and mouse support, or some other device. Session values whose manifestations rely on specific device features must appear in delta response &#x03b4;(2) or later.
     </p>
     <p>
-When the session dump is available, the terminal waits for the installation of the application image to finish. This ensures the terminal has loaded all modules, which are required to manifest the session model. The next example is a JavaScript extract of a module configuration that binds data types to manifestation classes. The configuration keys are type names, and the values are class names. If the dynamic type of a new session value is bound to a manifestation class, an object of this class is created. The new manifestation object implements the intended behavior of the session value in the browser environment, e.g. button and slider controls in the browser DOM that represent abstract session values.
+When the session dump is available, the terminal waits for the installation of the application image to finish. This ensures the terminal has loaded all modules, which are required to manifest the session model. Module configurationis bind data types to manifestation classes. If the dynamic type of a new session value is bound to a manifestation class, an object of this class is created. The new manifestation object implements the intended behavior of the session value in the browser environment, e.g. button and slider controls in the browser DOM that represent abstract session values.
     </p>
-<pre><span class="keyword">function</span> configure(module) {
-  &hellip;
-  module.manifest = {
-    <span class="literal">'UI.Button'</span>: <span class="literal">'Ext.Dixmix.Toolkit.Button'</span>,
-    <span class="literal">'UI.Slider'</span>: <span class="literal">'Ext.Dixmix.Toolkit.Slider'</span>,
-    &hellip;
-  }
-}</pre>
     <h1>Deploy service</h1>
     <p>
 A backend application contacts the deploy service of an open mainframe to enable frontend terminals to start the application. This chapter explains what the mainframe expects from a backend application to achieve successful deployment.
