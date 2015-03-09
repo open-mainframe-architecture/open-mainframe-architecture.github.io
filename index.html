@@ -26,6 +26,15 @@ pre {
 .pattern {
   font-weight: bold;
 }
+.variable {
+  font-style: italic;
+}
+.variable::before {
+  content: "\00AB";
+}
+.variable::after {
+  content: "\00BB";
+}
 .figure {
   padding: 1em;
   text-align: center;
@@ -90,14 +99,22 @@ pre {
 .network-stack td {
   text-align: center;
 }
-.network-layer td {
-  border: solid thin;
+.layer td {
   padding: 0.25em;
+  border-width: thin;
+  border-left-width: 0;
+  border-right-width: 0;
+}
+.firewall.layer td {
+  border-style: dotted;
+}
+.network.layer td {
+  border-style: solid;
 }
 .network-flow {
   font-size: 0.5em;
 }
-.network-layer .network-separator {
+.layer td.network-separator {
   border-bottom-style: none;
   border-top-style: none;
 }
@@ -139,7 +156,7 @@ pre {
 The open mainframe architecture (oma) is an application architecture that revives old ideas. A terminal presents the user interface of a remote process. A traditional mainframe runs these processes for connected terminals, but an open mainframe doesn't run processes for terminals. Processes run autonomously in the backend tier of oma. A backend application is deployed on a mainframe to enable terminals to start the application. Terminals populate the frontend tier. An open mainframe in the middle acts as a router between the frontend and backend. When a terminal starts a deployed application, the application creates a backend process. The new process is a running instance of the backend application, which handles user interactions that the terminal reports.
     </p>
     <p>
-Backend applications and their processes are not concerned with presentation technologies of user interfaces. Frontend terminals don't care about application logic to process user interactions. Traditional and open mainframes provide the same separation of presentation and application concerns. Although oma adds an extra middle tier with routing functionality to improve scalability, this does not affect the primary separation of concerns. Unlike traditional mainframes with proprietary technologies, oma relies on open web standards. A frontend terminal is a modern HTML browser that presents the user interface of a backend process. This process is an HTTP client that updates the user interface when the terminal reports user interactions. A backend application is an HTTP client that manages the deployment on an open mainframe.
+Backend applications and their processes are not concerned with presentation technologies for user interfaces. Frontend terminals don't care about application logic to process user interactions. Traditional and open mainframes provide the same separation of presentation and application concerns. Although oma adds an extra middle tier to improve scalability, this does not affect the primary separation of concerns. Unlike traditional mainframes with proprietary technologies, oma relies on open web standards. A frontend terminal is a modern HTML browser that presents the user interface of a backend process. This process is an HTTP client that updates the user interface when the terminal reports user interactions. A backend application is an HTTP client that manages the deployment on an open mainframe.
     </p>
     <div class="figure">
       <div class="inline">
@@ -226,10 +243,10 @@ The service supports two forms of deployment. In a <dfn>light deployment</dfn>, 
 library service
         </p>
         <p>
-This service resembles a public library where anyone can read books, known as bundles in oma terminology. A <dfn>bundle</dfn> publishes the compiled assets of a source archive in a directory on a web server. All terminals load JavaScript assets from standard library bundles that initialize a bare runtime environment in the browser. The loader of this runtime environment fetches assets from other library bundles.
+This service resembles a public library where anyone can read books, known as bundles in oma terminology. A <dfn>bundle</dfn> publishes the compiled assets of a source archive in a directory on a web server. All terminals load JavaScript assets from standard library bundles that initialize a runtime environment in the browser. The loader of this runtime environment fetches assets from other library bundles.
         </p>
         <p>
-Bundles are distribution units for modules, which improve startup times of applications. When a terminal needs a module from a bundle, it loads all modules of the bundle in one download. If a bundle is like a book, a module is like a chapter in a book. A <dfn>module</dfn> is a logically cohesive set of assets with a well-defined and obvious purpose. A modular organization with clear boundaries between modules reduces complexity of asset management. Developers should generally not care about the bundles in which their modules are distributed. This flexibility promotes the development of many small modules that specify their dependencies on other modules.
+Bundles are distribution units for modules. When a terminal needs a module from a bundle, it loads all modules of the bundle in one download, improving startup times of applications. If a bundle is like a book, a module is like a chapter in a book. A <dfn>module</dfn> is a logically cohesive set of assets with a well-defined and obvious purpose. A modular organization with clear boundaries between modules reduces complexity of asset management. Developers should generally not care about the bundles in which their modules are distributed. This flexibility promotes the development of many small modules that specify their dependencies on other modules.
         </p>
       </li>
       <li>
@@ -273,11 +290,11 @@ Web standards slowly evolve to encorporate the latest technologies. It's an unfo
 A hybrid solution that fetches and presents snippets from the web inside native apps, combines the best of both worlds. The native app is responsible for an intuitive integration with the mobile device OS, while the snippets are easy to manage and to upgrade on web servers. It is a new equilibrium that keeps users and organizations happy.
     </p>
     <p>
-The short history of past application architectures is an important lesson for oma. A universal application that offers a good user experience across terminal devices, now and in the future, is unrealistic. Many devices have capabilities that cannot be emulated on other types of devices. The open mainframe architecture encourages experimentation with device-specific features that are captured in emerging web standards/proposals. Developers have to design suitable data abstractions, which convey the effects of a new web technology as delta actions in a virtual user interface. Backend processes employ these abstractions in the virtual user interface to optimize the real user experience on popular devices.
+The short history of past application architectures is an important lesson for oma. A universal application that offers a good user experience across terminal devices, now and in the future, is unrealistic. Many devices have capabilities that cannot be emulated on other types of devices. The open mainframe architecture encourages experimentation with device-specific features that are captured in emerging web standards/proposals. Developers design suitable data abstractions, which convey the effects of a new web technology as delta actions in a virtual user interface. Backend processes employ these abstractions in the virtual user interface to optimize the real user experience on popular devices.
     </p>
     <h2>Typed JSON</h2>
     <p>
-The open mainframe architecture augments JSON with a type system to enforce more rigorous rules about structure. The type system introduces a simple definition language to create data types, which specify how to marshal and unmarshal data values in JSON. A data values is either a basic, list, dictionary or record value.
+The open mainframe architecture augments JSON with a type system to enforce more rigorous rules about structure. The type system introduces a simple definition language to create data types, which specify how to marshal and unmarshal data values in JSON. A data value is either a basic, list, dictionary or record value.
     </p>
     <p>
 Typed JSON is an essential ingredient of oma, because data types form the glue between architectural components. The dynamic type of a value must be preserved when values are communicated over the wire. Delta sessions solve contravariance problems with the dynamic types of values.
@@ -286,7 +303,7 @@ Typed JSON is an essential ingredient of oma, because data types form the glue b
 The JSON representation of a data value is either compact or full. A <dfn>full representation</dfn> includes the dynamic type of the represented value. A <dfn>compact representation</dfn> is on the other hand untyped. Consider the list type <code>[string]</code>. The compact representation of an empty string list is an empty array <code class="literal">[]</code>. The full representation is a JSON object <code class="literal">{$:'[string]',_:[]}</code>. The dollar entry defines the dynamic type of the value and the underscore represents the untyped value. Although a compact JSON representation is preferable, a full representation is unavoidable when the dynamic type of a value cannot be inferred.
     </p>
     <p>
-Data types are defined in modules. Type definitions specify a data interface to some aspect of a software system. For example, a terminal loads modules that define data types for virtual user-interface elements like buttons, labels and sliders. The terminal loads other modules that implement concrete user-interface elements in JavaScript. In oma terminology, these implementations are known as manifestations. A <dfn>manifestation</dfn> determines how a data value in a session model behaves in a runtime environment. Manifestations separate structural from behavioral concerns. A virtual slider element in a session model is unaware of its manifestation in the browser DOM, which presents a real slider the user can interact with.
+Data types are defined in modules. Type definitions specify a data interface to some aspect of a software system. For example, a terminal loads modules that define data types for virtual user-interface elements like buttons and sliders. The terminal loads other modules that implement concrete user-interface elements in JavaScript. In oma terminology, these implementations are known as manifestations. A <dfn>manifestation</dfn> determines how a data value in a session model behaves in a runtime environment. Manifestations separate structural from behavioral concerns. A virtual slider element in a session model is unaware of its manifestation in the browser DOM, which presents a real slider the user can interact with.
     </p>
     <h2>Multidisciplinary teams</h2>
     <p>
@@ -306,7 +323,7 @@ The open mainframe architecture stresses the importance of a scalable network in
     </p>
     <table class="network-stack">
       <tbody>
-        <tr class="network-layer">
+        <tr class="network layer">
           <td colspan="7">
 Internet
           </td>
@@ -316,7 +333,7 @@ Internet
 &darr;
           </td>
         </tr>
-        <tr class="network-layer">
+        <tr class="firewall layer">
           <td colspan="7">
 Frontend firewall
           </td>
@@ -332,7 +349,7 @@ Frontend firewall
 &darr;
           </td>
         </tr>
-        <tr class="network-layer">
+        <tr class="network layer">
           <td colspan="7">
 Mainframe network
           </td>
@@ -358,7 +375,7 @@ Mainframe network
 &uarr;
           </td>
         </tr>
-        <tr class="network-layer">
+        <tr class="firewall layer">
           <td colspan="3">
 Backend firewall<sub>1</sub>
           </td>
@@ -376,7 +393,7 @@ Backend firewall<sub>2</sub>
 &uarr;
           </td>
         </tr>
-        <tr class="network-layer">
+        <tr class="network layer">
           <td colspan="3">
 Local network<sub>1</sub>
           </td>
@@ -389,13 +406,10 @@ Local network<sub>2</sub>
     </table>
     <h2>Application domains</h2>
     <p>
-Mainframes are traditionally used in administrative domains, but oma is more domain agnostic. There are however inherent limitations.
+Mainframes are traditionally used in administrative domains. Although oma is more domain agnostic, there are inherent limitations.
     </p>
     <p>
-When a user interaction takes place in a terminal, there is a delay before a backend process is informed about a delta action in a virtual user interface. There is yet another delay before the effects in the user interface are reported back to the terminal. These roundtrip delays are not problematic, if the user is not expecting immediate feedback from the backend process. For example, users in data entry applications fill in extensive forms without expecting any feedback. However, the user experience quickly degrades when the user expects immediate feedback, e.g. after pressing a submit button in a form, and the feedback fails to materialize.
-    </p>
-    <p>
-Developers should be careful not to neglect the Law of Leaky Abstractions. It is tempting to treat a virtual user interface as an event-driven user interface, commonly found in native window systems. But the separation of presentation and application concerns on distinct networks is not just an implementation detail. Network latencies are measured in milliseconds whereas response times of native applications are measured in microseconds. The open mainframe architecture cannot hide a thousandfold difference behind an abstraction. A delay of ten milliseconds is perceived as instantaneous. Having to wait for ten seconds absolutely kills the user experience. A virtual user interface is bound to leak if network latency is not a fundamental part of its design.
+Developers should be careful not to neglect the Law of Leaky Abstractions. It is tempting to treat a virtual user interface as an event-driven user interface, commonly found in native window systems. But the separation of presentation and application concerns on distinct networks is not an implementation detail. When a user interaction takes place in a terminal, there is a delay before a backend process is informed about a delta action in a virtual user interface. There is yet another delay before the effects in the user interface are reported back to the terminal. Network delays are measured in milliseconds. Response times in window systems are on the other hand measured in microseconds. A thousandfold difference cannot be ignored. A delay of ten milliseconds is perceived as instantaneous. Having to wait for ten seconds absolutely kills the user experience. A virtual user interface is bound to leak if network latency is not a fundamental part of its design.
     </p>
     <p>
 When designing virtual user interfaces, team members divide responsibilities between presentation logic in frontend terminals and application logic in backend processes. They negotiate a balance that supports an intuitive user experience on terminal devices with average network connectivity. User perception must be the decisive factor to resolve design issues. This may involve optimistic trickery like starting an animation in a terminal to show results, before the backend process has produced the results. Leave it to the imagination of creative teams to design virtual user interfaces for a broad range of application domains.
@@ -465,7 +479,7 @@ A union type contains type alternatives, separated by vertical bars. A member of
 A delta session exports a <dfn>typespace</dfn> that binds names to type expressions and macros. A <dfn>type expression</dfn> is evaluated in a typespace. A <dfn>type macro</dfn> is a template that needs one or more type parameters to evaluate the resulting data type. Both sides of a session parse and evaluate the expressions and macros of the typespace to establish a common vocabulary for model synchronization. Typespaces add a convenient level of indirection to organize and to reuse type definitions, for example type additions to merge the fields of record types.
     </p>
     <p>
-The definitions in a typespace must be closed under evaluation. Every type variable in an expression must be bound to a macro argument. Every type name must be bound to a macro or expression in the typespace. Cyclic definitions are not supported, e.g. a macro cannot apply itself, neither directly nor indirectly. The complete grammar of type definitions is given below in EBNF notation.
+The definitions in a typespace must be closed under evaluation. Every type variable in an expression must be bound to a macro argument. Every type name must be bound to a macro or expression in the typespace. Recursive definitions are not supported, e.g. a macro cannot apply itself, neither directly nor indirectly. The complete grammar of type definitions is given below in EBNF notation.
     </p>
 <pre>TypeDef     =  TypeMacro | TypeExpr
 TypeMacro   =  <span class="literal">"("</span> TypeArg {<span class="literal">","</span> TypeArg} <span class="literal">")"</span> TypeExpr
@@ -490,7 +504,7 @@ The token patterns are defined by the following regular expressions.
 <span class="pattern">FIELD</span>     [<span class="literal">a</span>-<span class="literal">z</span>][<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]*
 <span class="pattern">VARIABLE</span>  [<span class="literal">A</span>-<span class="literal">Z</span>]
 <span class="pattern">CHOICE</span>    <span class="literal">"</span>[<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]+<span class="literal">"</span></pre>
-    <h3>JavaScript configuration</h3>
+    <h3>Type definition</h3>
     <p>
 Data types are defined in module configurations. The following JavaScript extract shows the definitions of standard type names in oma.
     </p>
@@ -556,7 +570,7 @@ An enumeration alternative is pointless, if basic type <code>string</code> is an
 Duplicate alternatives are superfluous. This rule does not test for type equivalence, because alternatives are considered duplicates if they have identical definitions. Union types should not specify identical alternatives.
     </p>
 <pre><span class="rule-condition">S = T | T</span><span class="rule-conclusion">S = T</span></pre>
-    <h3>Compact or full JSON representation</h3>
+    <h3>Marshal and unmarshal</h3>
     <p>
 The marshal function of a type computes the JSON representation of a data value. The unmarshal function is the inverse function from JSON representation back to data value. Marshalling a data value and unmarshalling its JSON representation should produce an equal value. Data values are equal, if they convey the same structure, and if they are members of the same dynamic type.
     </p>
@@ -570,7 +584,7 @@ Members of enumeration types are represented as JSON strings, and thus by defaul
   bar: "a"_"b"
 }</pre>
     <p>
-Marshal functions of list, dictionary and record types compute a compact or full JSON representation. If the inferred type at the construction site matches the dynamic type of a data value, a compact representation suffices. Otherwise the full representation is required to preserve the dynamic type of the value. Type preservation solves contravariance problems when data values in session models are subjected to mutations. The dynamic type of a model value furthermore determines the manifestation in a runtime environment. If dynamic types are not properly preserved, a session model will not exhibit the intended behavior.
+Marshal functions of list, dictionary and record types compute a compact or full JSON representation. If the inferred type at the construction site is identical to the dynamic type of a data value, a compact representation suffices. Otherwise the full representation is required to preserve the dynamic type of the value. Type preservation solves contravariance problems when data values in session models are subjected to mutations. The dynamic type of a model value furthermore determines the manifestation in a runtime environment. If dynamic types are not properly preserved, a session model will not exhibit the intended behavior.
     </p>
     <p>
 The compact representation of a list value is a JSON array. The full representation stores this array in the underscore entry of a JSON object. The list type is stored in the dollar entry. List values benefit the most from a compact representation, because it avoids the creation of a wrapper object. For example, the array <code class="literal">[4,2]</code> is a compact representation for a value of list type <code>[number]</code>. The full representation <code class="literal">{$:'[number]',_:[4,2]}</code> wraps the array in an extra object to preserve the dynamic type of the list value.
@@ -579,10 +593,10 @@ The compact representation of a list value is a JSON array. The full representat
 The only difference between the compact and full representation of a record value is the missing dollar entry in the compact representation. Both representations are JSON objects. The full representation <code class="literal">{$:'Foo',bar:'b'}</code> includes information about the dynamic type of a record value, which is dropped from the compact representation <code class="literal">{bar:'b'}</code>. The benefits of a compact representation are noticeable when record values have few fields. If records have many fields, the penalty for extra dollar entries in full representations is negligible.
     </p>
     <p>
-The JSON representation of optional record fields is optimized. The marshal function of a record type does not include a field in the JSON representation, if the field value is <code class="literal">null</code>. The unmarshal function of a record type initializes a field to <code class="literal">null</code>, if the field is not present in the JSON representation. This optimization turns standard type <code>Flag</code> into an efficient type for boolean-like fields with a bias towards false. A cleared flag, i.e. the common case, is missing, but a set flag must be explicitly initialized to <code class="literal">"y"</code> in the JSON representation.
+The JSON representation of optional record fields is optimized. The marshal function of a record type does not include a data field in the JSON representation, if the field value is <code class="literal">null</code>. The unmarshal function of a record type initializes a data field to <code class="literal">null</code>, if the field is not present in the JSON representation. This optimization turns standard type <code>Flag</code> into an efficient type for boolean-like fields with a bias towards false. A cleared flag, i.e. the common case, is missing, but a set flag must be explicitly initialized to <code class="literal">"y"</code> in the JSON representation.
     </p>
     <p>
-The compact representation of a dictionary value is a JSON object with an underscore entry that contains another JSON object. The nested JSON object maps dictionary keys to values. Dictionary entries cannot be represented in the root JSON object, because this results in an ambiguous representation when a dollar and/or an underscore is a dictionary key. Full representations of dictionaries employ the same scheme as list values, i.e. a dollar for the type information and an underscore for the container with elements. The full representation of an empty dictionary with numbers is <code class="literal">{$:'&lt;number&gt;',_:{}}</code>. The omission of the dollar entry in the compact representation <code class="literal">{_:{}}</code> is similar to record values.
+The compact representation of a dictionary value is a JSON object with an underscore entry that contains another JSON object. The nested JSON object maps dictionary keys to values. Dictionary entries cannot be represented in the root JSON object, because this results in an ambiguous representation when a dollar and/or an underscore is a dictionary key. Full representations of dictionaries employ the same scheme as list values, i.e. a dollar for the type information and an underscore for the untyped container with elements. The full representation of an empty dictionary with numbers is <code class="literal">{$:'&lt;number&gt;',_:{}}</code>. The omission of the dollar entry in the compact representation <code class="literal">{_:{}}</code> is similar to record values.
     </p>
     <p>
 The marshal function of a wildcard type produces full representations of list, dictionary and record values, because an inferred wildcard type at a construction site cannot match with the dynamic type of a data value.
@@ -607,13 +621,13 @@ An <code>@event</code> annotation specifies an event field. A record value does 
   bar: none @event=server 
 }</pre>
     <p>
-A client event field is the origin of an event in a delta request. In the next example, the client informs the server about an occurence of event field <code>bar</code> as soon as possible. The field type indicates an event occurence conveys a boolean value.
+A client event field is the origin of an event in a delta request. In the next example, the client informs the server about an occurence of event field <code>bar</code> as soon as possible, which is the default client reaction to an event occurence. The field type indicates an occurence conveys a boolean value.
     </p>
 <pre>Foo: {
   bar: boolean @event=client 
 }</pre>
     <p>
-A client event field accepts a <code>@delay</code> annotation. The annotation value is <code>block</code>, <code>flush</code> or <code>forever</code>. The client sends a delta request with an occurence of event field <code>bar</code> in the next example as soon as possible. While waiting for the delta response, the blocked client is not allowed to modify the session model. The model is locked and the client has to wait for the server to produce the side effects of processing the event.
+A <code>@delay</code> annotation alters the client reaction to an event occurence. The annotation value is <code>block</code>, <code>flush</code> or <code>forever</code>. The client sends a delta request with an occurence of event field <code>bar</code> in the next example as soon as possible. While waiting for the delta response, the blocked client is not allowed to modify the session model. The model is locked and the client has to wait for the server to produce the side effects of processing the event.
     </p>
 <pre>Foo: {
   bar: boolean @event=client @delay=block
@@ -625,7 +639,7 @@ The client buffers an occurence of event field <code>bar</code> in the next exam
   bar: boolean @event=client @delay=flush
 }</pre>
     <p>
-The server is not interested in the occurence of event field <code>bar</code> in the next example. It expects the client to delay occurences indefinitely. The server has to update the <code>@delay</code> annotation if it wants to be informed about occurences.
+The server is not interested in the occurence of event field <code>bar</code> in the next example. It expects the client to delay occurences indefinitely. The server has to delete or update the <code>@delay</code> annotation if it wants to be informed about occurences.
     </p>
 <pre>Foo: {
   bar: boolean @event=client @delay=forever
@@ -634,13 +648,13 @@ The server is not interested in the occurence of event field <code>bar</code> in
 The initial value of a <dfn>meta field</dfn> is a dictionary that holds the specified annotations of a field definition. A member of record type <code>Foo</code> with field <code>bar</code> also contains meta field <code>@bar</code>, which maps annotation names to values. The type of a meta field is predefined as <code>&lt;string&gt;</code>, but in all other regards, a meta field is a regular data field that the server side can target with delta actions.
     </p>
     <p>
-A <code>@data</code> annotation specifies a data field that is modifiable on the client side. The annotation value is <code>client</code> or <code>both</code>. In the next example, both client and server can update data field <code>bar</code> in a session model with a new string value. When the client changes the field, it reports the modification in a delta request as soon as possible.
+A <code>@data</code> annotation specifies a data field that is modifiable on the client side. The annotation value is <code>client</code> or <code>both</code>. In the next example, both client and server can update data field <code>bar</code> in a session model with a new string value. When the client changes the field, the default reaction is to report the modification in a delta request as soon as possible.
     </p>
 <pre>Foo: {
   bar: string @data=both
 }</pre>
     <p>
-A <code>@delay</code> annotation specifies how the client reports a data modification. The annotation value is <code>block</code>, <code>flush</code>, <code>pause</code> or <code>ponder</code>. The values <code>block</code> and <code>flush</code> have the same meaning for data and event fields. A blocking client waits for a response after a modification. A flushing client buffers a modification and flushes it later. In the next example, the client buffers a modification of field <code>bar</code> as well. However, when this modification is still the most recent field modification after a small pause, the client sends a delta request as soon as possible. The value <code>ponder</code> increases the delay of the last modification to a few seconds, giving the client more time to think about what the field value should be, before the server is informed about it.
+A <code>@delay</code> annotation specifies an alternative client reaction to a data modification. The annotation value is <code>block</code>, <code>flush</code>, <code>pause</code> or <code>ponder</code>. The values <code>block</code> and <code>flush</code> have the same meaning for data and event fields. A blocking client waits for a response after a modification. A flushing client buffers a modification and flushes it later. In the next example, the client buffers a modification of field <code>bar</code> as well. However, when this modification is still the most recent field modification after a small pause, the client sends a delta request as soon as possible. The value <code>ponder</code> increases the delay of the last modification to a few seconds, giving the client more time to think about what the field value should be, before the server is informed about it.
     </p>
 <pre>Foo: {
   bar: string @data=both @delay=pause
@@ -676,7 +690,7 @@ A <code>Delta.Action</code> occurs in some part of the model. The field <code>pa
   path: [string | number]
 }</pre>
     <p>
-A <code>Delta.Assign</code> action mutates a value in the model. A <code>Delta.Signal</code> action reports a client or server event in the model. Both assignments and signals must be properly typed. The path of an action infers what type of value can be assigned or what type of event can be signalled. For example, if the path leads to an element of a list in the model, the value to assign must be a member of the inferred element type.
+A <code>Delta.Assign</code> action mutates a value in the model. A <code>Delta.Signal</code> action reports a client or server event in the model. Both assignments and signals must be properly typed. The path of an action infers what type of value can be assigned or what type of event can be signalled. For example, if the path leads to an element of a list in the model, the value to assign must be a member of the element type.
     </p>
 <pre>Delta.Assign: Delta.Action + {
   value: Any
@@ -694,13 +708,13 @@ Delta.Delete: Delta.Action + {
   keys: [string]
 }</pre>
     <p>
-A <code>Delta.Update</code> action fuses several assignments into a single action. The field <code>assigns</code> is a dictionary whose entry keys specify the assignment locations for entry values. If the path of an update action locates a record or dictionary in the session model, the assignment keys identify record fields or dictionary entries. If a list is located at the update path, the assignment keys are string representations of integer indices. A <code>Delta.Goto</code> action jumps to a location in the model from which the other relative actions are performed. Goto and update actions are optional optimizations that avoid path duplications to minimize the payload of delta messages.
+A <code>Delta.Goto</code> action jumps to a location in the model from which the other relative actions are performed. A <code>Delta.Update</code> action fuses several assignments into a single action. The field <code>assigns</code> is a dictionary whose entry keys specify the assignment locations for entry values. If the path of an update action locates a record or dictionary in the session model, the assignment keys identify record fields or dictionary entries. If a list is located at the update path, the assignment keys are string representations of integer indices. Goto and update actions are optional optimizations that avoid path duplications to minimize the payload of delta messages.
     </p>
-<pre>Delta.Update: Delta.Action + {
-  assigns: &lt;Any&gt;
+<pre>Delta.Goto: Delta.Action + {
+  actions: [Delta.Action]
 }
-Delta.Goto: Delta.Action + {
-  relative: [Delta.Action]
+Delta.Update: Delta.Action + {
+  assigns: &lt;Any&gt;
 }</pre>
     <h3>Query session</h3>
     <p>
@@ -716,11 +730,11 @@ An HTTP client polls a delta session to inspect the current session status. The 
 }</pre>
     <h4><code>GET &hellip;/model</code></h4>
     <p>
-An HTTP client sends a request to this resource to obtain the definition of data type <code>Delta.Model</code>, which describes the root value of a delta session. This type name is used in standard types, but it lacks a standard definition. The client should cache the HTTP response with the textual source of a type definition. The model of a session holds a list, dictionary or record value. This composed value is the starting point to access and to manipulate the session model.
+An HTTP client sends a request to this resource to obtain the definition of data type <code>Delta.Model</code>, which describes the root value of a delta session. This type name is used in standard types, but it lacks a standard definition. The client should cache the HTTP response with the textual source of a type definition. The model of a session holds a list, dictionary or record value. This composed value is the starting point to manipulate the session model.
     </p>
     <h4><code>GET &hellip;/dump</code></h4>
     <p>
-A dump operation returns the complete state of a session. An HTTP client should not cache the response with the compact representation of a <code>Delta.Dump</code> record. The record combines the status of a session with the root value. A dump enables the client to restore the session model. A browser must restore the model of a terminal session after a page refresh has destroyed the old model.
+A dump operation returns the complete state of a session. An HTTP client should not cache the response with the compact representation of a <code>Delta.Dump</code> record. The record combines the status of a session with the root value. A dump enables restoration of a session model. A browser must restore the model of a terminal session after a page refresh has destroyed the old model.
     </p>
 <pre>Delta.Dump: Delta.Status + Delta.Root
 Delta.Root: {
@@ -773,7 +787,7 @@ The visualization of file uploads in user interfaces of terminals is a responsib
     </p>
     <h3>Download file</h3>
     <p>
-The coordination with delta events enables the server side to create a pipe for an uploading client, but a similar coordination cannot be realized for a downloading client. A terminal cannot tell when a browser actually sends an HTTP request to download a file, because it depends on unknown factors, e.g. the volatile state of the browser cache. The URL of a downloaded file would furthermore be confined to a terminal session. Terminals would not be able to share a cache with files, even if the terminals belong to the same user.
+The coordination with delta events enables the server side to create a pipe for an uploading client, but a similar coordination cannot be realized for a downloading client. A terminal cannot tell when a browser actually sends an HTTP request to download a file, because it depends on unknown factors, e.g. the volatile state of the browser cache. The URL of a downloaded file would furthermore be confined to a terminal session. Terminals would not be able to share files, even if the terminals belong to the same user.
     </p>
     <p>
 A delta session can maintain a directory with cached files. Unlike a binary pipe with a paired reader and writer, a cache has many readers and one writer. Frontend terminals download files from the cache of a backend application. The application fills the cache with files that cannot be published in public library bundles. Cached files have dynamically generated and/or sensitive content, for example financial reports.
@@ -786,26 +800,26 @@ When an HTTP client attempts to download a cached file, the mainframe authentica
   guests: [string]
 }</pre>
     <p>
-The backend application signals an authorization event back that grants and revokes access to cached files. The event contains a dictionary that maps file names to <code>Delta.Authorization</code> records. The fields <code>allows</code> and <code>denies</code> specify lists of users with authorized and unauthorized access to the cached file.
+The cache owner signals an authorization event back that grants and revokes access to cached files. The event contains a dictionary that maps file names to <code>Delta.Authorization</code> records. The fields <code>allows</code> and <code>denies</code> specify lists of users with authorized and unauthorized access to the cached file.
     </p>
 <pre>Delta.Authorization: {
   allows: [string],
   denies: [string]
 }</pre>
     <p>
-The mainframe can purge cache entries, but it does not maintain a history of purged names. When the mainframe generates a download event for cached files, it indicates what files are currently in the cache. The application should revoke access to any unknown names it encounters in a download event, but it should restore purged files in the cache if their access is granted. The application must ensure restored files are identical to purged files.
+The mainframe can purge cache entries, but it does not maintain a history of purged names. When the mainframe generates a download event for cached files, it indicates what files are currently in the cache. The cache owner should revoke access to any unknown names it encounters in a download event, but it should restore purged files in the cache if their access is granted. The owner must ensure restored files are identical to purged files.
     </p>
     <h4><code>POST &hellip;/alloc</code></h4>
     <p>
-A backend application posts an HTTP request to this resource, when it wants to add a file to the cache. The request body encodes the compact JSON representation of a <code>Delta.Blob</code>. The textual body of the HTTP response is the name of a new cache entry. The allocated name allows a backend application to derive the URL of a cached file before the file content has been copied to the cache.
+A cache owner posts an HTTP request to this resource, when it wants to add a file to the cache. The request body encodes the compact JSON representation of a <code>Delta.Blob</code>. The textual body of the HTTP response is the name of a new cache entry. The allocated name allows the URL of a cached file to be derived before the file content has been copied to the cache.
     </p>
     <h4><code>GET &hellip;/file/&hellip;</code></h4>
     <p>
-A frontend terminal manifests the URL of a cached file in the DOM, e.g. in an <code>img</code> tag, which causes the browser to send an HTTP request to download the file from the cache. The HTTP response with the file should be cached indefinitely. 
+A frontend terminal is an example of a cache reader. A terminal manifests the URL of a cached file in the DOM, e.g. in an <code>img</code> tag, which causes the browser to send an HTTP request to download the file from the cache. The HTTP response with the file should be cached indefinitely. 
     </p>
     <h4><code>POST &hellip;/file/&hellip;</code></h4>
     <p>
-An application posts an HTTP request with a <code>multipart/form-data</code> body to this resource whose name must have been allocated earlier. The form data contains the binary content that should be copied to the cache. The file remains cached until the application is undeployed or the cache entry is purged.
+A cache owner posts an HTTP request with a <code>multipart/form-data</code> body to this resource whose name must have been allocated earlier. The form data contains the binary content that should be copied to the cache. The file remains cached until the cache entry is purged or the session of the owner is closed.
     </p>
     <h2>Delta protocol</h2>
     <p>
@@ -1226,7 +1240,7 @@ The client side of a paired session posts an HTTP request with &#x03b4;(2n+1) to
       <li>
         <span class="delta-side">this</span> <span class="delta-message">&#x03b4;(2n+2)<br/>&larr;</span> <span class="delta-side">other</span>
         <p>
-The server side replies with &#x03b4;(2n+2). The delta response contains a push event with the name of a binary pipe.
+The server side replies with &#x03b4;(2n+2). The delta response contains a push event with the name of a binary pipe and the names of files to upload in the pipe.
         </p>
       </li>
       <li>
@@ -1273,7 +1287,7 @@ The HTTP response contains the name of a new pipe.
       <li>
         <span class="delta-side">this</span> <span class="delta-message">do &#x03b4;(2n+2)<br/>&rarr;</span> <span class="delta-side">other</span>
         <p>
-The server side posts an HTTP request with &#x03b4;(2n+2) whose push event informs the client side about the pipe.
+The server side posts an HTTP request with &#x03b4;(2n+2) whose push event informs the client side about the files to upload in the pipe.
         </p>
       </li>
       <li>
@@ -1294,13 +1308,13 @@ A binary pipe transfers files from the client to the server side of a paired del
     </p>
     <h3>Publish cached files</h3>
     <p>
-A delta session can publish a web directory with cached files. File access is coordinated with delta events, although the coordination is not visible to clients that download cached files. An HTTP client simply sends a request to get a file, regardless whether it's cached or not.
+A delta session can publish a web directory with cached files. File access is coordinated with delta events in the session of the cache owner, although the coordination is not visible to clients that download cached files. An HTTP client simply sends a request to get a file, regardless whether it's cached or not.
     </p>
     <ol>
       <li>
         <span class="delta-side">this</span> <span class="delta-message">alloc<br/>&rarr;</span> <span class="delta-side">other</span>
         <p>
-This side posts an HTTP request to allocate a unique name in the cache.
+This side posts an HTTP request to allocate a unique name in the cache that this side owns.
         </p>
       </li>
       <li>
@@ -1330,7 +1344,7 @@ This side verifies the user is authorized to access the file. It posts &#x03b4;(
       <li>
         <span class="delta-side">this</span> <span class="delta-message">file &hellip;<br/>&rarr;</span> <span class="delta-side">other</span>
         <p>
-After this side has granted access to the file, it must post an HTTP request to copy the file content to the cache.
+After the cache owner has granted access to the file, it must post an HTTP request to copy the file content to the cache.
         </p>
       </li>
     </ol>
@@ -1441,7 +1455,7 @@ Many web applications use cryptic URLs to store all kinds of state, e.g. session
 When a browser navigates to a welcome URL, the welcome service has to decide which deployed application is responsible for the user interface of a terminal. An application deployment subscribes itself to prefixes of welcome URLs that it wishes to associate with the application. The welcome service examines these subscriptions to link a welcome request to a deployed application. If the path of a welcome URL matches multiple subscriptions, the subscription of the most recently deployed application wins the conflict.
     </p>
     <p>
-The subscription mechanism simplifies application management in oma. An application subscribes to welcome URLs that seem suitable for the particular type of deployment. Suppose a webshop application is deployed on a production site. This deployment welcomes terminals that visit URLs like <code>shirt/search</code>, which are meaningful to end users. When a developer deploys the same webshop application on a test site, the deployment subscribes to welcome URLs that start with <code>_/app/AiQ9x/</code>. The ugliness does not disappoint a user in this case, because the developer is well aware the URLs belong to a temporary deployment.
+The subscription mechanism simplifies application management in oma. An application subscribes to welcome URLs that seem suitable for the particular type of deployment. Suppose a webshop application is deployed on a production site. This deployment welcomes terminals that visit URLs like <code>search/shirt</code>, which look meaningful to end users. When a developer deploys the same webshop application on a test site, the deployment subscribes to welcome URLs that start with <code>_/app/AiQ9x/</code>. The ugliness does not disappoint a user in this case, because the developer is well aware the URLs belong to a temporary deployment.
     </p>
     <p>
 Welcome URLs generally belong to one of the following categories.
@@ -1450,13 +1464,13 @@ Welcome URLs generally belong to one of the following categories.
       <li>
         <p>domain entity</p>
         <p>
-A welcome URL selects an entity from an application domain. The path of the URL starts with the domain name, followed by selection criteria to designate an entity, e.g. <code>shirt/53928</code>. Users expect these welcome URLs to last on production sites. They are convenient targets for bookmarks and for hyperlinks in HTML documents. 
+A welcome URL selects an entity from an application domain. The path of the URL starts with the domain name, followed by selection criteria to identify an entity, e.g. <code>shirt/53928</code>. Users expect these welcome URLs to last on production sites. They are convenient targets for bookmarks and for hyperlinks in HTML documents. 
         </p>
       </li>
       <li>
         <p>domain partition</p>
         <p>
-The welcome URL of an entity in a flat domain does not convey implementation details about the backend. However, if the backend already partitions the domain in distinct chunks, e.g. geographically, the partition of an entity is an obvious prefix for a welcome URL. For example, when a browser navigates to URL <code>us/shirt/search</code>, the terminal starts the US version of the webshop. The URL <code>de/hemd/suchen</code> starts the German version. These welcome URLs are expected to last on production sites, but the current partition scheme may not the best scheme in the future. Users will be disappointed if a company changes welcome URLs after a major reorganization. 
+The welcome URL of an entity in a flat domain does not convey implementation details about the backend. However, if the backend already partitions the domain in distinct chunks, e.g. geographically, the partition of an entity is an obvious prefix for a welcome URL. For example, when a browser navigates to URL <code>us/search/shirt</code>, the terminal starts the US version of the webshop. The URL <code>de/suchen/hemd</code> starts the German version. These welcome URLs are expected to last on production sites, but the current partition scheme may not the best scheme in the future. Users will be disappointed if a company changes welcome URLs after a major reorganization. 
         </p>
       </li>
       <li>
@@ -1473,14 +1487,14 @@ These welcome URLs are suitable for developers. They deploy and test many applic
       </li>
     </ul>
     <p>
-The welcome request of a terminal may pass through proxies before it arrives at a mainframe. Proxies rewrite URLs in HTTP requests, which is problematic for welcome requests, because the welcome URL in the address bar is reflected in the session model. It's possible for a backend process to assume the browser of the terminal displays welcome URL <code>shirt/28471</code>, whereas the browser actually displays <code>foo/shirt/28471</code>. The extra <code>foo/</code> prefix has been added by a proxy between the terminal and the mainframe. A mainframe may disallow the use of proxies, and redirect an offending browser to a proper welcome URL. The redirection is also necessary if cookies are scoped to subdomains. The Same-Origin-Policy of browsers requires the welcome URL to stem from the same domain as the subdomains of new cookies. Production sites rely on subdomains to balance incoming HTTP traffic. If proxies are allowed between a terminal and a mainframe, the potential discrepancy between a welcome URL in the address bar and in the session model must be taken into account. The <dfn>welcome root</dfn> of a terminal is an extra path prefix that is displayed in the address bar. Terminals strip the root prefix from welcome URLs in session models. Backend applications are not bothered by HTTP proxies.
+The welcome request of a terminal may pass through proxies before it arrives at a mainframe. Proxies rewrite URLs in HTTP requests, which is problematic for welcome requests, because the welcome URL in the address bar is part of the session model. It's possible for a backend process to assume the browser of the terminal displays welcome URL <code>shirt/28471</code>, whereas the browser actually displays <code>foo/shirt/28471</code>. The extra <code>foo/</code> prefix has been added by a proxy between the terminal and the mainframe. A mainframe may disallow the use of proxies, and redirect an offending browser to a proper welcome URL. The redirection is also necessary if cookies are scoped to subdomains. The Same-Origin-Policy of browsers requires the welcome URL to stem from the same domain as the subdomains of new cookies. Production sites rely on subdomains to balance incoming HTTP traffic. If proxies are allowed between a terminal and a mainframe, the potential discrepancy between a welcome URL in the address bar and in the session model must be taken into account. The <dfn>welcome root</dfn> of a terminal is an extra path prefix that is displayed in the address bar. Terminals strip the root prefix from welcome URLs in session models. Backend applications are not bothered by HTTP proxies.
     </p>
     <h2>Boot terminal</h2>
     <p>
 When the welcome service knows which backend application is subscribed at a welcome URL, the service generates an HTML document for the browser. The HTML document should not contain sensitive information, e.g. a descriptive title of the domain entity, because the welcome service does not authenticate the welcome request. Everybody receives the same welcome response for a welcome URL, as long as the same application deployment remains subscribed at the given URL.
     </p>
     <p>
-The generated HTML document is the first stage to boot a terminal. In the second stage, the terminal loads all assets it requires to present the user interface of a backend process. In the final stage, the terminal opens the terminal session to obtain the model of the user interace. The end user however expects a visual clue that the application is running in the browser, before the terminal manifests the session model and presents the user interface in the last stage. This is especially important on mobile networks with significant latencies. The HTML document is treated as a splash screen that postpones the execution of JavaScript files. The browser first loads other resources that specify the initial appearance of the application. 
+The generated HTML document is the first stage to boot a terminal. In the second stage, the terminal loads all assets it requires to present the real user interface of a backend process. In the final stage, the terminal opens the terminal session to obtain the model of the virtual user interace. The end user however expects a visual clue that the application is running in the browser, before the terminal manifests the session model and presents the user interface in the last stage. This is especially important on mobile networks with significant latencies. The HTML document is treated as a splash screen that postpones the execution of JavaScript files. The browser first loads other resources that specify the initial appearance of the application. 
     </p>
     <p>
 The next example shows a typical welcome response. The head section contains links to CSS style sheets. Small style sheets can be inlined in the head section. The body section contains the <dfn>display element</dfn> where the virtual user interface of the session model will be manifested in the DOM later on. Until that happens, the display element presents the splash content. The body section ends with several script tags, which initialize the runtime environment of the terminal. In the last inline script, the loader of the runtime environment installs the application image. One of the modules in the application image opens or restores the terminal session whose model is manifested in the DOM.
@@ -1532,7 +1546,7 @@ When a terminal opens a session to start an application, the terminal specifies 
       </li>
     </ul>
     <p>
-The script resource to open a terminal session is usually located at <code>_/open</code>, relative from the web root. A browser sends an HTTP request with script parameters to this resource. The corresponding HTTP response with JavaScript source code may issue cookies with <code>Set-Cookie</code> headers. The welcome service associates several cookies with a terminal. The <dfn>device identity</dfn> is a persistent cookie that tracks the browser of a terminal. The <dfn>guest identity</dfn> and <dfn>guest ticket</dfn> are transient cookies that authenticate the user of a terminal. The welcome service issues the guest cookies once, but the device cookie is renewed whenever guest cookies are issued. The combination of guest identity and ticket proves terminals belong to a unique person, although the welcome service does not know what this person is allowed to do.
+The script resource to open a terminal session is located at <code>_/start</code>, relative from the web root. A browser sends an HTTP request with script parameters to get JavaScript source code from this resource. The corresponding HTTP response may issue cookies with <code>Set-Cookie</code> headers. The welcome service associates several cookies with a terminal. The <dfn>device identity</dfn> is a persistent cookie that tracks the browser of a terminal. The <dfn>guest identity</dfn> and <dfn>guest ticket</dfn> are transient cookies that authenticate the user of a terminal. The welcome service issues the guest cookies once, but the device cookie is renewed whenever guest cookies are issued. The combination of guest identity and ticket proves terminals belong to a unique person, although the welcome service does not know what this person is allowed to do.
     </p>
     <p>
 The welcome service protects the confidentiality of guest tickets, because they resemble temporary passwords. The service does not store plain guest tickets to limit the damage of a compromised guest administration. When the service issues guest cookies, it computes a salted hash of the guest ticket, which is stored with the guest identity. An HTTP request is considered authentic if a hash of the ticket cookie reproduces the hash that was stored with the guest identity.
@@ -1548,44 +1562,40 @@ The last stage of a booting terminal manifests the session model to present a re
 A booting terminal retrieves its session URL from the HTML5 session storage. Armed with the URL, the terminal sends an HTTP request to get a JSON dump of the session. The dump reveals the complete state of a virtual user interface, which the terminal should present in the browser. If the terminal is restoring an existing session, the user interface continues in the state where the terminal left the application the last time. If the terminal has just opened a new session, the virtual user interface is in an indeterminate state. When the backend process produces delta response &#x03b4;(0) with an initial virtual user interface, it doesn't know whether the terminal device is a mobile smartphone with touch support, a laptop with keyboard and mouse support, or some other device. Session values whose manifestations rely on specific device features must appear in delta response &#x03b4;(2) or later, because a terminal reports supported device features in delta request &#x03b4;(1).
     </p>
     <p>
-When the session dump is available, the terminal waits for the installation of the application image to finish. This ensures the terminal has loaded all modules, which are required to manifest the session model. Module configurationis bind data types to manifestation classes. If the dynamic type of a session value is bound to a manifestation class, an object of this class is created. The new manifestation object implements the intended behavior of the session value in the browser environment, e.g. real button and slider controls in the browser DOM that synchronize session values.
+When the session dump is available, the terminal waits for the installation of the application image to finish. This ensures the terminal has loaded all modules, which are required to manifest the session model. Module configurations bind data types to manifestation classes. If the dynamic type of a session value is bound to a manifestation class, an object of this class is created. The new manifestation object implements the intended behavior of the session value in the browser environment, e.g. real button and slider controls in the browser DOM that synchronize session values.
     </p>
     <h1>Deploy service</h1>
     <p>
 A backend application contacts the deploy service of an open mainframe to enable frontend terminals to start the application. This chapter explains what the mainframe expects from a backend application to achieve successful deployment.
-    </p>
-    <h2>HTTP resources</h2>
-    <p>
-The deploy service covers HTTP resources in frontend and backend networks.
     </p>
     <h2>Application image</h2>
     <h1>Library service</h1>
     <h1>Diagnostics service</h1>
     <h1>Virtual user interface</h1>
     <p>
-The virtual user interface of oma describes basic features that any real user interface in a terminal must be able to support. This boils down to HTML features, because terminals are modern web browsers in oma. However, HTML was not designed to construct consistent user interfaces. HTML is very rich and expressive, which is an invitation for developers to tweak the HTML markup of user intefaces, until they are pixel-precise replicas of mock-ups. In theory, CSS is a powerful instrument to separate styling from HTML markup. The harsh reality is that the amount of CSS classes, rules and properties in web applications quickly explodes to incomprehensible proportions. If developers are not careful, CSS preprocessors only worsen the situation with more bloated style sheets. The philosophy of CSS envisions cooperation between team members to develop a solid strategy, but CSS is too often an afterthought in projects.
+The virtual user interface of oma describes basic features that any real user interface in a terminal must be able to support. This boils down to HTML features, because terminals are web browsers. However, HTML was not designed to construct consistent user interfaces. HTML is very rich and expressive, which is an invitation for developers to tweak the HTML markup of user intefaces, until they are pixel-precise replicas of mock-ups. In theory, CSS is a powerful instrument to separate styling from HTML markup. The harsh reality is that the amount of CSS classes, rules and properties in web applications quickly explodes to incomprehensible proportions. If developers are not careful, CSS preprocessors only worsen the situation with more bloated style sheets. The philosophy of CSS envisions cooperation between team members to develop a solid strategy, but CSS is too often an afterthought in projects.
     </p>
     <p>
 The virtual user interface borrows heavily from HTML and CSS. It is an attempt to take the good parts of these technologies and to drop the smelly parts. The final result, discussed in this chapter, should improve cooperation between all team disciplines that are involved in the realization of user interfaces, both virtual and real.
     </p>
     <h2>Default toolkit</h2>
     <p>
-A virtual user interface is built from a tree of widgets. A <dfn>widget</dfn> is a user interface component with a clear purpose. Widgets are defined in toolkits, and the default toolkit defines the minimal set of widgets that work properly on all terminal devices.
+A virtual user interface is built from a tree of widgets. A <dfn>widget</dfn> is a user interface control with a clear purpose. Widgets are defined in toolkits, and the default toolkit defines the minimal set of widgets that work on all terminal devices.
     </p>
     <h3>Widget</h3>
     <p>
-A virtual widget is a <code>UI.Widget</code> record value. When <code>hidden</code> is truthy, the widget should not be manifested in the browser DOM. If a DOM manifestation already exists, it must either be removed or its CSS <code>display</code> property must be set to <code>none</code>. Field <code>styles</code> contains <code class="literal">null</code>, a style class name, or a list with style class names. These names are mapped to one or more CSS class names in the DOM. Optional numeric field <code>index</code> determines the presentation order of a widget when it's part of a dictionary composition.
+A virtual widget is a <code>UI.Widget</code> record value. When <code>hidden</code> is truthy, the widget should not be manifested in the browser DOM. If a DOM manifestation already exists, it must either be removed or its CSS <code>display</code> property must be set to <code>none</code>. Field <code>style</code> contains <code class="literal">null</code>, a style class name, or a list with style class names. These names are mapped to one or more CSS class names in the DOM. Optional numeric field <code>index</code> determines the presentation order of a widget when it's part of a dictionary composition.
     </p>
-    <pre>UI.Widget: {
+<pre>UI.Widget: {
   hidden: Flag,
-  styles: UI.Styles?,
+  style: UI.Style?,
   index: number?
 }
-UI.Styles: string | [string]</pre>
+UI.Style: string | [string]</pre>
     <p>
-Virtual widgets roughly fall into four categories, although a concrete widget type may combine features from several categories or introduce entirely new features. A <dfn>layout widget</dfn> specifies a layout strategy for child widgets. The composition of children is either a list or dictionary with widget values. A <dfn>decorator widget</dfn> adds one or more features to another widget, the <code>subject</code>. An <dfn>output widget</dfn> is a noninteractive label, image or combination, i.e. an icon, with a symbolic identifier for localization purposes. An <dfn>input widget</dfn> captures real user interactions and translates them to delta actions on a virtual widget, but only when it's enabled. An interactive input widget may need exclusive focus.
+Virtual widgets roughly fall into four categories, although a concrete widget type may combine features from several categories. A <dfn>layout widget</dfn> specifies a layout strategy for child widgets. The composition of children is either a list or dictionary with widget values. A <dfn>decorator widget</dfn> adds features to another widget, the <code>subject</code>. An <dfn>output widget</dfn> displays a text or image in a virtual user interface, with a symbolic identifier for localization purposes. An <dfn>input widget</dfn> captures real user interactions and translates them to delta actions on a virtual widget, but only when it's enabled. An interactive input widget may need exclusive focus. An unchained widgets is dropped from the list of  focusable widgets in the DOM, which a user can traverse, for example with <code>tab</code> and <code>alt-tab</code> keys on terminal devices with keyboards. When the user presses a key on the keyboard, the input widget with focus generates a client event.
     </p>
-    <pre>UI.Layout(T=UI.Widget): UI.Widget + {
+<pre>UI.Layout(T=UI.Widget): UI.Widget + {
   widgets: UI.Composition(T)?
 }
 UI.Composition(T=UI.Widget): [T] | &lt;T&gt;
@@ -1597,28 +1607,30 @@ UI.Output: UI.Widget + {
 }
 UI.Input: UI.Widget + {
   disabled: Flag,
+  unchained: Flag,
   focus: boolean @event=client @delay=forever,
-  autofocus: none @event=server
+  autofocus: none @event=server,
+  keypress: UI.Keypress @event=client @delay=forever
 }</pre>
     <h3>Layout</h3>
     <p>
 A virtual widget does not specify a size. The 2D area that a virtual widget occupies in a user interface, is intrinsically driven by the content and styling of the widget, except for sizeable widgets with an explicit height or width. A sizeable widget without a height or width automatically grows and shrinks to accommodate for its content. Otherwise, the size of a sizeable widget is either fixed at a CSS length, or proportional to the size of the parent widget.
     </p>
-    <pre>UI.Sizeable: { height: UI.Size?, width: UI.Size? }
+<pre>UI.Sizeable: { height: UI.Size?, width: UI.Size? }
 UI.Size: UI.Length | number
 UI.Length: { n: number, u: "ch"_"em"_"ex"_"px"_"rem" }</pre>
     <p>
 A <dfn>widget frame</dfn> is a sizeable display surface for a child subject and a layout for child magnets. A <dfn>magnet frame</dfn> has an absolute position, relative to the top left corner of the parent frame. A numeric top or left is proportional to the size of the parent. A negative magnet height or width, whether fixed-length or proportional, is subtracted from the distance to the opposite side of the parent frame. For example, if <code>left</code> is fixed at ten pixels, and <code>width</code> is minus ten percent (<code>-0.1</code>), the right side of a magnet is positioned at ninety percent of the parent's width. A horizontal or vertical translation positions the magnet at its final location. A numeric translation is proportional to the size of the magnet.
     </p>
-    <pre>UI.Frame: UI.Sizeable + UI.Decorator + UI.Layout(UI.Magnet)
+<pre>UI.Frame: UI.Sizeable + UI.Decorator + UI.Layout(UI.Magnet)
 UI.Magnet: UI.Frame + {
   left: UI.Size?, top: UI.Size?,
   translateX: UI.Size?, translateY: UI.Size?
 }</pre>
     <p>
-The items in a sizeable <dfn>widget list</dfn> either flow horizontally in rows or vertically in columns. The layout of list items is controlled with CSS3 flexbox features. Unless specified differently, items flow from left to right in Latin writing mode, they wrap in multiple rows from top to bottom, they are left-aligned in a row, they stretch to fit the row height, and when there are multiple rows, the rows stretch to fit the list height.
+The items in a sizeable <dfn>widget list</dfn> either flow horizontally in rows or vertically in columns. The layout of list items is controlled with CSS flexbox features. Unless specified differently, items flow from left to right in Latin writing mode, they wrap in multiple rows from top to bottom, they are left-aligned in a row, they stretch to fit the row height, and when there are multiple rows, the rows stretch to fit the list height.
     </p>
-    <pre>UI.List: UI.Sizeable + UI.Layout(UI.Item) + {
+<pre>UI.List: UI.Sizeable + UI.Layout(UI.Item) + {
   orientation: UI.Flow.Orientation?,
   wrap: UI.Flow.Wrap?,
   justify: UI.Flow.Justify?,
@@ -1628,27 +1640,27 @@ The items in a sizeable <dfn>widget list</dfn> either flow horizontally in rows 
     <p>
 Items in a list flow from right to left with <code>rowReverse</code> orientation, from top to bottom with a <code>column</code> orientation, and from bottom to top with a <code>columnReverse</code> orientation.
     </p>
-    <pre>UI.Flow.Orientation: "rowReverse"_"column"_"columnReverse"</pre>
+<pre>UI.Flow.Orientation: "rowReverse"_"column"_"columnReverse"</pre>
     <p>
 A list wraps items by default, unless overruled with <code>overflow</code>. If there are too many items to fit in one row or column, the list will overflow horizontally or vertically. When a list wraps items in the <code>reverse</code> direction, multiple rows or columns are positioned in reverse order. For example, a list with row orientation that needs two rows to layout items, contains the last items in the first row and the first items in the second row.
     </p>
-    <pre>UI.Flow.Wrap: "overflow"_"reverse"</pre>
+<pre>UI.Flow.Wrap: "overflow"_"reverse"</pre>
     <p>
 Field <code>justify</code> controls how a list distributes empty space between items on the orientation axis. For example, items in a list with a row orientation are left-aligned by default, right-aligned with <code>opposite</code>, horizontally centered with <code>center</code> and evenly distributed in a row with <code>between</code> and <code>around</code>.
     </p>
-    <pre>UI.Flow.Justify: "opposite"_"center"_"between"_"around"</pre>
+<pre>UI.Flow.Justify: "opposite"_"center"_"between"_"around"</pre>
     <p>
 Field <code>alignItems</code> specifies alignment of items, perpendicular to the orientation axis, i.e. vertical alignment of row items or horizontal alignment of column items. By default, items are not aligned, stretching to row height or column width. Otherwise, they are compactly aligned with <code>start</code>, <code>end</code>, <code>center</code> or <code>baseline</code>.
     </p>
-    <pre>UI.Flow.AlignItems: "start"_"end"_"center"_"baseline"</pre>
+<pre>UI.Flow.AlignItems: "start"_"end"_"center"_"baseline"</pre>
     <p>
-Field <code>alignContent</code> specifies how a list distributes empty space between multiple rows or columns. It is ignored when the items fit in one row or column. By default, rows stretch to cover the list height and columns stretch to cover the list width. Otherwise, they are compactly aligned with <code>start</code>, <code>end</code>, <code>center</code>, <code>between</code> or <code>around</code>.
+Field <code>alignContent</code> specifies how a list distributes empty space between multiple rows or columns. It is ignored when the list has one row or column. By default, rows stretch to cover the list height and columns stretch to cover the list width. Otherwise, they are compactly aligned with <code>start</code>, <code>end</code>, <code>center</code>, <code>between</code> or <code>around</code>.
     </p>
-    <pre>UI.Flow.AlignContent: "start"_"end"_"center"_"between"_"around"</pre>
+<pre>UI.Flow.AlignContent: "start"_"end"_"center"_"between"_"around"</pre>
     <p>
 A <dfn>list item</dfn> decorates a subject that flows in a list layout. Optional fields <code>grow</code>, <code>shrink</code> and <code>basis</code> specify flexibility of an individual list item. Perpendicular alignment of a list item is overruled with field <code>align</code>.
     </p>
-    <pre>UI.Item: UI.Decorator + {
+<pre>UI.Item: UI.Decorator + {
   grow: number?,
   shrink: number?,
   basis: UI.Size?,
@@ -1657,35 +1669,123 @@ A <dfn>list item</dfn> decorates a subject that flows in a list layout. Optional
 UI.Flow.Align: "stretch" | UI.Flow.AlignItems</pre>
     <h3>Output</h3>
     <p>
-A <dfn>label widget</dfn> 
+A <dfn>text widget</dfn> displays lines of text inside a virtual user interface. The bounding box of the widget grows and shrinks to wrap the text, unless style classes restrict the width of the box and also prevent line wrapping.
     </p>
-    <pre>UI.Label: UI.Output + {
-  label: Text?
+<pre>UI.Text: UI.Output + {
+  line: Text?
 }</pre>
-An <dfn>image widget</dfn> 
+    <p>
+An <dfn>image widget</dfn> adds graphics to a virtual user interface. Field <code>asset</code> contains the mandatory URL where the binary asset is located.
     </p>
-    <pre>UI.Image: UI.Output + {
-  source: string?
-}
-UI.Icon: UI.Image + UI.Label</pre>
+<pre>UI.Image: UI.Output + {
+  asset: string
+}</pre>
+    <p>
+An <dfn>icon widget</dfn> resembles a list with an image and text widget, whose orientation can be specified. An icon with the default row orientation flows the image and text from left to right. The image and text are compactly aligned from the start of the orientation axis, and they are centered, perpendicular to this axis.
+    </p>
+<pre>UI.Icon: UI.Image + UI.Text + {
+  orientation: UI.Flow.Orientation?
+}</pre>
     <h3>Input</h3>
     <p>
-A <dfn>button widget</dfn> 
+A <dfn>scroll input</dfn> pins a viewport to the display surface of the decorated subject. The viewport selects the visible portion when the display surface is too large. Horizontal and vertical scroll offsets are proportional to size differences. For example, if <code>scrollY</code> is <code>0</code>, the top of the viewport aligns with the top of the surface. If <code>scrollY</code> is <code>1</code>, the bottom of the viewport aligns with the bottom of the surface.
     </p>
-    <pre>UI.Button: UI.Input + UI.Decorator + UI.Symbol
-UI.NavButton: UI.Button + {
-  jump: string
-}
-UI.CmdButton: UI.Button + {
-  click: none @event=client @delay=block
-}</pre>
-    <p>
-A <dfn>scroll input</dfn> pins a viewport on the display surface of the subject. The viewport selects the visible portion when the display surface is too large. Horizontal and vertical scroll offsets are proportional to size differences. For example, if <code>scrollY</code> is <code>0</code>, the top of the viewport aligns with the top of the surface. If <code>scrollY</code> is <code>1</code>, the bottom of the viewport aligns with the bottom of the surface.
-    </p>
-    <pre>UI.Scroll: UI.Input + UI.Decorator + {
+<pre>UI.Scroll: UI.Input + UI.Decorator + {
   scrollX: number? @data=both @delay=flush,
   scrollY: number? @data=both @delay=flush
 }</pre>
+    <p>
+A <dfn>button widget</dfn> decorates a subject widget with a click feature to activate or select the subject. Most buttons decorate an output widget, e.g. an icon. Although it's possible to nest another interactive widget inside a button, it should be avoided, because it looks and feels confusing.
+    </p>
+<pre>UI.Button: UI.Input + UI.Decorator + {
+  click: UI.Click @event=client @delay=forever
+}</pre>
+    <p>
+A <dfn>navigation button</dfn> is a hyperlink that navigates the terminal to a new URL, contained in field <code>jump</code>,  when the user activates the hyperlink.
+    </p>
+<pre>UI.NavButton: UI.Button + {
+  jump: string
+}</pre>
+    <p>
+A <dfn>command button</dfn> initiates a blocking operation. The user interface is unresponsive after activating the button, until the server side has processed the click event.
+    </p>
+<pre>UI.CmdButton: UI.Button + {
+  click: UI.Click @event=client @delay=block
+}</pre>
+    <p>
+A user interacts with a <dfn>selection widget</dfn> to make a choice. A <dfn>choice widget</dfn> is a special button that is always unchained. The parent selection determines how focus programmatically switches between choice buttons, for example with arrow keys on a keyboard.
+    </p>
+<pre>UI.Selection: UI.Input + UI.Layout(UI.Choice)
+UI.Choice: UI.Button + {
+  unchained: none,
+  selected: Flag
+}</pre>
+    <p>
+A <dfn>radio list</dfn> selects at most one radio button. Radio buttons cannot be deselected by the user. The list automatically deselects a radio button when the user selects another button from the list. The default orientation of a radio list flows the buttons from left to right in a row. 
+    </p>
+<pre>UI.RadioList: UI.Selection + {
+  orientation: UI.Flow.Orientation?
+}</pre>
+    <p>
+A <dfn>check list</dfn> selects zero or more checkboxes. The orientation specifies how checkboxes flow in the check list, similar to a radio list.
+    </p>
+<pre>UI.CheckList: UI.Selection + {
+  orientation: UI.Flow.Orientation?
+}</pre>
+    <p>
+A <dfn>cycle button</dfn> decorates the current choice. Although a cycle button appears to nest buttons, which is generally a bad idea, only one choice is ever visible. When the user presses the button, the decorated subject is replaced by the next choice from the selection. The behavior of cycle buttons is similar to how radio lists behave, but cycle buttons take up less space in the user interface. They are convenient controls if there are a few obvious choices.
+    </p>
+<pre>UI.CycleButton: UI.Selection + UI.Button</pre>
     <h2>Style classes</h2>
+    <h1>Appendix</h1>
+    <h2>HTTP</h2>
+    <h3><span class="variable">welcome</span></h3>
+    <p>
+If a URL does not start with an underscore, it is a treated as a welcome URL. The welcome service runs in the frontend network.
+    </p>
+    <h3>_/deploy</h3>
+    <p>
+Deploy a backend application. Light deployment posts a JSON object. Heavy deployment uploads JSON object and a source archive.
+    </p>
+    <h3>_/start</h3>
+    <p>
+Open terminal session and start application in browser. The GET response contains JavaScript code to persist info about terminal session in the browser, using HTML5 session storage.
+    </p>
+    <h3>_/publish</h3>
+    <p>
+Publish new library bundle. Assets in uploaded source archive are compiled and copied to directory on a web server.
+    </p>
+    <h3>_/pub/<span class="variable">bundle</span>/<span class="variable">version</span>/load.js</h3>
+    <p>
+JavaScript loader to install particular version of the bundle.
+    </p>
+    <h3>_/pub/<span class="variable">bundle</span>/<span class="variable">version</span>/<span class="variable">module</span>/&hellip;</h3>
+    <p>
+Access compiled asset from a module. The module is identified by an ordinal index inside the versioned bundle. Path remainder locates asset inside module.
+    </p>
+    <h3>_/mount/<span class="variable">app-id</span>/<span class="variable">operation</span></h3>
+    <p>
+Initiate delta session operation in an application session. Session does not support ready/greedy messages and file transfers with pipes. It includes support for publishing files in cache.  
+    </p>
+    <h3>_/proc/<span class="variable">proc-id</span>/<span class="variable">operation</span></h3>
+    <p>
+Initiate delta session operation in a process session. Session supports greedy messages, pipe creation and pipe downloading. Ready messages and cached files are not supported.
+    </p>
+    <h3>_/tty/<span class="variable">tty-id</span>/<span class="variable">app-id</span>/<span class="variable">operation</span></h3>
+    <p>
+Initiate delta session operation in a terminal session. Terminal session supports ready messages and pipe uploading. Cached files are not supported, because a terminal accesses the application cache.
+    </p>
+    <h3>_/app/<span class="variable">app-id</span>/<span class="variable">welcome</span></h3>
+    <p>
+Welcome URL for temporary deployment of a test application.
+    </p>
+    <h3>_/app/<span class="variable">app-id</span>/_/file/<span class="variable">name</span></h3>
+    <p>
+Get file from application cache. A terminal is authenticated and authorized before it can access a cached file.
+    </p>
+    <h3>_/app/<span class="variable">app-id</span>/_/pub/<span class="variable">module</span>/&hellip;</h3>
+    <p>
+Access compiled asset from module in heavy deployment.
+    </p>
   </body>
 </html>
