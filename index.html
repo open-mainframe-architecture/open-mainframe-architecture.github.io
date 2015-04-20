@@ -232,7 +232,7 @@ welcome service
 The welcome service establishes contact between a terminal and an open mainframe. When a browser navigates to a <dfn>welcome URL</dfn>, the browser becomes a terminal that requests the welcome service to start an application. The service examines the welcome request to find the deployed application that the terminal intends to start. This application is instructed to create a new process, which computes the initial model of a <dfn>virtual user interface</dfn>. The terminal subsequently presents a real version of this user interface in the web browser.
         </p>
         <p>
-The new process session in the backend is paired with the new terminal session in the frontend. A <dfn>session pair</dfn> synchronizes the same model in opposite directions. The terminal session controls the client side of the model and the process session controls the server side. The open mainframe in the middle only has to relay delta messages between the endpoints of a session pair.
+The process session in the backend is paired with the terminal session in the frontend. A <dfn>session pair</dfn> synchronizes the same model in opposite directions. The terminal session controls the client side of the model and the process session controls the server side. The open mainframe in the middle only has to relay delta messages between the endpoints of a session pair.
         </p>
       </li>
       <li>
@@ -550,7 +550,7 @@ Type addition <code>S</code> combines the fields of record types <code>T</code> 
     </p>
 <pre><span class="rule-condition">S = T + U</span><span class="rule-conclusion">S = { fields from T and not in U, &hellip;, fields from U, &hellip; }</span></pre>
     <p>
-A <code>none</code> alternative lifts a union type to an optional type. The optional type is a more concise shorthand for the union type. Union types should not have a <code>none</code> alternative.
+A <code>none</code> alternative lifts a union type to an optional type. Union types should not have a <code>none</code> alternative.
     </p>
 <pre><span class="rule-condition">S = T | none</span><span class="rule-conclusion">S = T?</span></pre>
     <p>
@@ -582,7 +582,7 @@ Duplicate alternatives are superfluous. This rule does not test for type equival
 The unmarshal function of a type constructs a data value from a JSON representation. The marshal function is the inverse function from data value back to JSON representation. Marshalling a data value and unmarshalling the resulting JSON representation should produce an equal value. Data values are equal, if and only if they have the same structure and they are members of the same dynamic type.
     </p>
     <p>
-The marshal and unmarshal function of a basic type is the identity function. The compact JSON representation of a basic value cannot be distinguished from the value itself. Consequently, basic values cannot carry additional type information. A typespace can define an alias for a basic type, but a basic value cannot be a member of the type alias. The dynamic type of a basic value is implicitly encoded in the value.
+The marshal and unmarshal function of a basic type is the identity function. The compact JSON representation of a basic value cannot be distinguished from the value itself. Consequently, basic values cannot carry dynamic type information. A typespace can define an alias for a basic type, but a basic value cannot be a member of the type alias. The dynamic type of a basic value is implicitly encoded in the value.
     </p>
     <p>
 Members of enumeration types are represented as JSON strings, and thus by default, reconstructed as basic string values. This loss of type information is not a problem, if the construction site expects an enumerated choice. Record type <code>Foo</code> in the next example expects basic string <code class="literal">"a"</code> or <code class="literal">"b"</code> when a value for field <code>bar</code> is constructed. The type information, required to validate a basic string as an enumerated choice, is inferred from the construction site. 
@@ -591,7 +591,7 @@ Members of enumeration types are represented as JSON strings, and thus by defaul
   bar: "a"_"b"
 }</pre>
     <p>
-Unmarshal functions of list, dictionary, record, optional and union types accept a compact or full JSON representation. If the dynamic type of a data value can be inferred from the construction site, a compact representation suffices. Otherwise the full representation is required to preserve the dynamic type of the value. Type preservation solves contravariance problems when data values in session models are subjected to mutations. The dynamic type of a model value furthermore determines the manifestation in a runtime environment. If dynamic types are not properly preserved, a session model will not exhibit the desired behavior.
+Unmarshal functions of list, dictionary, record, optional and union types accept a compact or full JSON representation. If the dynamic type of a data value can be inferred from the construction site, a compact representation suffices. Otherwise the full representation is required to preserve the dynamic type of the value. Type preservation solves contravariance problems when data values in session models are subjected to mutations. The dynamic type of a model value furthermore determines the manifestation in a runtime environment. A session model will not exhibit the desired behavior, if type information is properly preserved.
     </p>
     <p>
 The compact representation of a list value is a JSON array. The full representation stores this array in the underscore entry of a JSON object. The list type is stored in the dollar entry. List values benefit the most from a compact representation, because it avoids the creation of a wrapper object. For example, the array <code class="literal">[4,2]</code> is a compact representation for a value of list type <code>[number]</code>. The full representation <code class="literal">{$:'[number]',_:[4,2]}</code> wraps the array in an extra object to preserve the dynamic type of the list value.
@@ -676,10 +676,10 @@ Delta sessions are directories on web servers of open mainframes. The delta serv
     <h3>Update model</h3>
     <h4><code>POST <span class="variable">session</span>/do</code></h4>
     <p>
-The most prominent session resource is <code>do</code> that performs delta actions on the model. The body of an HTTP request encodes the compact JSON representation of a delta message. The HTTP response contains the compact representation of the next delta message. HTTP requests contain delta requests in forward sessions, but they contain delta responses in reverse sessions.
+The most prominent session resource is <code>do</code> that performs delta actions on the model. The body of an HTTP request encodes the compact JSON representation of a delta message. The HTTP response contains the compact representation of the next delta message. HTTP requests contain delta requests in forward sessions. They contain delta responses in reverse sessions.
     </p>
     <p>
-The sequence number of a <code>Delta.Message</code> is an integer that distinguishes between a delta request and response. Requests have positive, odd sequence numbers. Responses have nonnegative, even sequence numbers. A delta message is denoted as &#x03b4;(n) in this document, where n is a sequence number, e.g. &#x03b4;(1) is the first delta request from the client. The actions of response &#x03b4;(2m) reflect side effects that resulted from processing actions of request &#x03b4;(2m-1). The initial session model is assigned in the first delta response &#x03b4;(0) from the server. Field <code>lease</code> counts the number of seconds the receiver of a message has left before it should produce the next delta message. Field <code>retried</code> is truthy if the message was retried after a communication failure.
+The sequence number of a <code>Delta.Message</code> is an integer that distinguishes between a delta request and response. Requests have positive, odd sequence numbers. Responses have nonnegative, even sequence numbers. A delta message is denoted as &#x03b4;(n) in this document, where n is a sequence number, e.g. &#x03b4;(1) is the first delta request from the client. The actions of response &#x03b4;(2m) reflect side effects that resulted from processing actions of request &#x03b4;(2m-1). The first delta response &#x03b4;(0) from the server assigns the initial model of a reverse session. Field <code>lease</code> counts the number of seconds the receiver of a message has left before it should produce the next delta message. Field <code>retried</code> is truthy if the message was retried after a communication failure.
     </p>
 <pre>Delta.Message: {
   sequence: number,
@@ -777,10 +777,10 @@ The visualization of file uploads in virtual user interfaces, e.g. progress bars
 The coordination with delta events enables the server side to create a pipe for an uploading client, but a similar coordination cannot be realized for a downloading client. A terminal cannot tell when a browser actually sends an HTTP request to download a file, because it depends on unknown factors, e.g. the volatile state of the browser cache. The URL of a downloaded file would furthermore be confined to a terminal session. Terminals would not be able to share files, even if the terminals belong to the same user.
     </p>
     <p>
-A delta session can maintain a directory with cached files. Unlike a binary pipe with a paired reader and writer, a cache has many readers and one owner that writes content. Frontend terminals are readers that download files from the cache of a backend application. The application is the owner, which fills the cache with files that cannot be published in public library bundles. Cached files have dynamically generated and/or sensitive content, for example financial reports.
+A forward delta session can maintain a directory with cached files. Unlike a binary pipe with a paired reader and writer, a cache has many readers and one owner that writes content. Frontend terminals are readers that download files from the cache of a backend application. The application is the owner, which fills the cache with files that cannot be published in public library bundles. Cached files have dynamically generated and/or sensitive content, for example financial reports.
     </p>
     <p>
-When an HTTP client attempts to download a cached file, the delta service verifies the download request originates from an authentic cache reader, i.e. a terminal whose user is running the application. If not, the HTTP client is informed that the resource could not be found. If the request has an authentic origin, the user must be authorized to access the cached file. Authorization is coordinated with delta events in the session model of the cache owner, i.e. the backend application. The delta service generates an event that describes users accessing files. The event conveys a dictionary value that maps file names to <code>Delta.Access</code> records. Field <code>content</code> is the current status of the file in the cache. Field <code>guests</code> identifies the users that are attempting to download the file.
+When an HTTP client attempts to download a cached file, the delta service verifies the download request originates from an authentic cache reader, i.e. a terminal whose user is running the application. If not, the HTTP client is informed that the resource could not be found. If the request has an authentic origin, the user must be authorized to access the cached file. Authorization is coordinated with delta events in the session model of the cache owner. The delta service generates an event that describes users accessing files. The event conveys a dictionary value that maps file names to <code>Delta.Access</code> records. Field <code>content</code> is the current status of the file in the cache. Field <code>guests</code> identifies the users that are attempting to download the file.
     </p>
 <pre>Delta.Access: { content: "cached"_"allocated"_"unknown", guests: [string] }</pre>
     <p>
@@ -1297,7 +1297,7 @@ A binary pipe transfers files from the client to the server side of a paired del
     </p>
     <h3>Publish cached files</h3>
     <p>
-A delta session can publish a web directory with cached files. File access is coordinated with delta events in the session of the cache owner, although the coordination is not visible to readers that download cached files. An HTTP client simply sends a request to get a file, regardless whether it's cached or not.
+A forward delta session can publish a web directory with cached files. File access is coordinated with delta events in the session of the cache owner, although the coordination is not visible to readers that download cached files. An HTTP client simply sends a request to get a file, regardless whether it's cached or not.
     </p>
     <ol>
       <li>
@@ -1313,21 +1313,21 @@ The HTTP response reveals the name of a new file in the cache. This side can now
         </p>
       </li>
       <li>
-        <span class="delta-side">this</span> <span class="delta-message">do &#x03b4;(n)<br/>&rarr;</span> <span class="delta-side">other</span>
+        <span class="delta-side">this</span> <span class="delta-message">do &#x03b4;(2n+1)<br/>&rarr;</span> <span class="delta-side">other</span>
         <p>
-This side posts an HTTP request with &#x03b4;(n) to the other side.
+This side posts an HTTP request with &#x03b4;(2n+1) to the other side.
         </p>
       </li>
       <li>
-        <span class="delta-side">this</span> <span class="delta-message">&#x03b4;(n+1)<br/>&larr;</span> <span class="delta-side">other</span>
+        <span class="delta-side">this</span> <span class="delta-message">&#x03b4;(2n+2)<br/>&larr;</span> <span class="delta-side">other</span>
         <p>
-The other side replies with &#x03b4;(n+1). The delta message contains a download event, which specifies a user attempting to access the cached file that was allocated earlier.
+The other side replies with &#x03b4;(2n+2). The delta response contains a download event, which specifies a user attempting to access the cached file that was allocated earlier.
         </p>
       </li>
       <li>
-        <span class="delta-side">this</span> <span class="delta-message">do &#x03b4;(n+2)<br/>&rarr;</span> <span class="delta-side">other</span>
+        <span class="delta-side">this</span> <span class="delta-message">do &#x03b4;(2n+3)<br/>&rarr;</span> <span class="delta-side">other</span>
         <p>
-This side verifies the user is authorized to access the file. It posts &#x03b4;(n+2) to the other side with an authorization event that grants access.
+This side verifies the user is authorized to access the file. It posts &#x03b4;(2n+3) to the other side with an authorization event that grants access.
         </p>
       </li>
       <li>
@@ -1345,15 +1345,15 @@ In the next scenario, the cache owner restores purged files.
     </p>
     <ol>
       <li>
-        <span class="delta-side">this</span> <span class="delta-message">do &#x03b4;(n)<br/>&rarr;</span> <span class="delta-side">other</span>
+        <span class="delta-side">this</span> <span class="delta-message">do &#x03b4;(2n+1)<br/>&rarr;</span> <span class="delta-side">other</span>
         <p>
-This side posts an HTTP request with &#x03b4;(n) to the other side.
+This side posts an HTTP request with &#x03b4;(2n+1) to the other side.
         </p>
       </li>
       <li>
-        <span class="delta-side">this</span> <span class="delta-message">&#x03b4;(n+1)<br/>&larr;</span> <span class="delta-side">other</span>
+        <span class="delta-side">this</span> <span class="delta-message">&#x03b4;(2n+2)<br/>&larr;</span> <span class="delta-side">other</span>
         <p>
-The other side replies with &#x03b4;(n+1). A download event in the delta message specifies a user attempting to access content at cache entry <code>pK0vR</code>, which is neither cached nor allocated.
+The other side replies with &#x03b4;(2n+2). A download event in the delta response specifies a user attempting to access content at cache entry <code>pK0vR</code>, which is neither cached nor allocated.
         </p>
       </li>
       <li>
@@ -1369,9 +1369,9 @@ The HTTP response indicates the mapping of the name has been successfully restor
         </p>
       </li>
       <li>
-        <span class="delta-side">this</span> <span class="delta-message">do &#x03b4;(n+2)<br/>&rarr;</span> <span class="delta-side">other</span>
+        <span class="delta-side">this</span> <span class="delta-message">do &#x03b4;(2n+3)<br/>&rarr;</span> <span class="delta-side">other</span>
         <p>
-This side posts &#x03b4;(n+2) to the other side with an authorization event that grants the guest access to the restored entry <code>pK0vR</code>.
+This side posts &#x03b4;(2n+3) to the other side with an authorization event that grants the guest access to the restored entry <code>pK0vR</code>.
         </p>
       </li>
       <li>
@@ -1513,7 +1513,7 @@ A welcome URL selects an entity from an application domain. The path of the URL 
       <li>
         <p>domain partition</p>
         <p>
-The welcome URL of an entity in a flat domain does not convey implementation details about the backend. However, if the backend already partitions the domain in distinct chunks, e.g. geographically, the partition of an entity is an obvious prefix for a welcome URL. For example, when a browser navigates to URL <code>us/search/shirt</code>, the terminal starts the US version of the webshop. The URL <code>de/suchen/hemd</code> starts the German version. These welcome URLs are expected to last on production sites, but the current partition scheme may not the best scheme in the future. Users will be disappointed if a company changes welcome URLs after a major reorganization. 
+The welcome URL of an entity in a flat domain does not convey implementation details about the backend. However, if the backend already partitions the domain in distinct chunks, e.g. geographically, the partition of an entity is an obvious URL prefix. For example, when a browser navigates to URL <code>us/search/shirt</code>, the terminal starts the US version of the webshop. The URL <code>de/suchen/hemd</code> starts the German version. These welcome URLs are expected to last on production sites, but the current partition scheme may not the best scheme in the future. Users are disappointed if a company changes welcome URLs after a major reorganization. 
         </p>
       </li>
       <li>
@@ -1530,7 +1530,7 @@ These welcome URLs are suitable for developers. They deploy and test many applic
       </li>
     </ul>
     <p>
-The welcome request of a terminal may pass through proxies before it arrives at a mainframe. Proxies rewrite URLs in HTTP requests, which is problematic for welcome requests, because the welcome URL in the address bar is stored in the session model. It's possible for a backend process to assume the browser of the terminal displays welcome URL <code>shirt/28471</code>, whereas the browser actually displays <code>foo/shirt/28471</code>. The extra <code>foo/</code> prefix has been added by a proxy between the terminal and the mainframe. A mainframe may disallow the use of proxies, and redirect an offending browser to a proper welcome URL. The redirection is also necessary if cookies are scoped to subdomains. The Same-Origin-Policy of browsers requires the welcome URL to stem from the same domain as the subdomains of new cookies. Production sites rely on subdomains to balance incoming HTTP traffic. If proxies are allowed between a terminal and a mainframe, the potential discrepancy between a welcome URL in the address bar and in the session model is a problem that terminals have to solve. The <dfn>welcome root</dfn> is an extra path prefix that is displayed in the address bar. Terminals strip the root prefix from welcome URLs in session models. Backend applications are not bothered by HTTP proxies.
+The welcome request of a terminal may pass through proxies before it arrives at a mainframe. Proxies rewrite URLs in HTTP requests, which is problematic for welcome requests, because the welcome URL in the address bar is stored in the session model. A backend process may assume the browser of the terminal displays welcome URL <code>shirt/28471</code>, whereas the browser actually displays <code>foo/shirt/28471</code>. The extra <code>foo/</code> prefix has been added by a proxy between the terminal and the mainframe. A mainframe may disallow the use of proxies, and redirect an offending browser. Redirection is also necessary if cookies are scoped to subdomains. The Same-Origin-Policy of browsers requires the welcome URL to stem from the same domain as the subdomains of new cookies. Production sites rely on subdomains to balance incoming HTTP traffic. If proxies are allowed between a terminal and a mainframe, the potential discrepancy between welcome URLs is a problem that terminals have to solve. The <dfn>welcome root</dfn> is an extra path prefix that is displayed in the address bar. Terminals strip the root prefix from welcome URLs in session models. Backend applications are not bothered by HTTP proxies.
     </p>
     <h2>Boot terminal</h2>
     <p>
@@ -1711,9 +1711,9 @@ The virtual user interface of oma describes basic features that any real user in
     <p>
 The virtual user interface borrows heavily from HTML and CSS. It is an attempt to take the good parts of these technologies and to drop the smelly parts. The final result, discussed in this chapter, should improve cooperation between all team disciplines that are involved in the construction of user interfaces, both virtual and real.
     </p>
-    <h2>Default toolkit</h2>
+    <h2>Standard toolkit</h2>
     <p>
-A virtual user interface is built from a tree of widgets. A <dfn>widget</dfn> is a user interface control with a clear purpose. Widgets are defined in toolkits, and the default toolkit defines the minimal set of widgets that work on all terminal devices.
+A virtual user interface is built from a tree of widgets. A <dfn>widget</dfn> is a user interface control with a clear purpose. Widgets are defined in toolkits, and the standard toolkit defines the minimal set of widgets that work on all terminal devices.
     </p>
     <h3>Widget</h3>
     <p>
