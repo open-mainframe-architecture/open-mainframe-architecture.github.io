@@ -708,9 +708,9 @@ This document employs a terse notation to bind names to type definitions. The ne
 <pre>Any: *?
 Flag: "y"?
 Text: string | [string]
-List(T=Any): [T]
-Dict(T=Any): &lt;T&gt;
-Maybe(T=*): T?
+List: (T=Any) [T]
+Dict: (T=Any) &lt;T&gt;
+Maybe: (T=*) T?
 Record: {}</pre>
     <h2>Type evaluation</h2>
     <p>
