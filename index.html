@@ -3,6 +3,14 @@
   <head>
     <title>The open mainframe architecture</title>
     <style>
+@media print {
+h1 {
+  page-break-before: always;
+}
+h1:first-child {
+  page-break-before: avoid;
+}
+}
 html {
   font-family: serif;
   font-size: 16px;
@@ -201,10 +209,10 @@ figure figcaption::before {
   <body>
     <h1 class="unnumbered">Preface</h1>
     <p>
-I am a seasoned software developer from The Netherlands. I assume you have an interest in software development, in particular the development of interactive applications.
+I am a seasoned software developer from The Netherlands. I assume you have an interest in the development of interactive applications.
     </p>
     <p>
-In this document, I describe a novel architecture for interactive applications. Although mainframes and terminals sound outdated, I will show they are relevant concepts in the 21st century. Of course, I am not suggesting we should dust off old mainframes and put them back in business! The open mainframe architecture (oma) copies the idea of a reliable, scalable mainframe that serves stateless terminals, but oma employs modern web technologies to realize this old idea.
+In this document, I describe a novel architecture for interactive applications. Although mainframes and terminals sound outdated, I will show they are relevant concepts in the 21st century. Of course, I am not suggesting we should dust off old mainframes and put them back in business! The open mainframe architecture (oma) copies the idea of a reliable, scalable mainframe that serves stateless terminals, but it employs modern web technologies to realize this old idea.
     </p>
     <p>
 Apart from being a compact acronym, the word 'oma' also means grandmother in Dutch.
@@ -215,7 +223,7 @@ The open mainframe architecture revives old ideas. In this chapter, I take a tri
     </p>
     <h2>Mainframes and terminals</h2>
     <p>
-Mainframes are the first commercial computers. They are mysterious machines in the 1950s and 60s, because electronics is still in its infancy. Mainframes automate administrative tasks, often in the finance industry, e.g. transaction processing for banks. Mainframes have largely become extinct, but they remain renowned for their reliability.
+Mainframes are the first commercial computers. They are mysterious machines in the 1950s and 60s, because electronics is still in its infancy. Mainframes automate administrative tasks, often in the finance industry. Although mainframes have largely become extinct, they remain renowned for their reliability.
     </p>
     <figure>
       <img src="https://upload.wikimedia.org/wikipedia/commons/7/7d/IBM_704_mainframe.gif" />
@@ -233,14 +241,14 @@ Mainframes and terminals revolutionize the concept of remote computing. A mainfr
     </p>
     <h2>Home computers and PCs</h2>
     <p>
-In the early 1980s, a new type of computer emerges. The home computer inspires many enthusiasts to learn more about hardware and software. The computational power of a home computer is tiny, but creative minds manage to squeeze out every inch of the hardware to create impressive games and demos. User experience becomes a significant feature in many applications. Users are no longer bank employees that blindly accept how an application works. Users are critical consumers that need convincing before they buy an application.
+In the early 1980s, a new type of computer emerges. The home computer inspires many enthusiasts to learn more about hardware and software. The computational power of a home computer is tiny, but creative minds manage to squeeze out every inch of the hardware to create impressive games and demos. User experience becomes a significant feature in many applications. Users are not bank employees that blindly accept how an application works. Users are critical consumers that need convincing before they buy an application.
     </p>
     <figure>
       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Commodore-64-Computer.png/300px-Commodore-64-Computer.png" />
       <figcaption>Commodore 64 (<a href="https://en.wikipedia.org/wiki/Commodore_64#/media/File:Commodore-64-Computer.png">Wikimedia</a>)</figcaption>
     </figure>
     <p>
-The personal computer dominates after the home computer. The affordable PC introduces computers to a broad audience. The competitive PC market forces hardware and software manufacturers to innovate. Ergonomics and usability studies are taken seriously. New technologies, e.g. mouse, color display and audio playback, pave the way for advanced graphical user interfaces. For many people, the PC becomes a vital instrument that is switched on every day.
+The personal computer dominates after the home computer. The affordable PC introduces computers to a broad audience. The competitive PC market forces hardware and software manufacturers to innovate. Ergonomics and usability studies are taken seriously. New technologies, e.g. mouse, color display and audio playback, pave the way for immersive user interfaces. For many people, the PC becomes a vital instrument that is switched on every day.
     </p>
     <figure>
       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/MSI_Laptop_computer.jpg/220px-MSI_Laptop_computer.jpg" />
@@ -251,14 +259,14 @@ Home computers and PCs shift attention from machines to humans. Software should 
     </p>
     <h2>Networking and the Internet</h2>
     <p>
-When businesses connect the PCs of their employees to a network, a new problem surfaces. Distributed application management is a nightmare on a network with heterogenous PCs. An upgrade of a service on the business network, e.g. a file server, might demand an update of the client software on all PCs. Members of the IT department regularly hop from PC to PC in a building, installing new software versions by hand. 
+When businesses connect the PCs of their employees to a network, a new problem surfaces. Distributed application management is a nightmare on a network with PCs. An upgrade of a service on the business network, e.g. a file server, might demand an update of the client software on all PCs. Members of the IT department regularly hop from PC to PC in a building, installing new software versions by hand. 
     </p>
     <figure>
       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Floppy_disk_2009_G1.jpg/220px-Floppy_disk_2009_G1.jpg" />
       <figcaption>Floppies for software distribution (<a href="https://en.wikipedia.org/wiki/Floppy_disk#/media/File:Floppy_disk_2009_G1.jpg">Wikimedia</a>)</figcaption>
     </figure>
     <p>
-The Internet provides a solution with web applications. A web browser, installed on every PC, displays HTML pages of a web application. A user is free to install other software on the personal device. The web application is hosted and maintained on a web server. The first web applications are restricted to simple form-based tasks, but improved web standards, and better support for existing standards across browsers, enable web applications to offer a decent user experience on PCs with mainstream browsers, for a wide range of tasks. 
+The Internet provides a solution with web applications. A web browser, installed on every PC, displays HTML pages of a web application. A user is free to install other software on the personal device. The web application is hosted and maintained on a web server. The first web applications are restricted to simple form-based tasks. Improved web standards, and better support for existing standards across browsers, enable web applications to offer a decent user experience for a wide range of tasks on PCs with mainstream browsers.
     </p>
     <figure>
       <img src="https://upload.wikimedia.org/wikipedia/en/thumb/c/c9/Navigator_1-22.png/225px-Navigator_1-22.png" />
@@ -269,7 +277,7 @@ Web browsers that display HTML pages, are similar to terminals that display user
     </p>
     <h2>Native apps on mobile devices</h2>
     <p>
-Web applications are not popular on mobile devices, because native apps deliver a superior user experience. Web standards are still playing catch-up with mobile technologies. It's an unfortunate consequence of the standardization process. A rivalry with native apps is out of the question, if web applications cannot exploit basic features on mobile devices, e.g. touch and orientation. The loss in user experience is unacceptable.
+Web applications are not popular on mobile devices, because native apps deliver a superior user experience. Web standards are still playing catch-up with mobile technologies. It's an unfortunate consequence of the standardization process. A rivalry with native apps is out of the question, if web applications are not exploiting basic features on mobile devices, e.g. touch and orientation. The loss in user experience is unacceptable.
     </p>
     <figure>
       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/ASUS_Mobile_ZenFone6_20141109.jpg/150px-ASUS_Mobile_ZenFone6_20141109.jpg" />
@@ -280,7 +288,7 @@ Native apps on mobile devices resemble PC applications, because both execute on 
     </p>
     <h2>Summary</h2>
     <p>
-The short history of past application architectures shows an interesting tug of war between application management and user experience.
+The short history of application architectures shows an interesting tug of war between application management and user experience.
     </p>
     <ul>
       <li>
@@ -310,13 +318,13 @@ This chapter explains how the major components of oma fit together.
     </p>
     <h2>Presentation and application concerns</h2>
     <p>
-The open mainframe architecture consists of a presentation and application tier. The presentation tier is where terminals live. Their only job is to render user interfaces and to report user interactions. The application tier is where processes live. A process is a running instance of an application, which controls the state of a user interface. When a terminal reports user interactions, the process updates the user interface.
+The open mainframe architecture consists of a presentation and application tier. The presentation tier is where terminals live. A terminal renders a user interfaces and it reports user interactions. The application tier is where processes live. A process is a running instance of an application, which controls the state of a user interface. When a terminal reports user interactions, the process updates the user interface.
     </p>
     <p>
-A traditional mainframe runs all processes for connected terminals. A traditional mainframe <em>is</em> the application tier. An open mainframe is on the other hand a router between tiers. An open mainframe does <em>not</em> execute application logic on behalf of terminals. All processes run autonomously in the backend of an open mainframe. Terminals execute their presentation logic in the frontend. An open mainframe acts as a bridge that enables reliable communication between frontend and backend networks.
+A traditional mainframe runs all processes for connected terminals. A traditional mainframe <em>is</em> the application tier. An open mainframe is on the other hand a router between tiers. An open mainframe does <em>not</em> execute application logic on behalf of terminals. All processes run autonomously in the backend of an open mainframe. Terminals execute their presentation logic in the frontend. The open mainframe in the middle enables reliable communication between frontend and backend networks.
     </p>
     <p>
-Applications are installed on a traditional mainframe, much like PC applications, but applications on an open mainframe are deployed from the backend. When a frontent terminal launches an application that has been deployed, the application creates a backend process. The new process computes the initial state of a user interface, which is communicated back to the terminal and presented to the user.
+Applications are installed on a traditional mainframe, much like PC applications, but applications on an open mainframe are deployed from the backend. When a frontent terminal launches an application, the deployment creates a backend process. The new process computes the initial state of a user interface, which is communicated back to the terminal and presented to the user.
     </p>
     <figure>
       <div class="inline">
@@ -370,7 +378,7 @@ Backend applications and their processes are not concerned with user-interface t
 Unlike traditional mainframes with proprietary technologies, oma embraces open web technologies and standards. Terminals, applications and processes are HTTP clients that talk to web services on an open mainframe. The open mainframe architecture leverages the success of HTTP. Common problems like HTTPS encryption, serving static files and load balancing have already been solved in numerous hardware and software products. The challenge is to encorporate these products in the infrastructure of oma as smoothly as possible. Reliance on HTTP for all communication ensures HTTP-based products work equally well in frontend and backend networks.
     </p>
     <p>
-A web browser turns into a frontend terminal when a user navigates the browser to the welcome service on an open mainframe. Browsers are converging towards an impressive set of HTML standards, which cover a wide range of devices, from mobile smartphones to desktop computers. CSS has also been steadily improving over the years, gaining ever more features to separate styling from content, e.g. transitions and animations.
+A web browser turns into a frontend terminal when a user navigates the browser to the welcome service on an open mainframe. Browsers are converging towards an impressive set of HTML standards, which cover a wide range of devices. CSS has also been steadily improving over the years, gaining ever more features to separate styling from content. The browser wars have ended in a victory for web standards.
     </p>
     <p>
 Despite a problematic childhood, JavaScript has matured well. Every incarnation of oma ships with a Node.js implementation. The sole purpose of this reference implementation is to provide an executable prototype of the architecture. JavaScript is the obvious choice for a reference implementation, because web browsers must be programmed in JavaScript. There is no compelling reason to complicate the reference implementation with another programming language. However, the success of oma depends on the availability of alternative component implementations, in as many programming language as possible. The architecture merely aims to define how components communicate over HTTP. The choice of the most suitable implementation language for a component is outside the scope of oma.
@@ -391,7 +399,7 @@ library service
 This service resembles a public library where anyone can read books, known as bundles in oma terminology. A <dfn>bundle</dfn> publishes assets in a directory on a web server. Bundles are distribution units for modules. When a terminal needs a module from a bundle, it loads all modules of the bundle in one download. A booting terminal loads modules from a standard library bundle that initializes a JavaScript runtime environment in the browser.
         </p>
         <p>
-If a bundle is like a book, a module is like a chapter in a book. A <dfn>module</dfn> is a logically cohesive set of assets with a clear purpose. A modular organization reduces complexity of asset management. Developers should generally not care about the bundles in which their modules are distributed. This flexibility promotes the development of many small modules that specify their dependencies on other modules.
+If a bundle is like a book, a module is like a chapter in a book. A <dfn>module</dfn> is a logically cohesive set of assets with a clear purpose. A modular organization reduces complexity of asset management. Developers should not care about the bundles in which their modules are distributed. This flexibility promotes the development of many small modules that specify their dependencies on other modules.
         </p>
       </li>
       <li>
@@ -399,7 +407,7 @@ If a bundle is like a book, a module is like a chapter in a book. A <dfn>module<
 delta service
         </p>
         <p>
-This service creates delta sessions. A <dfn>delta session</dfn> synchronizes a typed JSON model that both sides of the session share. The client side sends a delta request with actions on the model. A delta action is either a mutation that modifies the model, or an event that signals an incident in the model. The server side replies with a delta response whose actions on the model reflect the effects of processing the previous request. The sequential exchange of delta messages continues, until one of the sides closes the session.
+This service creates delta sessions. A <dfn>delta session</dfn> synchronizes a typed JSON model that the client and server side of the session share. The client side sends a delta request with actions on the model. A delta action is either a mutation that modifies the model, or an event that signals an incident in the model. The server side replies with a delta response whose actions on the model reflect the effects of processing the previous request. The sequential exchange of delta messages continues, until one of the sides closes the session.
         </p>
         <p>
 The direction of a delta session determines the role of an HTTP client in the session. Terminal and application sessions are <dfn>forward sessions</dfn>. Terminals and applications are HTTP clients that fulfil the client role in delta sessions. Processes are also HTTP clients, but they play the server role in delta sessions. Process sessions are <dfn>reverse sessions</dfn>.
@@ -433,21 +441,20 @@ Components in a perfect architecture are black boxes with hidden implementations
         </p>
       </li>
     </ul>
-    <h2>URLs</h2>
     <p>
-The <dfn>mainframe root</dfn> is the URL where the open mainframe is located from the perspective of a particular HTTP client, e.g. <code>http://example.oma/</code>. Most URLs in this document are relative to a mainframe root.
+The <dfn>mainframe root</dfn> is the URL where an open mainframe is located from the perspective of a particular HTTP client, e.g. <code>http://example.oma/</code>. Most URLs in this document are relative to a mainframe root.
     </p>
     <p>
-A <dfn>welcome URL</dfn> is displayed in the address bar of a terminal that presents the user interface of a backend process. A welcome URL involves a user experience. A user that bookmarks a welcome URL in a browser, expects to see a similar user interface when the bookmark is activated later on. Although welcome URLs should be human-friendly, oma cannot dictate what a friendly URL looks like, because the friendliness depends on the application domain. An application deployment specifies patterns of welcome URLs that belong to the deployment.
+A <dfn>welcome URL</dfn> is displayed in the address bar of a terminal that presents the user interface of a backend process. A welcome URL involves a user experience. A user that bookmarks a welcome URL, expects to see a similar user interface when the bookmark is activated later on. Welcome URLs should be human-friendly, but oma cannot dictate what a friendly URL looks like, because the friendliness depends on the application domain. An application deployment specifies patterns of welcome URLs that belong to the deployment.
     </p>
     <p>
 A <dfn>service URL</dfn> is part of a web service. An underscore in the mainframe root is the home directory where all web services are located. For example, relative URL <code>_/pub/</code> is the location where the library service publishes bundles.
     </p>
     <p>
-An <dfn>asset URL</dfn> locates an asset that belongs to a module. It is a relative URL that starts with a tilde, followed by the module name and the path to the asset. Asset URL <code>~Example/foo.png</code> locates asset <code>foo.png</code> in module <code>Example</code>. When the content of an asset is fetched over HTTP, the asset URL is translated to a service URL that locates the bundle version where the asset has been published on a web server.
+An <dfn>asset URL</dfn> locates an asset that belongs to a module. It is a relative URL that starts with a tilde, followed by the module name and the path to the asset. Asset URL <code>~Example/foo.png</code> locates asset <code>foo.png</code> in module <code>Example</code>.
     </p>
     <p>
-The <dfn>application image</dfn> of a deployment lists all modules that a terminal may need to load when it launches the application. Application images control the translation of asset URLs. If an application image specifies that module <code>Example</code> is published as the fifth module in version <code>4.2</code> of bundle <code>example</code>, the previous asset URL translates to <code>_/pub/example/4.2/5/foo.png</code>.
+The <dfn>application image</dfn> of a deployment lists all modules that a terminal may need to load when it launches the application. Application images control the translation of asset URLs to service URLs. If an application image specifies that module <code>Example</code> is published as the fifth module in version <code>4.2</code> of bundle <code>example</code>, the previous asset URL translates to <code>_/pub/example/4.2/5/foo.png</code>. An asset URL is automatically translated to a service URL of a published asset, when the content of the asset is needed.
     </p>
     <h2>Virtual user interface</h2>
     <p>
@@ -486,10 +493,13 @@ Type annotations furthermore specify how the terminal reacts to a mutation or ev
 A non-blocking reaction is not necessarily immediate. Type annotations can specify a client side that buffers a mutation or event. When the client is about to send the next delta request, it flushes the buffer and adds the flushed delta actions to the request on the wire. The server side is not informed about buffered actions until the client flushes. 
     </p>
     <p>
-The model of a session pair has one state. When a terminal buffers user interactions, the virtual user interface appears to be in two different states. The process controls the previous state, before the interactions, while the terminal is already presenting the next state. The terminal is however presenting an intermediate state that will be synchronized with the process in due time. Every delta message carries a lease time that specifies how many seconds the receiver of the message can wait, before it has to send the next delta message. Upon lease expiration, the terminal sends one delta request, which combines all intermediate states that have already been presented.
+A terminal session cannot prevent synchronization conflicts, because the terminal is allowed to change the session model while waiting for the backend process to produce a delta response. The subsequent response might invalidate the changes that the client side has already buffered. For example, when a user changes the text of a text input widget, while a terminal is expecting a delta response from the process, the actions in the subsequent response can remove the input widget from the virtual user interface. The server side always wins these conflicts. The client side must drop the invalidated changes and continue with the new session model.
     </p>
     <p>
-A terminal should not buffer an interaction if the process might respond to the interaction with an update in the widget tree. Intermediate states must represent insignificant interactions in the application domain. Intermediate states minimize communication between terminals and processes when used correctly, but incorrect use causes weird inconsistencies that result in a bad user experience.
+The model of a session pair has one state, but when a terminal buffers user interactions, the virtual user interface appears to be in two different states. The process controls the previous state, before the interactions, while the terminal is already presenting the next state. The terminal is however presenting an intermediate state that will be synchronized with the process in due time. Every delta message has a lease time that specifies how many seconds the receiver of the message can wait, before it has to send the next delta message. Upon lease expiration, the terminal sends one delta request to transition the model to the next state, which combines all intermediate states that have already been presented.
+    </p>
+    <p>
+A terminal should not buffer an interaction if the process might respond to the interaction with an update in the widget tree. Intermediate states must represent insignificant interactions in the application domain.
     </p>
     <h2>Multidisciplinary teams</h2>
     <p>
@@ -502,7 +512,7 @@ For the sake of simplicity, I assume there are four disciplines in a development
 Frontend and backend developers share a <dfn>development mainframe</dfn> on which they deploy and test applications. Developers are not forced to install, maintain and run an open mainframe on their local machines. They simply post an HTTP request to the deploy service on the development mainframe. After successful deployment, developers start an application by navigating a web browser to a welcome URL on the development mainframe.
     </p>
     <p>
-The modular organization of assets streamlines cooperation between frontend and backend developers. They have to agree on the application image that defines which module versions are bundled in an application deployment. Backend developers are unlikely to change an application image when they deploy new application logic. It might even be possible to test a new version of the application without redeploying it. Frontend developers redeploy the same application logic over and over again, but with different images, to test new manifestations in browser environments. The source assets of these manifestations are uploaded in heavy deployments. A <dfn>heavy deployment</dfn> contains modules that have not yet been published in library bundles. Heavy deployments allow frontend developers to replace modules in an application image. They test the new modules until they are satisfied with the result. Once the modules have been published in library bundles, a heavy deployment is no longer necessary, because the new bundle versions can be referenced from 'light' deployments. 
+Developers have to agree on the application image that defines which module versions are bundled in an application deployment. Backend developers are unlikely to change an application image when they deploy new application logic. It might even be possible to test a new version of the application without redeploying it. Frontend developers redeploy the same application logic over and over again, but with different images, to test new manifestations in browser environments. The source assets of these manifestations are uploaded in heavy deployments. A <dfn>heavy deployment</dfn> contains modules that have not yet been published in library bundles. Heavy deployments allow frontend developers to replace modules in an application image. They test the new modules until they are satisfied with the result. Once the modules have been published in library bundles, the new bundle versions can be referenced from 'light' deployments. 
     </p>
     <p>
 The early stages of an application's lifecycle focus on frantic development, but at some point, an application deployment should be production-ready. A <dfn>test mainframe</dfn> isolates application deployments for QA engineers. New application versions have to pass a slew of quality assurance tests before they go into production. Users can start a particular version in a terminal and test it, if the version is reachable at some welcome URL on the test mainframe. The isolation of datasets and of application code in distinct deployments is a responsibility of QA engineers. 
@@ -598,10 +608,7 @@ app network<sub>2</sub>
     </figure>
     <h2>Summary</h2>
     <p>
-The open mainframe architecture separates presentation from application concerns, in the same spirit as traditional mainframes. An open mainframe is a reliable, scalable platform that employs modern web technologies to bridge the gap between the presentation and application tier. A web browser turns into a frontend terminal when it launches an application. Applications are deployed from the backend. They create processes that control virtual user interfaces for terminals.
-    </p>
-    <p>
-The user experience in virtual user interfaces depends on the quality of widgets. Frontend developers build widgets that backend developers include in virtual user interfaces. Automatic translation of asset URLs to service URLs of published assets ensures that virtual widgets do not depend on a particular distribution of modules in bundles.
+The open mainframe architecture separates presentation from application concerns, in the same spirit as traditional mainframes. An open mainframe is a reliable, scalable platform that employs modern web technologies to bridge the gap between the presentation and application tier. A web browser turns into a frontend terminal when it launches an application. Applications are deployed from the backend. They create processes that control virtual user interfaces for terminals. The user experience in virtual user interfaces depends on the quality of widgets. Frontend developers build widgets that backend developers include in virtual user interfaces.
     </p>
     <p>
 Open mainframes come in various shapes and sizes, with different perspectives on application management. On a development mainframe, frontend and backend developers manage their own temporary application deployments. QA engineers isolate deployments of distinct application versions on a test mainframe before applications go into production. Production mainframes deploy the most recent application versions that passed all QA tests.
@@ -611,7 +618,7 @@ The reference implementation of oma complements the service descriptions in this
     </p>
     <h1>JSON with datatypes</h1>
     <p>
-The open mainframe architecture adds a simple type system to JSON, which specifies how to marshal and unmarshal typed data values.
+The open mainframe architecture adds a simple type system to JSON, which specifies how to marshal and unmarshal typed data values. A value is either basic or composed. A <dfn>basic value</dfn> is <code class="literal">null</code>, <code class="literal">true</code>, <code class="literal">false</code>, a number or a string. A <dfn>composed value</dfn> is a dictionary, a list or a record.
     </p>
     <h2>Datatypes</h2>
     <p>
@@ -640,7 +647,7 @@ A wildcard type, denoted with an asterisk, matches types without a <code class="
       </li>
       <li>
         <p>
-An optional type, denoted with a closing question mark, adds a <code class="literal">null</code> value. An optional wildcard type <code>*?</code> matches any type.
+An optional type, denoted as a type with a closing question mark, adds a <code class="literal">null</code> value. An optional wildcard type <code>*?</code> matches any type.
         </p>
       </li>
       <li>
@@ -650,7 +657,7 @@ A list type surrounds an element type with square brackets. A value of list type
       </li>
       <li>
         <p>
-A dictionary type surrounds an element type with angle brackets. A value of dictionary type <code>&lt;number&gt;</code> maps string keys to basic numbers.
+A dictionary type surrounds an element type with angle brackets. Dictionaries map strings to their elements. A value of dictionary type <code>&lt;number&gt;</code> maps string keys to basic numbers.
         </p>
       </li>
       <li>
@@ -685,12 +692,13 @@ DictType    =  <span class="literal">"&lt;"</span> TypeExpr <span class="literal
 ListType    =  <span class="literal">"["</span> TypeExpr <span class="literal">"]"</span>
 RecordType  =  <span class="literal">"{"</span> [Fields] <span class="literal">"}"</span>
 Fields      =  Field {<span class="literal">","</span> Field}
-Field       =  <span class="pattern">FIELD</span> <span class="literal">":"</span> TypeExpr {Annotation}
-Annotation  =  <span class="literal">"@"</span> <span class="pattern">FIELD</span> <span class="literal">"="</span> <span class="pattern">FIELD</span></pre>
+Field       =  <span class="pattern">FIELD</span> <span class="literal">":"</span> TypeExpr MetaField
+MetaField   =  {<span class="literal">"@"</span> <span class="pattern">FIELD</span> <span class="literal">"="</span> Annotation}
+Annotation  =  <span class="pattern">CHOICE</span> | <span class="pattern">FIELD</span></pre>
     <p>
 The token patterns are defined by the following regular expressions.
     </p>
-<pre><span class="pattern">CHOICE</span>    <span class="literal">"</span>[<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]+<span class="literal">"</span>
+<pre><span class="pattern">CHOICE</span>    <span class="literal">"</span>[<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span><span class="literal">.-+_$</span>]+<span class="literal">"</span>
 <span class="pattern">FIELD</span>     [<span class="literal">a</span>-<span class="literal">z</span>][<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]*
 <span class="pattern">NAME</span>      [<span class="literal">A</span>-<span class="literal">Z</span>][<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]+(<span class="literal">.</span>[<span class="literal">A</span>-<span class="literal">Z</span>][<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]+)*
 <span class="pattern">VARIABLE</span>  [<span class="literal">A</span>-<span class="literal">Z</span>]</pre>
@@ -761,7 +769,7 @@ The unmarshal function of a type constructs a data value from a JSON representat
 The marshal and unmarshal function of a basic type is the identity function. The JSON representation of a basic value cannot be distinguished from the value itself. A typespace can define an alias for a basic type, but the type alias can never be the type of a basic value. The type of a basic value is implicitly encoded in the value.
     </p>
     <p>
-Integer and enumeration types represent their values as JSON numbers and strings, although these are reconstructed as basic values. This loss of type information is not a problem, if the construction site expects an integer or enumerated choice. Field <code>foo</code> of record type <code>Example</code> expects basic string <code class="literal">"a"</code> or <code class="literal">"b"</code>. The type information, required to validate a basic string as an enumerated choice, is inferred from the construction site.
+Integer and enumeration types marshal their values as JSON numbers and strings, although these are unmarshalled as basic values. This loss of type information is not a problem, if the construction site expects an integer or enumerated choice. Field <code>foo</code> of record type <code>Example</code> expects basic string <code class="literal">"a"</code> or <code class="literal">"b"</code>. The type information, required to validate a basic string as an enumerated choice, is inferred from the construction site.
     </p>
 <pre>Example: {
   foo: "a"_"b"
@@ -776,10 +784,13 @@ The untyped representation of a list value is a JSON array. The typed representa
 The only difference between the untyped and typed JSON representation of a record value is the missing dollar entry in the untyped representation. Both representations are JSON objects. The typed representation <code class="literal">{$:'Example',foo:'b'}</code> includes the type of a record value, which is dropped from the untyped representation <code class="literal">{foo:'b'}</code>. The benefits of an untyped representation are noticeable when record values have few fields. If records have many fields, the penalty for extra dollar entries in typed representations is negligible.
     </p>
     <p>
-A record value drops a field from the JSON representation, if the field value is <code class="literal">null</code>. A new record value initializes a field to <code class="literal">null</code>, if the field is not present in the JSON representation. This optimization turns standard type <code>Flag</code> into an efficient type for boolean-like fields with a bias towards false. A cleared flag, i.e. the common case, is missing, but a set flag is explicitly initialized to <code class="literal">"y"</code> in the JSON representation. Record types often define <code class="literal">null</code> as the default field value to optimize JSON representations.
+A record value drops a field from the JSON representation, if the field value is <code class="literal">null</code>. A new record value initializes a field to <code class="literal">null</code>, if the field is not present in the JSON representation. This optimization turns standard type <code>Flag</code> into an efficient type for boolean fields with a bias towards false. A cleared flag, i.e. the common case, is missing, but a set flag is explicitly initialized to <code class="literal">"y"</code> in the JSON representation. Record types often define <code class="literal">null</code> as the default field value to optimize JSON representations.
     </p>
     <p>
 The untyped representation of a dictionary value is a JSON object with an underscore entry that contains another JSON object. The nested JSON object maps dictionary keys to values. Dictionary entries cannot be represented in the root JSON object, because this results in ambiguous representations when a dollar and/or an underscore is a dictionary key. Typed representations of dictionaries employ the same scheme as list values, i.e. a dollar expresses the type information and an underscore holds an untyped container with elements. The typed representation of an empty dictionary with numbers is <code class="literal">{$:'&lt;number&gt;',_:{}}</code>. The omission of the dollar entry in the untyped representation <code class="literal">{_:{}}</code> is similar to record values.
+    </p>
+    <p>
+Optional and union types unmarshal data values from JSON representations, but they do not marshal values back to JSON representations, because the type of a value is either a basic, dictionary, list or record type. Optional types can unmarshal values from untyped representations. If the inferred type at a construction site is <code>Example?</code>, the untyped representation <code class="literal">{foo:'a'}</code> preserves record type <code>Example</code>. A union type can unmarshal a value from an untyped representation if there is exactly one dictionary, list or record alternative to choose from. Standard type <code>Text</code> specifies one string list alternative. If the inferred type is <code>Text</code>, the untyped representation <code class="literal">['One','Two']</code> preserves list type <code>[string]</code>.
     </p>
     <h2>Field annotations</h2>
     <p>
@@ -793,10 +804,7 @@ A record exposes annotations through meta fields. A <dfn>meta field</dfn> holds 
     </p>
     <h2>Summary</h2>
     <p>
-JSON with datatypes preserves the type of data values when they are communicated over the network. A basic value is <code class="literal">null</code>, <code class="literal">true</code>, <code class="literal">false</code>, a number or a string. A composed value is a dictionary, a list or a record. The typed JSON representation of a composed value includes the type expression that evaluates to the type of the value. The untyped JSON representation assumes this type expression can be inferred from the construction site of a composed value.
-    </p>
-    <p>
-The communication of a data value is only possible if the sender and receiver 'speak' the same type language. A typespace defines expressions and macros that can be referenced with a type name. The typespaces of the sender and receiver must be the same.
+The open mainframe architecture preserves the type of data values when they are communicated over the network. The communication of a data value is only possible if the sender and receiver 'speak' the same type language. A typespace defines expressions and macros that can be referenced with a type name. The typespaces of the sender and receiver must be the same. The typed JSON representation of a composed value includes the type expression that designates the type of the value. The untyped JSON representation assumes this type expression can be inferred from the construction site of a composed value.
     </p>
     <h1>Delta sessions</h1>
     <p>
@@ -838,7 +846,7 @@ Record fields are annotated to specify characteristics of record values in sessi
   foo: number
 }</pre>
     <p>
-An <code>@event</code> annotation specifies an <dfn>event field</dfn>. The annotation value is <code>client</code> or <code>server</code>. Marshal and unmarshal functions ignore event fields. In the next example, field <code>foo</code> is a server event field. The server side reports an occurence of this event in a delta response. Field type <code>none</code> implies an occurence is unstructured. The client side is informed about an occurence, but the reported event does not provide any additional information.
+An <code>@event</code> annotation specifies an <dfn>event field</dfn>. The annotation value is <code>client</code> or <code>server</code>. Record types ignore event fields when marshalling or unmarshalling. In the next example, field <code>foo</code> is a server event field. The server side reports an occurence of this event in a delta response. Field type <code>none</code> implies an occurence is unstructured. The client side is informed about an occurence, but the reported event does not provide any additional information.
     </p>
 <pre>Example: {
   foo: none @event=server 
@@ -862,7 +870,7 @@ The client side buffers an occurence of event field <code>foo</code> in the next
   foo: boolean @event=client @delay=flush
 }</pre>
     <p>
-The server side is not interested in the occurence of event field <code>foo</code> in the next example. It expects the client to delay occurences indefinitely. The server has to modify meta field <code>@foo</code> if it wants to be informed about occurences. Apart from its predefined type, a meta field is a regular data field of a record value, which the server side can target with delta actions.
+The server side is not interested in the occurence of event field <code>foo</code> in the next example. It expects the client to delay occurences indefinitely. The server has to modify meta field <code>@foo</code> if it wants to be informed about occurences. Apart from the predefined type, a meta field is a regular data field of a record value, which the server side can target with delta actions.
     </p>
 <pre>Example: {
   foo: boolean @event=client @delay=forever
@@ -891,10 +899,7 @@ Delta sessions are directories on web servers of open mainframes. The delta serv
     </p>
     <h3><code>POST <span class="variable">session</span>/do</code></h3>
     <p>
-The most prominent session resource is <code>do</code> that performs delta actions on the model. The body of an HTTP request encodes the untyped JSON representation of a delta message. The HTTP response contains the untyped representation of the next delta message. The direction of a session does not affect the sequential exchange of delta messages. A <code>do</code> request in a forward session holds a delta request. In a reverse session, a <code>do</code> request holds a delta response.
-    </p>
-    <p>
-The sequence number of a delta message is an integer that distinguishes between a delta request and response. Requests have positive, odd sequence numbers. Responses have nonnegative, even sequence numbers. A delta message is denoted as &#x03b4;(n) in this document, where n is a sequence number, e.g. &#x03b4;(1) is the first delta request from the client side. The actions of response &#x03b4;(2m) reflect the effects that resulted from processing actions of request &#x03b4;(2m-1). The first delta response &#x03b4;(0) from the server side assigns the initial model of a reverse session. Field <code>lease</code> counts the number of seconds the receiver of a message has left before it should produce the next delta message. Field <code>retried</code> is set if the message was retried after a communication failure.
+The most prominent session resource is <code>do</code> that performs delta actions on the model. The body of an HTTP request encodes the untyped JSON representation of a delta message. The HTTP response contains the untyped representation of the next delta message. The sequence number of a delta message is an integer that distinguishes between a delta request and response. Requests have positive, odd sequence numbers. Responses have nonnegative, even sequence numbers. A delta message is denoted as &#x03b4;(n) in this document, where n is a sequence number, e.g. &#x03b4;(1) is the first delta request from the client side. The actions of response &#x03b4;(2m) reflect the effects that resulted from processing actions of request &#x03b4;(2m-1). The first delta response &#x03b4;(0) from the server side assigns the initial model of a reverse session. Field <code>lease</code> counts the number of seconds the receiver of a message has left before it should produce the next delta message. Field <code>retried</code> is set if the message was retried after a communication failure.
     </p>
 <pre>Delta.Message: {
   sequence: integer,
@@ -918,16 +923,16 @@ Delta.Signal: Delta.Action + {
   event: Any
 }</pre>
     <p>
-The path of a splice action locates a position in a list value. Field <code>deletes</code> counts the number of list elements to delete. The nonnegative delete count cannot exceed the number of remaining list elements at the position. Field <code>values</code> holds the values to insert at the position. Inserted values must described by the element type. At least one element must be inserted, if the delete count is zero.
+The path of a splice action locates a position in a list value. Field <code>deletes</code> counts the number of list elements to delete. The nonnegative delete count cannot exceed the number of remaining list elements at the position. Field <code>values</code> holds the values to insert at the position. Inserted values must be described by the element type. At least one element must be inserted, if the delete count is zero.
     </p>
 <pre>Delta.Splice: Delta.Action + {
   deletes: integer,
   values: [Any]?
 }</pre>
     <p>
-A delete action specifies keys to delete from a dictionary value in the model. The keys must be present in the dictionary and at least one key must be deleted.
+A removal action specifies keys to remove from a dictionary value in the model. The keys must be present in the dictionary and at least one key must be removed.
     </p>
-<pre>Delta.Delete: Delta.Action + {
+<pre>Delta.Remove: Delta.Action + {
   keys: [string]
 }</pre>
     <p>
@@ -1008,7 +1013,7 @@ A cache owner posts an <code>alloc</code> request, when it wants to add a file t
     </p>
     <h3><code>POST <span class="variable">session</span>/realloc</code></h3>
     <p>
-When a cache owner needs to restore purged files in the cache, it posts a <code>realloc</code> request. The body of a <code>realloc</code> request encodes the untyped JSON representation of a dictionary that maps allocated names of cache entries to <code>Delta.File</code> records.
+When a cache owner needs to restore purged files in the cache, it posts a <code>realloc</code> request. The body of a <code>realloc</code> request encodes the untyped JSON representation of a dictionary that maps allocated names of cache entries to <code>Delta.File</code> records. A <code>realloc</code> response contains an estimate of remaining cache space. The estimate counts the number of available gigabytes. 
     </p>
     <h3><code>PUT <span class="variable">session</span>/cache/<span class="variable">name</span></code></h3>
     <p>
@@ -1588,9 +1593,9 @@ The cache owner knows the name of the cache entry belongs to a file that the del
         </p>
       </li>
       <li>
-        <span class="delta-side">this</span> <span class="delta-message"><br/>&larr;</span> <span class="delta-side">session</span>
+        <span class="delta-side">this</span> <span class="delta-message">5.4<br/>&larr;</span> <span class="delta-side">session</span>
         <p>
-An empty <code>realloc</code> response confirms the mapping of the name has been successfully restored. 
+The <code>realloc</code> response confirms the mapping of the name has been restored. With the new cache entry, the cache still has room for approximately 5.4 GB of files.  
         </p>
       </li>
       <li>
@@ -1713,7 +1718,7 @@ Field <code>serverLease</code> is the lease time in the next delta request. The 
 }</pre>
     <h2>Summary</h2>
     <p>
-A delta session is a generic instrument to synchronize a shared model. The typed root value of a model is a tree structure which is targeted by delta actions from both sides of the session. Pipes and caches coordinate the transfer of files with events in session models. Binary files are not stored in models.
+A delta session is a generic instrument to synchronize a shared model. The typed root value of a model is a tree structure which is targeted by delta actions from both sides of the session. Pipes and caches coordinate the transfer of files with events in session models. The binary contents of files are not stored in models.
     </p>
     <p>
 Each turn has a finite lease period in the turn-based delta protocol. The remaing lease period is optionally controlled with <code>ready</code> and <code>greedy</code> messages. When the lease period expires for one side of a session, this side has to produce the next delta message, automatically giving the turn to the other side.
