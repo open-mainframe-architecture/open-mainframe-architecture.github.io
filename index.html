@@ -247,7 +247,7 @@ Mainframes and terminals revolutionize the concept of remote computing. A mainfr
     </p>
     <h2>Home computers and PCs</h2>
     <p>
-In the early 1980s, a new type of computer emerges. The home computer inspires enthusiasts to learn more about hardware and software. The computational power of a home computer is tiny, but creative minds manage to squeeze out every inch of the hardware to create impressive games and demos. User experience is important for applications on home computers. Users are no longer bank employees that blindly accept how a mainframe application works. Users are critical consumers that need convincing before they buy an application.
+In the early 1980s, a new type of computer emerges. The home computer inspires enthusiasts to learn more about hardware and software. The computational power of a home computer is tiny, but creative minds manage to squeeze out every inch of the hardware to create impressive games and demos. User experience is an important criterion for applications on home computers. Users are no longer bank employees that blindly accept how a mainframe application works. Users are critical consumers that need convincing before they buy an application.
     </p>
     <figure>
       <img src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Commodore-64-Computer.png/300px-Commodore-64-Computer.png" />
@@ -320,7 +320,7 @@ Native apps offer a rich user experience on mobile devices, but application mana
     </ul>
     <h1>Overview</h1>
     <p>
-This chapter explains how the major components of oma fit together. The architecture aims to deliver a decent user experience with easy application management.
+This chapter explains how the major components of oma fit together. The open mainframe architecture promises easy application management and a decent user experience.
     </p>
     <h2>Presentation and application tier</h2>
     <p>
@@ -402,7 +402,7 @@ library service
 This service resembles a public library where any client can read books, known as bundles in oma terminology. A <dfn>bundle</dfn> publishes assets in a directory on a web server. Bundles are distribution units for modules. When a client needs a module from a bundle, it fetches all modules of the bundle in one download.
         </p>
         <p>
-If a bundle is like a book, a module is like a chapter in a book. A <dfn>module</dfn> is a logically cohesive set of assets with a clear purpose. A modular organization reduces complexity of asset management. Developers should not be bothered by the bundles in which their modules are distributed. This flexibility promotes the development of many small modules that specify their dependencies on other modules.
+If a bundle is like a book, a module is like a chapter in a book. A <dfn>module</dfn> is a logically cohesive set of assets with a clear purpose. A modular organization reduces complexity of asset management. Developers should not be bothered by the bundles in which modules are distributed. This flexibility promotes the development of many small modules that specify their dependencies on other modules.
         </p>
         <p>
 A browser loads modules from standard library bundles, which transform the browser into a booting terminal. These modules initialize a JavaScript runtime environment that connects the terminal to a remote mainframe.
@@ -424,7 +424,7 @@ Terminals, applications and processes have their own delta sessions. The directi
 welcome service
         </p>
         <p>
-The welcome service establishes first contact between a terminal and an open mainframe. When a user navigates a web browser to this service, the browser becomes a terminal that requests the welcome service to launch an application. The service examines the welcome request to determine the deployed application that the user intends to start.
+The welcome service establishes contact between a terminal and an open mainframe. When a user navigates a web browser to this service, the browser becomes a terminal that requests the welcome service to launch an application. The service examines the welcome request to determine the deployed application that the user intends to start.
         </p>
         <p>
 When a user starts an application, a new terminal session in the frontend is paired with a new process session in the backend. A <dfn>session pair</dfn> synchronizes the same model in opposite directions. The forward terminal session controls the client side of the model and the reverse process session controls the server side. The open mainframe only has to relay delta messages between the client and server side of a session pair.
@@ -544,7 +544,7 @@ Frontend and backend developers share a <dfn>development mainframe</dfn> on whic
 Developers have to agree on the application image that defines which module versions are bundled in an application deployment. Backend developers are unlikely to change an application image when they deploy new application logic. It might even be possible to test a new version of the application without redeploying it. Frontend developers redeploy the same application logic over and over again, but with different application images, to test new manifestations in browser environments.
     </p>
     <p>
-Frontend developers upload the source assets of new manifestations in heavy deployments. A <dfn>heavy deployment</dfn> contains modules whose assets have not yet been published in library bundles. Heavy deployments allow frontend developers to replace modules in an application image. They test the new modules until they are satisfied with the result. When the improved assets have been published in library bundles, the new bundles can be referenced from deployments. 
+Frontend developers upload the source assets of new manifestations in heavy deployments. A <dfn>heavy deployment</dfn> contains modules whose assets have not yet been published in library bundles. Heavy deployments allow frontend developers to replace modules in an application image. They test the new modules until they are satisfied with the result. When the improved assets have been published in library bundles, the new bundles can be referenced from 'light' deployments. 
     </p>
     <p>
 The early stages of an application's lifecycle focus on frantic development, but at some point, an application deployment should be production-ready. A <dfn>test mainframe</dfn> isolates application deployments. New application versions have to pass a slew of quality assurance tests before they go into production. Users can start a particular version in a terminal and test it, if the version is reachable at some welcome URL on the test mainframe. The isolation of datasets and of application code in distinct deployments is a responsibility of QA engineers. 
@@ -640,7 +640,7 @@ app network<sub>2</sub>
     </figure>
     <h2>Summary</h2>
     <p>
-The open mainframe architecture separates presentation from application concerns. An open mainframe is a reliable, scalable solution that employs modern web technologies. Applications are deployed from the backend of an open mainframe. They create processes that control virtual user interfaces for terminals. A web browser turns into a frontend terminal when it launches a deployed application. The user experience in virtual user interfaces depends on the quality of widgets. Frontend developers build widgets that backend developers include in virtual user interfaces. Application development is a teamsport.
+The open mainframe architecture separates presentation from application concerns. An open mainframe is a reliable, scalable solution that employs modern web technologies. Applications are deployed from the backend of an open mainframe. They create processes that control virtual user interfaces for frontend terminals. A web browser turns into a terminal when it launches a deployed application. The user experience in virtual user interfaces depends on the quality of widgets. Frontend developers build widgets that backend developers include in virtual user interfaces. Application development is a teamsport.
     </p>
     <p>
 Open mainframes come in various shapes and sizes, with different perspectives on application management. On a development mainframe, frontend and backend developers manage their own temporary application deployments. QA engineers isolate deployments of distinct application versions on a test mainframe before applications go into production. Production mainframes deploy the most recent application versions that passed all QA tests.
@@ -713,9 +713,9 @@ TypeArg     =  <span class="pattern">VARIABLE</span> <span class="literal">"="</
 TypeExpr    =  TypeExpr<sub>1</sub> [<span class="literal">"?"</span>]
 TypeExpr<sub>1</sub>   =  TypeExpr<sub>2</sub> {<span class="literal">"|"</span> TypeExpr<sub>2</sub>}
 TypeExpr<sub>2</sub>   =  TypeExpr<sub>3</sub> {<span class="literal">"+"</span> TypeExpr<sub>3</sub>}
-TypeExpr<sub>3</sub>   =  TypeExpr<sub>4</sub> | <span class="pattern">VARIABLE</span> | <span class="pattern">NAME</span> [<span class="literal">"("</span> TypeExpr {<span class="literal">","</span> TypeExpr} <span class="literal">")"</span>]
-TypeExpr<sub>4</sub>   =  TypeExpr<sub>5</sub> | <span class="literal">"*"</span> | <span class="literal">"integer"</span> | <span class="pattern">CHOICE</span> {<span class="literal">"_"</span> <span class="pattern">CHOICE</span>}
-TypeExpr<sub>5</sub>   =  BasicType | DictType | ListType | RecordType
+TypeExpr<sub>3</sub>   =  BasicType | DictType | ListType | RecordType
+            |  <span class="literal">"*"</span> | <span class="literal">"integer"</span> | <span class="pattern">CHOICE</span> {<span class="literal">"_"</span> <span class="pattern">CHOICE</span>}
+            |  <span class="pattern">VARIABLE</span> | <span class="pattern">NAME</span> [<span class="literal">"("</span> TypeExpr {<span class="literal">","</span> TypeExpr} <span class="literal">")"</span>]
 BasicType   =  <span class="literal">"none"</span> | <span class="literal">"boolean"</span> | <span class="literal">"number"</span> | <span class="literal">"string"</span>
 DictType    =  <span class="literal">"&lt;"</span> TypeExpr <span class="literal">"&gt;"</span>
 ListType    =  <span class="literal">"["</span> TypeExpr <span class="literal">"]"</span>
@@ -902,7 +902,7 @@ The client side buffers an occurence of event field <code>foo</code> in the next
   foo: boolean @event=client @delay=flush
 }</pre>
     <p>
-The server side is not interested in the occurence of event field <code>foo</code> in the next example. It expects the client to delay occurences indefinitely. The server must modify meta field <code>@foo</code> if it wants to be informed about occurences. Apart from the predefined type, a meta field is a regular data field of a record value, which the server side can target with delta actions.
+The server side is not interested in the occurence of event field <code>foo</code> in the next example. It expects the client to delay occurences indefinitely. The server can modify meta field <code>@foo</code> if it wants to be informed about occurences. Apart from the predefined type, a meta field is a regular data field of a record value, which the server side can target with delta actions.
     </p>
 <pre>Example: {
   foo: boolean @event=client @delay=forever
@@ -1050,7 +1050,7 @@ A cache owner puts a new file in the cache. The name of the cache entry must hav
 A cache reader retrieves a file from the cache. The HTTP response with the file should be privately cached and revalidated on every access.
     </p>
     <p>
-The directory where readers locate cached files, is not a resource in the session of the cache owner. The forward session and the cache directory may be located on different networks. For example, an application is a cache owner whose session is found in a backend network, but the directory with cached files is located in the frontend network where terminals can access the files.
+The directory where readers locate cached files, is not a resource in the session of the cache owner. The forward session and the cache directory may be located on different networks. For example, an application is a cache owner with a session in a backend network, but the directory with cached files is in the frontend network where terminals can access the files.
     </p>
     <p>
 When an HTTP client attempts to retrieve a cached file, the delta service verifies the HTTP request originates from an authentic cache reader. If not, the HTTP client is informed that the file could not be found. If the request has an authentic origin, the user must be authorized to access the cached file. Authorization is coordinated with delta events in the session model of the cache owner. The delta service generates an event that describes users accessing files. The event conveys a dictionary value that maps names to <code>Delta.Access</code> records. Field <code>content</code> is the current status of the name in the cache. The file content is cached in the directory, the name has been allocated but the file content is not in the cache, or the name is not known to the delta service. Field <code>guests</code> identifies the users that are attempting to get the file from the cache. 
@@ -1756,7 +1756,7 @@ The library service publishes assets of modules in bundles. The source assets of
     </p>
     <h2>Module</h2>
     <p>
-Modules are the common denominator of bundles and archives. A module is a logically cohesive set of assets. A module name is a fully qualified name from the <dfn>logical namespace</dfn>, e.g. <code>My.Example</code>. This is the same namespace where JavaScript classes live. A module enables assets to evolve as independently as possible. A module should maximize the local impact of changes and minimize the global impact on other modules. In more pragmatic terms, a module isolates assets that are likely to be touched by a single development task. For example, assets that style the appearance of virtual widgets in a webshop application, should be isolated from assets that implement the manifestation of virtual widgets in the DOM of a browser. Developing the appearance of an application and developing browser widgets in JavaScript are completely different tasks.
+Modules are the common denominator of bundles and archives. A module is a logically cohesive set of assets. A module name is a fully qualified name from the <dfn>logical namespace</dfn>, e.g. <code>My.Example</code>. This is the same namespace where JavaScript classes live. A module enables assets to evolve as independently as possible. A module should maximize the local impact of asset changes and minimize the global impact on other modules. In more pragmatic terms, a module isolates assets that are likely to be touched by a single development task. For example, assets that style the appearance of virtual widgets in a webshop application, should be isolated from assets that implement the manifestation of virtual widgets in the DOM of a browser. Developing the appearance of an application and developing browser widgets in JavaScript are different tasks.
     </p>
     <h3>Configuration</h3>
     <p>
@@ -1873,9 +1873,6 @@ The source assets of a module are preserved in a library archive. The library se
     </p>
     <p>
 An archive is constructed from source directories on a file system. These directories are scanned for subdirectories that contain source trees of modules. A subdirectory with a valid module name holds a source tree if the subdirectory contains file <code>config.js</code>. If the source tree of a child module is part of the parent's tree on the file system, the source tree of the child moves to the root directory of the flat archive.
-    </p>
-    <p>
-A library archive may include generated source files. <a href="http://coffeescript.org/">CoffeeScript</a> is a popular alternative for JavaScript. If an archive contains CoffeeScript sources, it also includes the generated JavaScript sources. When a bundle publishes assets of modules, it processes JavaScript sources, but it ignores CoffeeScript sources.
     </p>
     <h3>Bundle configurations</h3>
     <p>
