@@ -92,7 +92,7 @@ figure figcaption::before {
 
 .entity {
   border: solid thin;
-  border-radius: 10px;
+  border-radius: 2px;
   display: inline-block;
   padding: 4px;
 }
@@ -121,10 +121,10 @@ figure figcaption::before {
   margin-right: -4em;
 }
 .backend {
-  border-bottom-width: thin;
+  border-bottom-width: medium;
 }
 .frontend {
-  border-top-width: thin;
+  border-top-width: medium;
 }
 
 .widget, .node {
@@ -162,7 +162,7 @@ figure figcaption::before {
 }
 .firewall.layer td {
   border-style: solid;
-  border-width: thin;
+  border-width: medium;
   background-color: #f0f0f0;
   font-style: italic;
 }
@@ -219,7 +219,7 @@ I am a seasoned software developer from The Netherlands. I hope you have an inte
 In this document, I describe an architecture for interactive applications. Although mainframes and terminals sound horribly outdated, I will show they are still relevant concepts in the 21st century. I am however not suggesting we should dust off old mainframes and terminals. The open mainframe architecture (oma) recycles the idea of a reliable, scalable mainframe that serves stateless terminals, but oma employs modern web technologies to realize this idea. The word 'oma' means granny or grandmother in Dutch. This seems fitting for an architecture whose main concepts are decades old.
     </p>
     <p>
-An open mainframe is a website. A web browser becomes a terminal when it visits an open mainframe. A terminal presents a user interface. A mainframe hosts applications that process user interactions for terminals. A mainframe and a terminal are metaphors in oma for a strict separation of application and presentation concerns. This separation of concerns forms the basis of oma.
+An open mainframe is a website. A web browser becomes a terminal when it visits an open mainframe. A terminal presents a user interface. A mainframe hosts applications that process user interactions for terminals. A mainframe and a terminal are metaphors in oma for a strict separation of application and presentation concerns.
     </p>
     <p>
 The open mainframe architecture is released under the liberal MIT license. The reference implementation of oma complements this document with an executable prototype in JavaScript (Node.js). Developers are encouraged to implement oma components in their favorite programming languages. The ability to mix and match heterogenous components in an architecture for interactive applications is an important goal of oma. In memory of Douglas Adams, oma adopts the slogan of the Sirius Cybernetics Corporation. Share and enjoy!
@@ -331,7 +331,7 @@ The open mainframe architecture consists of a presentation and application tier.
 A traditional mainframe runs all processes for connected terminals. A traditional mainframe <em>is</em> the application tier whereas an open mainframe is a router between tiers. An open mainframe does <em>not</em> execute application logic on behalf of terminals. All processes run autonomously in the backend of an open mainframe. Terminals execute their presentation logic in the frontend. The open mainframe in the middle supervises communication between the frontend and backend.
     </p>
     <p>
-Applications on an open mainframe are deployed from the backend. An application deployment creates a new backend process, when a frontend terminal launches the application. The process computes the initial state of a user interface, which is communicated back to the terminal and presented to the user. Backend applications and processes are not concerned with particular user-interface technologies. Frontend terminals don't care about application logic to process user interactions. The open mainframe architecture separates the same presentation and application concerns as traditional mainframes. This separation of concerns is not affected by the relocation of application logic to the backend and the insertion of an extra router.
+Applications on an open mainframe are deployed from the backend. An application deployment creates a new backend process, when a frontend terminal launches the application. The process computes the initial state of a user interface, which is communicated back to the terminal and presented to the user. Backend applications and processes are not concerned with particular user-interface technologies. Frontend terminals don't care about application logic to process user interactions. The open mainframe architecture separates the same presentation and application concerns as traditional mainframes.
     </p>
     <figure>
       <div class="inline">
@@ -379,7 +379,7 @@ Applications on an open mainframe are deployed from the backend. An application 
     </figure>
     <h2>Web technologies</h2>
     <p>
-Unlike traditional mainframes with proprietary technologies, oma embraces open web standards. Terminals, applications and processes are HTTP clients that talk to web services on an open mainframe. The open mainframe architecture leverages the success of HTTP. Reliance on HTTP for all communication between tiers ensures HTTP-based products, e.g. firewalls and load balancers, work equally well in frontend and backend networks.
+Unlike traditional mainframes with proprietary technologies, oma embraces open web standards. Terminals, applications and processes are HTTP clients that talk to web services on an open mainframe. The open mainframe architecture leverages the success of HTTP. Reliance on HTTP for all communication between tiers ensures existing products, e.g. firewalls and load balancers, work equally well in frontend and backend networks.
     </p>
     <p>
 A web browser turns into a frontend terminal when a user navigates the browser to an open mainframe. Browsers are converging towards an impressive set of HTML standards and JavaScript APIs. CSS has also been steadily improving over the years, gaining ever more features to separate styling from content. The browser wars have ended in a victory for web standards.
@@ -802,7 +802,7 @@ An enumeration alternative is pointless, if basic type <code>string</code> is an
 The unmarshal function of a type constructs a data value from a JSON representation. The marshal function is the inverse function from data value to JSON representation. Marshalling a data value and unmarshalling the resulting JSON representation should produce an equal value.
     </p>
     <p>
-The identity function is the marshal and unmarshal function of basic and <code>none</code> types in JavaScript. These types cannot distinguish between a value and its JSON representation. A typespace can define an alias for a basic or <code>none</code> type, but the type alias can never be the concrete type of a value, because the concrete type is 'hardcoded' in the value.
+The identity function is the marshal and unmarshal function of basic and <code>none</code> types in JavaScript. These types cannot distinguish between a value and its JSON representation. A typespace can define an alias, but the type alias can never be the concrete type of <code class="literal">null</code> or a basic value, because the concrete type is 'hardcoded' in the value.
     </p>
     <p>
 Integer and enumeration types marshal their values as JSON numbers and strings. Although these representations are unmarshalled as basic values, this loss of type information is not a problem, if the construction site expects an integer or enumerated choice. Enumeration field <code>foo</code> of record type <code>Example</code> expects basic string <code class="literal">'a'</code> or <code class="literal">'b'</code>. The type information, required to validate a basic string as an enumerated choice, is inferred from the construction site.
@@ -811,7 +811,7 @@ Integer and enumeration types marshal their values as JSON numbers and strings. 
   foo: "a"_"b"
 }</pre>
     <p>
-Dictionary, list and record types unmarshal typed and untyped JSON representations. An untyped JSON representation suffices if the type of a value can be inferred from the construction site. A typed JSON representation preserves the concrete type of a value when this information cannot be inferred.
+Dictionary, list and record types unmarshal typed and untyped JSON representations. An untyped JSON representation suffices if the type of a value can be inferred from the construction site. A typed JSON representation preserves the concrete type of a composed value when this information cannot be inferred.
     </p>
     <p>
 The untyped representation of a list value is a JSON array. The typed representation stores this array in the underscore entry of a JSON object. The list type is expressed in the dollar entry of this object. List values benefit the most from an untyped representation, because it avoids the creation of a wrapper object. The array <code class="literal">[4,2]</code> is the untyped representation of a list value with type <code>[number]</code>. The typed representation <code class="literal">{$:'[number]',_:[4,2]}</code> wraps the array in an extra object to preserve the list type.
