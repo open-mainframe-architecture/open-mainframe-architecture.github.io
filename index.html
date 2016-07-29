@@ -54,7 +54,7 @@ figure figcaption::before {
 }
 
 .code {
-  font-family: "Courier New", Courier, monospace;
+  font-family: "Lucida Console", "Courier New", Courier, monospace;
   white-space: pre;
 }
 .comment {
@@ -274,7 +274,7 @@ Internet technologies provide a solution with web applications on intranets. All
       <figcaption>Netscape Navigator 1.22 (<a href="http://en.wikipedia.org/wiki/Netscape_Navigator#/media/File:Navigator_1-22.png">Wikimedia</a>)</figcaption>
     </figure>
     <p>
-Web browsers that display HTML pages, are only superficially similar to terminals that display user interfaces, because browsers blur the separation between presentation and application concerns. A terminal presents a user interface whose state is completely controlled by the process on the mainframe. A browser can respond to user interactions by executing JavaScript code that updates the user interface, without informing the server. Web applications on servers cannot always reproduce the complete state of a user interface that a web browser currently presents. In client/server terminolgy, a terminal is considered a thinner client than a browser.
+Web browsers that display HTML pages, are only superficially similar to terminals that present user interfaces, because browsers blur the separation between presentation and application concerns. A terminal presents a user interface whose state is completely controlled by the process on the mainframe. A browser can respond to user interactions by executing JavaScript code that updates the user interface, without informing the server. Web applications on servers cannot always reproduce the complete state of a user interface that a web browser currently presents. In client/server terminolgy, a terminal is considered a thinner client than a browser.
     </p>
     <h2>Apps on mobile devices</h2>
     <p>
@@ -408,10 +408,10 @@ A browser loads modules from standard library bundles, which transform the brows
 delta service
         </p>
         <p>
-The delta service creates delta sessions. A <dfn>delta session</dfn> synchronizes a model that the client and server side of the session share. The client side sends a delta request with actions on the model. A delta action is either a mutation that modifies the model, or an event that signals an incident in the model. The server side replies with a delta response whose actions reflect the effects of processing the previous request. The sequential exchange of delta messages continues, until one of the sides closes the session.
+The delta service creates delta sessions. A <dfn>delta session</dfn> synchronizes a model that the client and server side of the session share. The JSON representation of the model is defined by datatypes. The client side sends a delta request with actions on the model. A delta action is either a mutation that modifies the model, or an event that signals an incident in the model. The server side replies with a delta response whose actions reflect the effects of processing the previous request. The sequential exchange of delta messages continues, until one of the sides closes the session.
         </p>
         <p>
-Terminals, applications and processes manage their own delta sessions on open mainframes. The direction of a delta session determines the role of an HTTP client in the session. Processes are HTTP clients, but they play the server role in delta sessions. Process sessions are <dfn>reverse sessions</dfn>. Terminal and application sessions are <dfn>forward sessions</dfn>, because terminals and applications are HTTP clients that fulfil the client role in delta sessions.
+Terminals, applications and processes manage their own delta sessions on open mainframes. The direction of a delta session determines the role of an HTTP client in the session. Processes are HTTP clients, but they play the server role in delta sessions. Process sessions are <dfn>reverse sessions</dfn>. Terminal and application sessions are <dfn>forward sessions</dfn>, because terminals and applications are HTTP clients that also fulfil the client role in delta sessions.
         </p>
       </li>
       <li>
@@ -430,7 +430,10 @@ When a user starts an application, a new terminal session in the frontend is pai
 deploy service
         </p>
         <p>
-An HTTP client posts a request to the deploy service with a description of the application to deploy from the backend. Successful deployment results in a new application session. Delta actions in this session instruct the application deployment to create new processes, when terminals launch the application.
+An HTTP client posts a request to this service with a description of the application to deploy from the backend. Successful deployment results in a new application session that the HTTP client should manage. From here on, a user can start the application by navigating a web browser to an appropriate URL.
+        </p>
+        <p>
+A delta action in the application session instructs a deployment to create a new backend process, when a frontend terminal launches the application. The new process manages its own delta session that is paired with a terminal session.
         </p>
       </li>
       <li>
@@ -479,16 +482,16 @@ asset URL
 An asset URL identifies an asset that belongs to a module. It starts with a tilde, followed by the module name and the path to the asset. Asset URL <span class="code">~My.Example/i/cat.jpg</span> identifies asset <span class="code">i/cat.jpg</span> in module <span class="code">My.Example</span>. Asset URLs decouple assets from the bundles that publish their content.
         </p>
         <p>
-The <dfn>runtime image</dfn> of a deployment lists all modules that a terminal may need to load when it launches the application. Runtime images control the translation of asset URLs to service URLs of published assets. If a runtime image specifies that module <span class="code">My.Example</span> is distributed as the fifth module in release <span class="code">qL8c3</span> of bundle <span class="code">my-example</span>, the content of the previous asset URL is located at <span class="code">_/pub/my-example/qL8c3/5/i/cat.jpg</span>. A terminal automatically translates an asset URL to the service URL of a published asset, when the content is fetched over HTTP.
+The <dfn>runtime image</dfn> of a deployment lists all modules that a terminal may need to load when it launches the application. Runtime images control the translation of asset URLs to service URLs. If a runtime image specifies that module <span class="code">My.Example</span> is distributed as the fifth module in release <span class="code">qL8c3</span> of bundle <span class="code">my-example</span>, the content of the previous asset URL is located at service URL <span class="code">_/pub/my-example/qL8c3/5/i/cat.jpg</span>. A terminal automatically translates an asset URL to the service URL of a published asset, when the content is fetched over HTTP.
         </p>
       </li>
     </ul>
     <h2>Virtual user interface</h2>
     <p>
-The model of a terminal session is a virtual user interface. The frontend terminal shares this model with a backend process whose session is paired with the terminal session. The terminal converts real user interactions to delta actions on the virtual user interface. The process updates the virtual user interface in response to these interactions. The terminal ensures the real user interface presents the new state of the virtual user interface.
+The model of a terminal session is a virtual user interface. The frontend terminal shares this model with a backend process whose session is paired with the terminal session. The terminal converts real user interactions to delta actions on the virtual user interface. The process updates the virtual user interface in response to these interactions. The terminal refreshes the real user interface to present the new state of the virtual user interface.
     </p>
     <p>
-A virtual user interface must be designed to minize the impact of network latencies on the user experience. When a user interaction takes place in a terminal, there is at least a network delay before a backend process is informed about a delta action in a virtual user interface. There is yet another network delay before the effects in the virtual user interface are reported back to the frontend terminal and presented in the real user interface. Network delays are measured in milliseconds. This differs significantly from native window systems that deliver user-interface events in mere microseconds.
+A virtual user interface must be designed to minimize the impact of network latencies on the user experience. When a user interaction takes place in a terminal, there is at least a network delay before a backend process is informed about a delta action in a virtual user interface. There is yet another network delay before the effects in the virtual user interface are reported back to the frontend terminal and presented in the real user interface. Network delays are measured in milliseconds. This differs significantly from native window systems that deliver user-interface events in mere microseconds.
     </p>
     <p>
 The state of a virtual user interface includes a tree structure with widgets from various categories. Widgets are the fundamental building blocks of virtual user interfaces. A <dfn>layout widget</dfn> specifies a layout strategy for child widgets. A <dfn>decorator widget</dfn> adds a feature to a child widget. An <dfn>output widget</dfn> displays non-interactive text or graphics. An <dfn>input widget</dfn> translates user interactions to delta actions.
@@ -523,17 +526,17 @@ The model of a session pair has one state, but when a terminal buffers user inte
 The client side must be prepared to deal with synchronization conflicts in a delta session. When a terminal buffers a user interaction with an input widget while the terminal is still awaiting a response from the process, the actions in the subsequent delta response can remove the input widget from the virtual user interface. The server side always wins these conflicts. The client side must drop buffered mutations and events, which have been invalidated by actions from a delta response.
     </p>
     <p>
-A terminal should not buffer an interaction if the process might respond to the interaction with an update in the widget tree. Intermediate states must represent insignificant interactions in the application domain. Otherwise the user experience will be degraded by delayed responses to buffered interactions, or even worse, by delayed invalidations of interactions. The development of a virtual user interface deals with presentation and application concerns.
+If network delays were not an issue, a terminal would not buffer interactions, because the process might respond with an update in the widget tree. Intermediate states ideally represent insignificant interactions in the application domain. Otherwise the user experience might be degraded by delayed responses to buffered interactions, or even worse, by delayed invalidations of interactions. The development of a virtual user interface must deal with presentation and application concerns.
     </p>
     <h2>Multidisciplinary teams</h2>
     <p>
-Application development is difficult in any architecture. It's a delicate sport that requires experts from different disciplines and backgrounds to cooperate effectively in a team. In my experience, it's very rare to find a team that operates without problems. These problems have diverse reasons, e.g. procedural, personal or technical. The open mainframe architecture balances the needs of all team disciplines that are involved in an application's lifecycle, but it can only assist disciplines on technical grounds. The nontechnical challenges of a development process are outside the scope of oma.
+Application development is difficult in any architecture. It's a delicate sport that requires experts from different disciplines and backgrounds to cooperate effectively in a team. In my experience, it's very rare to find a team that operates without problems. These problems have diverse reasons, e.g. procedural, managerial, personal or technical. The open mainframe architecture balances the needs of all team disciplines that are involved in an application's lifecycle, but it can only assist disciplines on technical grounds. The nontechnical challenges of a development process are outside the scope of oma.
     </p>
     <p>
-For the sake of simplicity, I assume there are four major disciplines in a development team. The <dfn>frontend developer</dfn> is responsible for assets in modules, which manifest virtual widgets in browser environments. The <dfn>backend developer</dfn> writes application logic to control virtual user interfaces. The <dfn>QA engineer</dfn> verifies quality of application deployments before they go into production. An <dfn>infrastructure engineer</dfn> builds the infrastructure of open mainframes for development, test and production purposes.
+For the sake of simplicity, I assume there are four major disciplines in a development team. A <dfn>frontend developer</dfn> is responsible for assets in modules, which manifest virtual widgets in browser environments. A <dfn>backend developer</dfn> writes application logic to control virtual user interfaces. A <dfn>QA engineer</dfn> verifies quality of application deployments before they go into production. An <dfn>infrastructure engineer</dfn> builds the infrastructure of open mainframes for development, test and production purposes.
     </p>
     <p>
-Frontend and backend developers share a <dfn>development mainframe</dfn> on which they deploy and test applications. A developer posts an HTTP request to the deploy service on the development mainframe. After successful deployment, the developer starts an application by navigating a web browser to a welcome URL on the development mainframe.
+Frontend and backend developers share a <dfn>development mainframe</dfn> on which they deploy and test applications. After successful application deployment, a developer starts the application by navigating a web browser to a welcome URL on the development mainframe.
     </p>
     <p>
 A runtime image defines which module versions are bundled in an application deployment. Backend developers are unlikely to change a runtime image when they deploy new application logic. It might even be possible to test a new version of the application without redeploying it. Frontend developers redeploy the same application logic over and over again, but with different runtime images, to test new manifestations in browser environments.
@@ -721,18 +724,18 @@ DictType    =  <span class="literal">"&lt;"</span> TypeExpr <span class="literal
 ListType    =  <span class="literal">"["</span> TypeExpr <span class="literal">"]"</span>
 RecordType  =  <span class="literal">"{"</span> [Fields] <span class="literal">"}"</span>
 Fields      =  Field {<span class="literal">","</span> Field}
-Field       =  <span class="pattern">FIELD</span> <span class="literal">":"</span> TypeExpr MetaField
-MetaField   =  {<span class="literal">"@"</span> <span class="pattern">FIELD</span> <span class="literal">"="</span> Annotation}
-Annotation  =  <span class="pattern">CHOICE</span> | <span class="pattern">FIELD</span></pre>
+Field       =  <span class="pattern">SELECTOR</span> <span class="literal">":"</span> TypeExpr MetaField
+MetaField   =  {<span class="literal">"@"</span> <span class="pattern">SELECTOR</span> <span class="literal">"="</span> Annotation}
+Annotation  =  <span class="pattern">CHOICE</span> | <span class="pattern">SELECTOR</span></pre>
     <p>
 The token patterns are defined by the following regular expressions.
     </p>
 <pre><span class="pattern">CHOICE</span>    <span class="literal">"</span>[<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span><span class="literal">.-+_$!</span>]+<span class="literal">"</span>
-<span class="pattern">FIELD</span>     [<span class="literal">a</span>-<span class="literal">z</span>][<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]*
+<span class="pattern">SELECTOR</span>  [<span class="literal">a</span>-<span class="literal">z</span>][<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]*
 <span class="pattern">NAME</span>      [<span class="literal">A</span>-<span class="literal">Z</span>][<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]+(<span class="literal">.</span>[<span class="literal">A</span>-<span class="literal">Z</span>][<span class="literal">0</span>-<span class="literal">9</span><span class="literal">A</span>-<span class="literal">Z</span><span class="literal">a</span>-<span class="literal">z</span>]+)*
 <span class="pattern">VARIABLE</span>  [<span class="literal">A</span>-<span class="literal">Z</span>]</pre>
     <p>
-This document employs a terse notation to bind names to type definitions. The next example is an excerpt of the standard type names. Datatype <span class="code">Any</span> matches any type, including optional ones. Datatype <span class="code">Flag</span> is an alternative boolean type, where <span class="literal">null</span> stands for false and <span class="literal">"y"</span> for true. Datatype <span class="code">Text</span> avoids problems with newline characters. A new line of textual data is represented as an additional string in the list. The standard macros <span class="code">List</span>, <span class="code">Dict</span> and <span class="code">Maybe</span> construct list, dictionary and optional types. For example, <span class="code">Maybe(number)</span> is a more verbose way to express <span class="code">number?</span>. When a macro is evaluated without actual arguments, the formal arguments are bound to their default types. The expression <span class="code">List</span> is thus a shorthand for <span class="code">[Any]</span>. Datatype <span class="code">Record</span> describes any record value.
+This document employs a terse notation to bind names to type definitions. The next example is an excerpt of the standard type names. Datatype <span class="code">Any</span> matches any type, including optional ones. Datatype <span class="code">Flag</span> is an alternative boolean type, where <span class="literal">null</span> stands for false and <span class="literal">'y'</span> for true. Datatype <span class="code">Text</span> avoids problems with newline characters. A new line of textual data is represented as an additional string in the list. The standard macros <span class="code">List</span>, <span class="code">Dict</span> and <span class="code">Maybe</span> construct list, dictionary and optional types. For example, <span class="code">Maybe(number)</span> is a more verbose way to express <span class="code">number?</span>. When a macro is evaluated without actual arguments, the formal arguments are bound to their default types. The expression <span class="code">List</span> is thus a shorthand for <span class="code">[Any]</span>. Datatype <span class="code">Record</span> describes any record value.
     </p>
 <pre>Any: *?
 Flag: "y"?
@@ -751,7 +754,7 @@ Type addition <span class="code">S</span> combines the fields of record types <s
     </p>
 <pre><span class="rule-condition">S = T + U</span><span class="rule-follows"></span><span class="rule-conclusion">S = { fields from T and not in U, &hellip;, fields from U, &hellip; }</span></pre>
     <p>
-It's not possible to make an optional type more optional. It is syntactically already impossible, i.e. <span class="code">T??</span> is an invalid type expression, but the evaluation of a type expression can still run into this problem. Optionality must be an idempotent operation in a typespace.
+It's not possible to make an optional type more optional. It is syntactically already impossible, i.e. <span class="code">number??</span> is an invalid type expression, but the evaluation of a type expression can still run into this problem. Optionality must be an idempotent operation in a typespace.
     </p>
 <pre><span class="rule-condition">S = T?<br/>T = U?</span><span class="rule-follows"></span><span class="rule-conclusion">S = U?</span></pre>
     <p>
@@ -798,7 +801,7 @@ The unmarshal function of a type constructs a data value from a JSON representat
 The JavaScript identity function is the marshal and unmarshal function of type <span class="code">none</span> and of basic types. These types do not distinguish between a JavaScript value and a JSON representation. A typespace can define aliases for these types, but a type alias can never be the concrete type of <span class="literal code">null</span> or a basic value, because the concrete type is 'hardcoded' in the representation.
     </p>
     <p>
-Integer and enumeration types marshal their values as JSON numbers and strings. These representations are unmarshalled as basic number and strings, but this loss of type information is not a problem, if the construction site expects an integer or enumerated choice. Enumeration field <span class="code">foo</span> of record type <span class="code">Example</span> expects basic string <span class="literal code">'a'</span> or <span class="literal code">'b'</span>. The type information, required to validate a basic string as an enumerated choice, is inferred from the construction site. The information is not communicated in the JSON representation.
+Integer and enumeration types marshal their values as JSON numbers and strings, which are unmarshalled as basic number and strings. This loss of type information is not a problem, if the construction site expects an integer or enumerated choice. Enumeration field <span class="code">foo</span> of record type <span class="code">Example</span> expects basic string <span class="literal code">'a'</span> or <span class="literal code">'b'</span>. The type information, required to validate a basic string as an enumerated choice, is inferred from the construction site. The information is not communicated in the JSON representation.
     </p>
 <pre>Example: {
   foo: "a"_"b"
@@ -819,7 +822,7 @@ A record value drops a field from the JSON representation, if the field value is
 The untyped representation of a dictionary value is a JSON object with an underscore entry that contains another JSON object. The nested JSON object maps dictionary keys to values. Dictionary entries cannot be represented in the root JSON object, because this results in ambiguous representations when a dollar and/or an underscore is a dictionary key. Typed representations of dictionaries employ the same scheme as list values. A dollar entry expresses the type information and an underscore entry holds an untyped container with elements. The typed representation of an empty dictionary with numbers is <span class="literal code">{$:'&lt;number&gt;',_:{}}</span>. The omission of the dollar entry in the untyped representation <span class="literal code">{_:{}}</span> is similar to record values.
     </p>
     <p>
-Wildcard, optional and union types unmarshal JSON representations, but they do not marshal data values. The concrete type of a value defines the marshal function. A concrete type is either <span class="code">none</span>, <span class="code">boolean</span>, <span class="code">number</span>, <span class="code">string</span>, a dictionary, a list or a record type. Optional types can unmarshal values from untyped representations. Type <span class="code">Example?</span> infers record type <span class="code">Example</span> from the untyped representation <span class="literal code">{foo:'a'}</span>, because the representation is not <span class="literal code">null</span>. A union type can unmarshal a value from an untyped representation if there is exactly one dictionary, list or record alternative to choose from. Standard type <span class="code">Text</span> specifies one list alternative. If the inferred type is <span class="code">Text</span>, the untyped representation <span class="literal code">[]</span> preserves list type <span class="code">[string]</span>.
+Wildcard, optional and union types unmarshal JSON representations, but they never marshal data values. The concrete type of a value defines the marshal function. A concrete type is either <span class="code">none</span>, a basic, a dictionary, a list or a record type. Optional types can unmarshal values from untyped representations. Type <span class="code">Example?</span> infers record type <span class="code">Example</span> when it unmarshals the untyped representation <span class="literal code">{foo:'a'}</span>, because the representation is not <span class="literal code">null</span>. A union type can unmarshal a value from an untyped representation if there is exactly one dictionary, list or record alternative to choose from. Standard type <span class="code">Text</span> specifies one list alternative. If the inferred type is <span class="code">Text</span>, the untyped representation <span class="literal code">[]</span> preserves list type <span class="code">[string]</span>.
     </p>
     <h2>Field annotations</h2>
     <p>
@@ -829,7 +832,7 @@ A record field is annotated to specify additional field information. Annotations
   foo: number @drive=improbability
 }</pre>
     <p>
-A record value exposes annotations through meta fields. A <dfn>meta field</dfn> holds a dictionary with the annotations of a field definition. The type of a meta field is predefined as <span class="code">&lt;string&gt;</span>. The name of a meta field prefixes the original field name with an at-sign. A record of type <span class="code">Example</span> has meta field <span class="code">@foo</span> with a dictionary that maps <span class="literal code">'drive'</span> to <span class="literal code">'improbability'</span>.
+A record value exposes annotations through meta fields. A <dfn>meta field</dfn> holds a dictionary with the annotations of a field definition. The type of a meta field is predefined as <span class="code">&lt;string&gt;</span>. The selector of a meta field prefixes the original field selector with an at-sign. A record of type <span class="code">Example</span> has meta field <span class="code">@foo</span> with a dictionary that maps <span class="literal code">'drive'</span> to <span class="literal code">'improbability'</span>.
     </p>
     <h2>Summary</h2>
     <p>
@@ -868,7 +871,7 @@ The next figure depicts a record of type <span class="code">Example</span> as a 
     <figcaption>Root value</figcaption>
     </figure>
     <p>
-A value in a session model is identified by the path from root node to value node in the tree structure. Value <span class="literal code">'ford'</span> is identified by path <span class="literal code">['bar',2]</span>. A path element is a unique tag for an arrow from parent to child node. A path element is the name of a record field, the key of a dictionary entry or the index of a list element. Lists have one-based indices.
+A value in a session model is identified by the path from root node to value node in the tree structure. Value <span class="literal code">'ford'</span> is identified by path <span class="literal code">['bar',2]</span>. A path element is a unique tag for an arrow from parent to child node. A path element is the selector of a record field, the key of a dictionary entry or the index of a list element. Lists have one-based indices.
     </p>
     <h3>Annotations</h3>
     <p>
@@ -878,7 +881,7 @@ Record fields are annotated to specify characteristics of record values in sessi
   foo: number
 }</pre>
     <p>
-An <span class="code">@event</span> annotation specifies an <dfn>event field</dfn>. The annotation value is <span class="code">client</span> or <span class="code">server</span>. Event fields are not marshalled or unmarshalled. The JSON representation of a record value only specifies data fields. Values of event fields are represented in communicated event occurences of a delta message. In the next example, field <span class="code">foo</span> is a server event field. The server side reports an occurence of this event in a delta response. Field type <span class="code">none</span> implies an occurence is unstructured. The client side is informed about an occurence, but the reported event does not provide any additional information.
+An <span class="code">@event</span> annotation specifies an <dfn>event field</dfn>. The annotation value is <span class="code">client</span> or <span class="code">server</span>. Event fields are not marshalled or unmarshalled. The JSON representation of a record value only includes data fields. Values of event fields are represented in the communicated event occurences of a delta message. In the next example, field <span class="code">foo</span> is a server event field. The server side reports an occurence of this event in a delta response. Field type <span class="code">none</span> implies an occurence is unstructured. The client side is informed about an occurence, but the reported event does not provide any additional information.
     </p>
 <pre>Example: {
   foo: none @event=server 
@@ -896,7 +899,7 @@ A <span class="code">@delay</span> annotation alters the client reaction to an e
   foo: boolean @event=client @delay=block
 }</pre>
     <p>
-The client side buffers an occurence of event field <span class="code">foo</span> in the next example. The actions in this buffer are flushed and added to the request, when the client sends the next delta request. The client drops actions from the buffer, if a delta response invalidates them. Although a non-blocking reaction suggests the client can perform actions on the session model while it waits for the server to respond, the buffered actions should be treated as preliminary until the server actually produces a delta response. When the response arrives, the preliminary actions are either confirmed or invalidated.
+The client side buffers an occurence of event field <span class="code">foo</span> in the next example. The actions in this buffer are flushed and added to the request, when the client sends the next delta request. The client drops actions from the buffer, when the arrival of a delta response invalidates them. Although a non-blocking reaction suggests the client can perform actions on the session model while it waits for the server to respond, the buffered actions should be treated as preliminary until the server actually produces a delta response. When the response arrives, the preliminary actions are either confirmed or invalidated.
     </p>
 <pre>Example: {
   foo: boolean @event=client @delay=flush
@@ -946,7 +949,7 @@ A delta action occurs in some part of the model. Field <span class="code">path</
   path: [string | integer]
 }</pre>
     <p>
-An assignment action modifies a value in the model. A signal action reports a client or server event in the model. Both assignments and signals must be properly typed. The path of an action infers what type of value can be assigned or what type of event can be signalled. For example, if the path of an assignment leads to a dictionary entry in the model, the assigned value must obey the rules of the element type.
+An assignment action modifies a value in the model. A signal action reports a client or server event in the model. Both assignments and signals must be properly typed. The path of an action infers what type of value can be assigned or what type of event can be signalled. For example, if the path of an assignment leads to a dictionary entry in the model, the assigned value must be described by the element type.
     </p>
 <pre>Delta.Assign: Delta.Action + {
   value: Any
@@ -999,11 +1002,11 @@ The root value is <span class="literal code">null</span>, if a reverse session i
     </p>
     <h3><span class="code">GET <span class="variable">session</span>/typespace</span></h3>
     <p>
-Both sides of a delta session parse and evaluate type definitions. A <span class="code">typespace</span> response contains the untyped JSON representation of a dictionary with strings. The <span class="code">typespace</span> response should be cached. A dictionary entry maps a type name to the source of a type expression or macro. The dictionary exports the typespace of a session, except for the definition of <span class="code">Delta.Model</span>. The removal of <span class="code">Delta.Model</span> allows reuse of <span class="code">typespace</span> responses. For example, an application session and the process sessions of the application produce the same <span class="code">typespace</span> response.
+Both sides of a delta session parse and evaluate type definitions. A <span class="code">typespace</span> response contains the untyped JSON representation of a dictionary with strings. The <span class="code">typespace</span> response should be cached. A dictionary entry maps a type name to the source of a type expression or macro. The dictionary exports the typespace of a session, except for the definition of <span class="code">Delta.Model</span>. The removal of <span class="code">Delta.Model</span> allows reuse of <span class="code">typespace</span> responses. For example, an application session, the process sessions of the application and the paired terminal sessions of these processes produce the same <span class="code">typespace</span> response.
     </p>
     <h3><span class="code">GET <span class="variable">session</span>/modeltype</span></h3>
     <p>
-An HTTP client sends a <span class="code">modeltype</span> request to obtain the definition of datatype <span class="code">Delta.Model</span>. The <span class="code">modeltype</span> response with the textual source of a type definition should be cached. A <span class="code">modeltype</span> response is combined with a <span class="code">typespace</span> response to construct the full typespace of a session.
+An HTTP client sends a <span class="code">modeltype</span> request to obtain the definition of datatype <span class="code">Delta.Model</span>. The <span class="code">modeltype</span> response with the textual source of a type expression should be cached. A <span class="code">modeltype</span> response is combined with a <span class="code">typespace</span> response to construct the full typespace of a session.
     </p>
     <h3><span class="code">POST <span class="variable">session</span>/ready</span></h3>
     <p>
@@ -1060,14 +1063,14 @@ When an HTTP client attempts to retrieve a cached file, the delta service verifi
   guests: [string]
 }</pre>
     <p>
-The cache owner signals an authorization event back that grants and revokes access to cached files. The event contains a dictionary that maps names to <span class="code">Delta.Authorization</span> records. Fields <span class="code">allows</span> and <span class="code">denies</span> specify lists of users with authorized and unauthorized access to the cached file. 
+The cache owner signals an authorization event back that grants and denies access to cached files. The event contains a dictionary that maps names to <span class="code">Delta.Authorization</span> records. Fields <span class="code">allows</span> and <span class="code">denies</span> specify lists of users with authorized and unauthorized access to the cached file. 
     </p>
 <pre>Delta.Authorization: {
   allows: [string],
   denies: [string]
 }</pre>
     <p>
-The delta service can purge cache entries, but it does not maintain a history of purged names. When the delta service generates an event that describes users accessing cached files, the event contains the status of files in the cache. The cache owner should revoke access to unknown files that have never been used in the past, but it should restore purged files if their access is granted. The owner must ensure restored files are identical to purged files.
+The delta service can purge cache entries, but it does not maintain a history of purged names. When the delta service generates an event that describes users accessing cached files, the event contains the status of files in the cache. The cache owner should deny access to unknown files that have never been used in the past, but it should restore purged files if their access is granted. The owner must ensure restored files are identical to purged files.
     </p>
     <h2>Protocol scenarios</h2>
     <p>
@@ -1597,7 +1600,7 @@ After the cache owner has granted access to the file, it must put the file conte
       </li>
     </ol>
     <p>
-The cache fills up on demand. The content of a cached file must be copied when a cache reader is granted access to download an allocated file, although the content is not yet in the cache. If the content is already cached, the cache owner still authorizes a download attempt, but it should not copy the content again. If the owner revokes access, the file download fails with a status code that indicates the file could not be found. An HTTP client cannot differentiate between a file that is not cached, and a cached file that the client is not authorized to access.
+The cache fills up on demand. The content of a cached file must be copied when a cache reader is granted access to download an allocated file, although the content is not yet in the cache. If the content is already cached, the cache owner still authorizes a download attempt, but it should not copy the content again. If the owner denies access, the file download fails with a status code that indicates the file could not be found. An HTTP client cannot differentiate between a file that is not cached, and a cached file that the client is not authorized to access.
     </p>
     <p>
 In the next scenario, the cache owner restores a purged file.
@@ -1734,7 +1737,7 @@ If a session is unresponsive after three poll attempts, this side can safely con
 Record type <span class="code">Delta.Standard</span> describes a standard session model. The models of application, process and terminal sessions are standard.
     </p>
     <p>
-Field <span class="code">serverLease</span> controls the amount of lease time the server side gets from the client side in the next synchronization cycle. The server side overrules the client reaction to mutations and events with field <span class="code">maximumDelay</span>. If the field is <span class="literal code">null</span>, the client respects <span class="code">@delay</span> annotations of record fields. The value <span class="literal code">'pause'</span> prevents the client from buffering actions for too long. All mutations and events are reported within a short pause. The value <span class="literal code">'flush'</span> instructs the client to buffer and to flush all actions, including events with an infinite delay. Field <span class="code">impatience</span> controls the use of <span class="code">ready</span> and <span class="code">greedy</span> messages in the session. If the field contains a number, an HTTP client should send a <span class="code">ready</span> or <span class="code">greedy</span> request if expiration of the current lease period is not expected within the specified number of seconds. A cache owner receives server events from field <span class="code">verify</span> when users access cached files. Client events from field <span class="code">approve</span> grant and deny access to cached files.
+Field <span class="code">serverLease</span> controls the amount of lease time the server side gets from the client side. The server side overrules the client reaction to mutations and events with field <span class="code">maximumDelay</span>. If the field is <span class="literal code">null</span>, the client respects <span class="code">@delay</span> annotations of record fields. The value <span class="literal code">'pause'</span> prevents the client from buffering actions for too long. All mutations and events are reported within a short pause. The value <span class="literal code">'flush'</span> instructs the client to buffer and to flush all actions, including events with an infinite delay. Field <span class="code">impatience</span> controls the use of <span class="code">ready</span> and <span class="code">greedy</span> messages in the session. If the field contains a number, an HTTP client should send a <span class="code">ready</span> or <span class="code">greedy</span> request if expiration of the current lease period is not expected within the specified number of seconds. A cache owner receives server events from field <span class="code">verify</span> when users access cached files. Client events from field <span class="code">approve</span> grant and deny access to cached files.
     </p>
 <pre>Delta.Standard: {
   serverLease: number,
@@ -1774,7 +1777,8 @@ The source assets of a module are organized in a directory tree. The module is c
   };
   module.test = required =&gt; <span class="keyword">typeof</span> Cool != <span class="literal">'undefined'</span> &amp;&amp; required.awesome.isCool();
   module.provides = {
-    <span class="literal">'My.Own.Service'</span>: (serviceClass, required) =&gt; serviceClass.create(required.awesome.cool(<span class="keyword">new</span> Cool()))
+    <span class="literal">'My.Own.Service'</span>: (Provider, required) =&gt; Provider.create(required.awesome.cool(<span class="keyword">new</span> Cool())),
+    <span class="literal">'An.Other.Service with My.Own.Provider'</span>: Provider =&gt; Provider.create()
   };
   module.datatypes = {
     Example: <span class="literal">'(T=[string]) Dict(integer|T)'</span>
@@ -1802,7 +1806,7 @@ A module configures its <dfn>explicit dependencies</dfn> on other modules. The l
 A module configures the service providers it requires before it can be loaded. A <dfn>service</dfn> is a JavaScript class that describes the required behavior. A <dfn>provider</dfn> is a JavaScript object that implements the service behavior.
         </p>
         <p>
-The configured keys identify service providers. The configured values are class names of services. A service provider creates a <dfn>runtime dependency</dfn> between modules. The configured module depends on other modules to implement the required services, but it does not directly specify these modules.
+The configured keys identify service providers. The configured values are names of service classes. A service provider creates a <dfn>runtime dependency</dfn> between modules. The configured module depends on other modules to implement the required services, but it does not directly specify these modules.
         </p>
         <p>
 Cyclic dependencies are not allowed. The type of a dependency in a cycle is irrelevant. A cycle with an implicit and a runtime dependency is still a cycle.
@@ -1817,7 +1821,10 @@ A module might not be able to load, because it relies on nonstandard features. A
       <li>
         <pre>provides</pre>
         <p>
-A module configures the services it provides for other modules. The configured keys are class names. The configured values are closures that create providers. A closure is called with two parameters. The first parameter is the service class that was resolved from the configured key. The second parameter contains required service providers. The runtime system registers the service provider that the closure returns.
+A module configures the services it provides for other modules. The configured keys are class names. The configured values are closures that create providers. A closure is called with two parameters. The first parameter is the provider class that was resolved from the configured key. The second parameter contains required service providers. The runtime system registers the service provider that the closure returns.
+        </p>
+        <p>
+If a configured key specifies one class name, the named class is both the service and provider class. If a configured key specifies two class names, separated by <span class="literal">' with '</span>,the first name is the name of the service class and the second is the name of the provider class.
         </p>
       </li>
       <li>
@@ -1860,7 +1867,7 @@ The file <span class="code">boot.js</span> in the root of a module's source tree
   <span class="reserved">"use strict"</span>;
   &hellip;
   <span class="keyword">return</span> {
-    bundle: <span class="keyword">function</span> (moduleSpecs_) {
+    bundle: <span class="keyword">function</span>(moduleSpecs) {
       &hellip;
     }
   };
@@ -1895,33 +1902,25 @@ A bundle configures the following keys.
     </p>
     <ul>
       <li>
-        <p>
-description
-        </p>
+        <pre>description</pre>
         <p>
 The description explains the scope of the modules that the bundle distributes.
         </p>
       </li>
       <li>
-        <p>
-versions
-        </p>
+        <pre>versions</pre>
         <p>
 A bundle always selects modules from the archive where the bundle configuration is preserved. A bundle configures other archives that contribute modules. The configured keys are archive names. The configured values are <a href="http://semver.org/">semantic versions</a> of archives. A bundle picks the best version of an archive, if multiple versions are available.
         </p>
       </li>
       <li>
-        <p>
-includes
-        </p>
+        <pre>includes</pre>
         <p>
 A bundle configures a list with names of modules whose assets should be published. If not configured, the bundle distributes all modules from the archives. Otherwise, the bundle distributes modules whose names start with a configured name.
         </p>
       </li>
       <li>
-        <p>
-excludes
-        </p>
+        <pre>excludes</pre>
         <p>
 A bundle configures a list with names of modules whose assets should not be published. The bundle does not distribute modules whose names start with a configured name.
         </p>
@@ -1955,17 +1954,13 @@ A bundle distributes an anonymous module with information about the bundle. The 
     </p>
     <ul>
       <li>
-        <p>
-modules
-        </p>
+        <pre>modules</pre>
         <p>
 An anonymous module configures this key with an object that maps module names to archive names. An empty name specifies the archive where the bundle configuration resides.
         </p>
       </li>
       <li>
-        <p>
-archives
-        </p>
+        <pre>archives</pre>
         <p>
 A bundle cannot select modules from distinct versions of an archive. An anonymous module configures this key with an object that maps archive names to versions. 
         </p>
@@ -1987,18 +1982,14 @@ A bundle uses a simple URL scheme to publish the contents of public assets in di
     </p>
 <pre>_/pub/oma-terminal/sJf2k/4/beep.mp3</pre>
     <p>
-The empty name of the anonymous module ensures this module has ordinal position <span class="code">0</span> in the bundle, because it is always the first module in the sorted list. The public assets of the anonymous module include the generated loader <span class="code">bundle.js</span>.
+The empty name of the anonymous module ensures this special module has ordinal position <span class="code">0</span> in the bundle, because it is always the first module in the sorted list. The public assets of the anonymous module include the generated loader <span class="code">bundle.js</span>.
     </p>
     <h2>Library API</h2>
     <p>
 The most important responsibility of the library service is to serve static HTTP resources, in particular the published assets of bundles.
     </p>
-    <h3><span class="code">GET _/lib/imagine/<span class="variable">bundle</span>+<span class="variable">bundle</span>+&hellip;</span></h3>
+    <h3><span class="code">GET _/pub/<span class="variable">bundle</span>/<span class="variable">release</span>/<span class="variable">module</span>/<span class="variable">path</span></span></h3>
     <p>
-    </p>
-    <h3><span class="code">GET _/lib/search/<span class="variable">type</span>/<span class="variable">pattern</span></span></h3>
-    <p>
-Search archive, bundle, module, asset, class.
     </p>
     <h2>Summary</h2>
     <p>
@@ -2006,7 +1997,7 @@ The library service organizes modules in archives and bundles.
     </p>
     <h1>Hello terminal!</h1>
     <p>
-The welcome service
+The welcome service responds to the first HTTP request of a browser when a user navigates the browser to a welcome URL.
     </p>
   </body>
 </html>
