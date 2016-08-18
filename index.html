@@ -210,7 +210,7 @@ figure figcaption::before {
 I am a software developer from The Netherlands. In this document, I describe an architecture for interactive applications.
     </p>
     <p>
-The open mainframe architecture (oma) recycles the idea of a reliable, scalable mainframe that serves stateless terminals. I am not suggesting we should dust off old mainframes and terminals, but I will show mainframes and terminals are still relevant concepts in the 21st century. The word 'oma' means granny or grandmother in Dutch. This seems fitting for an architecture whose main concepts are decades old.
+The open mainframe architecture (oma) recycles the idea of a scalable mainframe that serves stateless terminals. I am not suggesting we should dust off old mainframes and terminals, but I will show mainframes and terminals are still relevant concepts in the 21st century. The word 'oma' means granny or grandmother in Dutch. This seems fitting for an architecture whose main concepts are decades old.
     </p>
     <p>
 An open mainframe is a website. A web browser turns into a terminal when it visits an open mainframe. A terminal presents a user interface and it reports user interactions. A mainframe hosts applications that process user interactions for terminals. Mainframes and terminals are ideal metaphors for a strict separation of application and presentation concerns. This separation of concerns is the foundation on which oma is built.
@@ -220,11 +220,11 @@ The open mainframe architecture is released under the liberal MIT license. The r
     </p>
     <h1>Introduction</h1>
     <p>
-The open mainframe architecture revives old ideas. This chapter examines the history of application architectures.
+The open mainframe architecture revives old ideas. This chapter explores the history of application architectures.
     </p>
     <h2>Mainframes and terminals</h2>
     <p>
-Mainframes are the first commercial computers. They are mysterious machines in the 1950s and 60s, because electronics is still in its infancy. Mainframes automate administrative tasks, often in the finance industry. Mainframes have almost become extinct, but they remain renowned for their reliability.
+Mainframes are the first commercial computers. They are mysterious machines in the 1950s and 60s, because electronics is still in its infancy. Mainframes have almost become extinct, but they remain renowned for their reliability.
     </p>
     <figure>
       <img src="http://upload.wikimedia.org/wikipedia/commons/7/7d/IBM_704_mainframe.gif" />
@@ -238,7 +238,7 @@ A terminal presents the user interface of a remote process that is running on a 
       <figcaption>DEC VT101 terminal (<a href="http://en.wikipedia.org/wiki/VT100#/media/File:Vt100-adventure.jpg">Wikimedia</a>)</figcaption>
     </figure>
     <p>
-Mainframes and terminals respect a strict separation of presentation and application concerns. A mainframe runs processes for terminals. A process is a running instance of an application whose user interface is presented by a terminal.  The terminal reports user interactions to the process, which computes the effects of the interactions on the user interface. These effects are communicated back to the terminal that refreshes the user interface accordingly.
+Mainframes and terminals respect a strict separation of application and presentation concerns. A mainframe runs processes for terminals. A process is a running instance of an application whose user interface is presented by a terminal.  The terminal reports user interactions to the process, which computes the effects of the interactions on the user interface. These effects are communicated back to the terminal that refreshes the user interface accordingly.
     </p>
     <h2>Home computers and PCs</h2>
     <p>
@@ -256,7 +256,7 @@ The personal computer dominates after the home computer. The affordable PC intro
       <figcaption>Laptop PC (<a href="http://en.wikipedia.org/wiki/Personal_computer#/media/File:MSI_Laptop_computer.jpg">Wikimedia</a>)</figcaption>
     </figure>
     <p>
-Home computers and PCs shift attention from machines to humans. Software should keep users happy and productive on commodity hardware. Most consumers are not interested in the details of the hardware they own. They only care for the applications they can run on the hardware.
+Home computers and PCs shift attention from machines to humans. Software should keep users happy and productive on commodity hardware. Most users are not interested in the details of the hardware they own. They only care for the applications they can run on the hardware.
     </p>
     <h2>Networking and the Internet</h2>
     <p>
@@ -267,14 +267,14 @@ When businesses connect the PCs of employees to a network, they soon discover th
       <figcaption>Floppies for software distribution (<a href="http://en.wikipedia.org/wiki/Floppy_disk#/media/File:Floppy_disk_2009_G1.jpg">Wikimedia</a>)</figcaption>
     </figure>
     <p>
-Internet technologies provide a solution with web applications on intranets. All PCs run web browsers  that display HTML pages of a web application. The web application is hosted and maintained on a web server by the IT department. The first web applications are restricted to simple form-based tasks. After substantial improvements to the web standards, web applications are able to offer a decent user experience for a wide range of tasks on PCs with mainstream browsers.
+Internet technologies provide a solution with web applications on intranets. All PCs run web browsers  that display HTML pages of a web application. The web application is hosted and maintained on a web server by the IT department. The first web applications are restricted to simple form-based tasks. After substantial improvements to the web standards, web applications can offer a decent user experience for a wide range of tasks on PCs with mainstream browsers.
     </p>
     <figure>
       <img src="http://upload.wikimedia.org/wikipedia/en/thumb/c/c9/Navigator_1-22.png/225px-Navigator_1-22.png" />
       <figcaption>Netscape Navigator 1.22 (<a href="http://en.wikipedia.org/wiki/Netscape_Navigator#/media/File:Navigator_1-22.png">Wikimedia</a>)</figcaption>
     </figure>
     <p>
-Web browsers that display HTML pages, are only superficially similar to terminals that present user interfaces, because browsers blur the separation between presentation and application concerns. A terminal presents a user interface whose state is completely controlled by the process on the mainframe. A browser can respond to user interactions by executing JavaScript code that updates the user interface, without informing the server. Web applications on servers cannot always reproduce the complete state of a user interface that a web browser currently presents. In client/server terminolgy, a terminal is considered a thinner client than a browser.
+Web browsers are only superficially similar to terminals, because browsers blur the separation between application and presentation concerns. A terminal presents a user interface whose state is completely controlled by the process on the mainframe. A browser can however respond to user interactions by executing JavaScript code that updates the HTML page, without informing the server. Web applications on servers cannot always reproduce the complete state of an HTML page that a web browser is currently displaying. In client/server terminolgy, a terminal is considered a thinner client than a browser.
     </p>
     <h2>Apps on mobile devices</h2>
     <p>
@@ -317,15 +317,15 @@ Native apps offer a rich user experience on mobile devices, but application mana
     <p>
 This chapter explains how the major components of oma fit together. The open mainframe architecture promises a decent user experience and easy application management.
     </p>
-    <h2>Presentation and application tier</h2>
+    <h2>Application and presentation tier</h2>
     <p>
-The open mainframe architecture consists of a presentation and application tier. The presentation tier is where terminals live. A terminal presents a user interface. The application tier is where processes live. A process is a running instance of an application, which controls the state of a user interface. When a terminal reports user interactions, the process updates the user interface.
+The open mainframe architecture consists of an application and presentation tier. The presentation tier is where terminals live. A terminal presents a user interface. The application tier is where processes live. A process is a running instance of an application, which controls the state of a user interface. When a terminal reports user interactions, the process updates the user interface.
     </p>
     <p>
-A traditional mainframe runs all processes for connected terminals. A traditional mainframe <em>is</em> the application tier whereas an open mainframe is a router between tiers. An open mainframe <em>does not</em> execute application logic on behalf of terminals. All processes run autonomously in the backend of an open mainframe. Terminals execute presentation logic in the frontend. The open mainframe in the middle supervises communication between the frontend and backend.
+A traditional mainframe runs all processes for connected terminals. A traditional mainframe <em>is</em> the application tier but an open mainframe is a router between tiers. An open mainframe <em>does not</em> execute application logic on behalf of terminals. All processes run autonomously in the backend of an open mainframe. Terminals execute presentation logic in the frontend. The open mainframe in the middle supervises communication between the frontend and backend.
     </p>
     <p>
-Applications on an open mainframe are deployed from the backend. An application deployment creates a new backend process, when a frontend terminal launches the application. The process computes the initial state of a user interface, which is communicated back to the terminal and presented to the user. Backend applications and processes are not concerned with particular user-interface technologies. Frontend terminals don't care about application logic to process user interactions. The open mainframe architecture separates the same presentation and application concerns as traditional mainframes.
+Applications on an open mainframe are deployed from the backend. An application deployment creates a process, when a terminal launches the application. The new process computes the initial state of a user interface, which is communicated back to the terminal and presented to the user. Backend applications and processes are not concerned with particular user-interface technologies. Frontend terminals don't care about application logic to process user interactions. The open mainframe architecture separates the same application and presentation concerns as traditional mainframes.
     </p>
     <figure>
       <div class="inline">
@@ -373,7 +373,10 @@ Applications on an open mainframe are deployed from the backend. An application 
     </figure>
     <h2>Web technologies</h2>
     <p>
-The open mainframe architecture leverages the success of HTTP. Terminals, applications and processes are HTTP clients that talk to web services on an open mainframe. Products that improve HTTP security and performance, e.g. firewalls and load balancers, work equally well in frontend and backend networks.
+The open mainframe architecture leverages the success of web technologies.
+    </p>
+    <p>
+Terminals, applications and processes are HTTP clients that talk to web services on an open mainframe. Products that improve HTTP security and performance, e.g. firewalls and load balancers, work equally well in frontend and backend networks.
     </p>
     <p>
 A web browser turns into a frontend terminal when a user navigates the browser to an open mainframe. Browsers are converging towards an impressive set of HTML standards and JavaScript APIs. CSS has also been steadily improving over the years, gaining evermore features to separate styling from content. The browser wars have ended in a clear victory for web standards.
@@ -411,7 +414,7 @@ delta service
 The delta service creates delta sessions. A <dfn>delta session</dfn> synchronizes a model that the client and server side of the session share. The JSON representation of the model is defined by datatypes. The client side sends a delta request with actions on the model. A delta action is either a mutation that modifies the model, or an event that signals an incident in the model. The server side replies with a delta response whose actions reflect the effects of processing the previous request. The sequential exchange of delta messages continues, until one of the sides closes the session.
         </p>
         <p>
-Terminals, applications and processes manage their own delta sessions on open mainframes. The direction of a delta session determines the role of an HTTP client in the session. Processes are HTTP clients, but they play the server role in delta sessions. Process sessions are <dfn>reverse sessions</dfn>. Terminal and application sessions are <dfn>forward sessions</dfn>, because terminals and applications are HTTP clients that also fulfil the client role in delta sessions.
+Terminals, applications and processes manage their own delta sessions on open mainframes. The direction of a delta session determines the role of an HTTP client in the session. Process sessions are <dfn>reverse sessions</dfn>. Processes are HTTP clients, but they play the server role in delta sessions. Terminal and application sessions are <dfn>forward sessions</dfn>, because terminals and applications are HTTP clients that also fulfil the client role in delta sessions.
         </p>
       </li>
       <li>
@@ -433,7 +436,7 @@ deploy service
 An HTTP client posts a request to this service with a description of the application to deploy from the backend. Successful deployment results in a new application session that the HTTP client should manage. From here on, a user can start the application by navigating a web browser to an appropriate URL.
         </p>
         <p>
-A delta action in the application session instructs a deployment to create a new backend process, when a frontend terminal launches the application. The new process manages its own delta session that is paired with a terminal session.
+A delta action in the application session instructs a deployment to create a new process, when a terminal launches the application. The new process manages its own delta session that is paired with a terminal session.
         </p>
       </li>
       <li>
@@ -491,10 +494,10 @@ The <dfn>runtime image</dfn> of a deployment lists all modules that a terminal m
 The model of a terminal session is a virtual user interface. The frontend terminal shares this model with a backend process whose session is paired with the terminal session. The terminal converts real user interactions to delta actions on the virtual user interface. The process updates the virtual user interface in response to these interactions. The terminal refreshes the real user interface to present the new state of the virtual user interface.
     </p>
     <p>
-A virtual user interface must be designed to minimize the impact of network latencies on the user experience. When a user interaction takes place in a terminal, there is at least a network delay before a backend process is informed about a delta action in a virtual user interface. There is yet another network delay before the effects in the virtual user interface are reported back to the frontend terminal and presented in the real user interface. Network delays are measured in milliseconds. This differs significantly from native window systems that deliver user-interface events in mere microseconds.
+A virtual user interface must be designed to minimize the impact of network latencies on the user experience. When a user interaction takes place in a terminal, there is at least a network delay before a backend process is informed about a delta action in a virtual user interface. There is yet another network delay before the effects in the virtual user interface are reported back to the frontend terminal and presented in the real user interface.
     </p>
     <p>
-The state of a virtual user interface includes a tree structure with widgets from various categories. Widgets are the fundamental building blocks of virtual user interfaces. A <dfn>layout widget</dfn> specifies a layout strategy for child widgets. A <dfn>decorator widget</dfn> adds a feature to a child widget. An <dfn>output widget</dfn> displays non-interactive text or graphics. An <dfn>input widget</dfn> translates user interactions to delta actions.
+The state of a virtual user interface includes a tree structure with widgets from various categories. Widgets are the fundamental building blocks of a virtual user interface. A <dfn>layout widget</dfn> specifies a layout strategy for child widgets. A <dfn>decorator widget</dfn> adds a feature to a child widget. An <dfn>output widget</dfn> displays non-interactive text or graphics. An <dfn>input widget</dfn> translates user interactions to delta actions.
     </p>
     <figure>
     <span class="widget">layout</span><br/>
@@ -511,22 +514,22 @@ A terminal loads modules that define datatypes for virtual widgets. The terminal
 The datatypes of virtual widgets are annotated to specify characteristics in a delta session. These annotations define whether the client, the server, or both sides of the session can modify session data. By default, the process on the server side can modify widgets, but the terminal on the client side cannot. The datatype of a text input is annotated to be modifiable on the client side. Otherwise a terminal cannot modify the field of an input widget, when the user enters a new text.
     </p>
     <p>
-Type annotations also distinguish between persistent mutations and transient events. An event signals an incident, but the incident is not persisted in the widget tree. When a terminal reports a button click event on the client side, the process on the server side does not have to 'unclick' the button. The state of a virtual button does not change after the button has been clicked. 
+Type annotations distinguish between persistent mutations and transient events. An event signals an incident, but the incident is not persisted in the widget tree. When a terminal reports a button click event on the client side, the process on the server side does not have to 'unclick' the button. The state of a virtual button does not change after the button has been clicked. 
     </p>
     <p>
 Type annotations specify how the client side reacts to a mutation or event occurence. The default reaction is immediate and non-blocking. A terminal informs the process about a user interaction as soon as possible. The terminal presents a responsive user interface while it waits for the process to compute the effects of the interaction. If the client reaction to an interaction is specified as blocking, the terminal immediately locks the user interface, and unlocks it after the process has responded to the interaction.
     </p>
     <p>
-A non-blocking reaction is not necessarily immediate. Type annotations can specify that the client side buffers a mutation or event. When a terminal is ready to send the next delta request, it flushes the buffer and adds the flushed delta actions to the request. The process on the server side is not informed about buffered actions until the terminal flushes. 
+A non-blocking reaction is not necessarily immediate. Type annotations can instruct the client side to buffer a mutation or event. When a terminal is about to send the next delta request, it flushes the buffer and adds the flushed delta actions to the request. The process on the server side is not informed about buffered actions until the terminal flushes. 
     </p>
     <p>
-The model of a session pair has one state, but when a terminal buffers user interactions, the virtual user interface appears to be in two different states. The process controls the old state, before the interactions, while the terminal is already presenting a new state. The terminal is however presenting an intermediate state that will be synchronized with the process in due time. Every delta message has a lease time that specifies how many seconds the receiver of the message can wait, before it has to produce the next delta message. Upon lease expiration, the terminal sends one delta request to transition the model to the new state that combines all intermediate states.
+The model of a session pair only has one state, but when a terminal buffers user interactions, the virtual user interface appears to be in two different states. The process controls the old state, prior to the interactions, while the terminal is already presenting a new state. The terminal is however presenting an intermediate state that will be synchronized with the process in due time. Every delta message has a lease time that controls how many seconds the receiver of the message can wait, before it has to produce the next delta message. Upon lease expiration, the terminal sends one delta request to transition the model to the new state that combines all intermediate states.
     </p>
     <p>
-The client side must be prepared to deal with synchronization conflicts in a delta session. When a terminal buffers a user interaction with an input widget while the terminal is still awaiting a response from the process, the actions in the subsequent delta response can remove the input widget from the virtual user interface. The server side always wins these conflicts. The client side must drop buffered mutations and events, which have been invalidated by actions from a delta response.
+The client side must be prepared to deal with synchronization conflicts in a delta session. Suppose a terminal is awaiting a delta response from the process. When the terminal buffers a user interaction with an input widget, the actions in the subsequent delta response can remove the input widget from the virtual user interface. The server side always wins these conflicts. The client side must drop buffered mutations and events, which have been invalidated by actions from a delta response.
     </p>
     <p>
-If network delays were not an issue, a terminal would not buffer interactions, because the process might respond with an update in the widget tree. Intermediate states ideally represent insignificant interactions in the application domain. Otherwise the user experience might be degraded by delayed responses to buffered interactions, or even worse, by delayed invalidations of interactions. The development of a virtual user interface must deal with presentation and application concerns.
+If network delays were not an issue, a terminal would not buffer interactions, because the process might respond with an update in the widget tree. Intermediate states ideally represent insignificant interactions in the application domain. Otherwise the user experience might be degraded by delayed responses to buffered interactions, or even worse, by delayed invalidations of interactions. The development of a virtual user interface must deal with application and presentation concerns.
     </p>
     <h2>Multidisciplinary teams</h2>
     <p>
@@ -638,10 +641,10 @@ app network<sub>2</sub>
     </figure>
     <h2>Summary</h2>
     <p>
-The open mainframe architecture separates presentation from application concerns. Applications are deployed from the backend of an open mainframe. They create processes that control virtual user interfaces for terminals. A web browser turns into a frontend terminal when it launches an application.
+The open mainframe architecture separates presentation from application concerns. Applications are deployed from the backend of an open mainframe. They create processes that control virtual user interfaces for terminals. A web browser turns into a frontend terminal when it launches an application. An open mainframe routes communication between the frontend and backend.
     </p>
     <p>
-Frontend developers build widgets that backend developers use in virtual user interfaces. Application development is a teamsport in oma. Open mainframes come in various shapes and sizes, with different perspectives on application management. Developers manage their own temporary application deployments on a development mainframe. QA engineers isolate deployments of distinct application versions on a test mainframe. Production mainframes deploy the most recent application versions that passed all QA tests.
+Frontend developers build widgets that backend developers use in virtual user interfaces. Application development is a teamsport in oma. Open mainframes come in various shapes and sizes, with different perspectives on application management. Developers manage their own temporary application deployments on a development mainframe. QA engineers isolate deployments of distinct application versions on a test mainframe. Production mainframes host the most recent application versions that passed all QA tests.
     </p>
     <h1>JSON with datatypes</h1>
     <p>
@@ -819,14 +822,14 @@ The only difference between the untyped and typed JSON representation of a recor
 A record value drops a field from the JSON representation, if the field value is <span class="literal code">null</span>. A new record value initializes a field to <span class="literal code">null</span>, if the field is not present in the JSON representation. This optimization turns standard type <span class="code">Flag</span> into an efficient type for boolean fields with a bias towards false. A cleared flag, i.e. the common case, is missing, but a set flag is initialized to <span class="literal code">'y'</span> in the JSON representation. Record types often define <span class="literal code">null</span> as the default field value to optimize JSON representations.
     </p>
     <p>
-The untyped representation of a dictionary value is a JSON object with an underscore entry that contains another JSON object. The nested JSON object maps dictionary keys to values. Dictionary entries cannot be represented in the root JSON object, because this results in ambiguous representations when a dollar and/or an underscore is a dictionary key. Typed representations of dictionaries employ the same scheme as list values. A dollar entry expresses the type information and an underscore entry holds an untyped container with elements. The typed representation of an empty dictionary with numbers is <span class="literal code">{$:'&lt;number&gt;',_:{}}</span>. The omission of the dollar entry in the untyped representation <span class="literal code">{_:{}}</span> is similar to record values.
+The untyped representation of a dictionary value is a JSON object with an underscore entry that contains another JSON object. The nested JSON object maps dictionary keys to values. Dictionary entries cannot be represented in the root JSON object, because this results in ambiguous representations when a dollar and/or an underscore is a dictionary key. Typed representations of dictionaries employ the same scheme as list values. A dollar entry expresses the type information and an underscore entry holds an untyped container with elements. The typed representation of an empty dictionary with <span class="code">Example</span> records is <span class="literal code">{$:'&lt;Example&gt;',_:{}}</span>. The omission of the dollar entry in the untyped representation <span class="literal code">{_:{}}</span> is similar to record values.
     </p>
     <p>
 Wildcard, optional and union types unmarshal JSON representations, but they never marshal data values. The concrete type of a value defines the marshal function. A concrete type is either <span class="code">none</span>, a basic, a dictionary, a list or a record type. Optional types can unmarshal values from untyped representations. Type <span class="code">Example?</span> infers record type <span class="code">Example</span> when it unmarshals the untyped representation <span class="literal code">{foo:'a'}</span>, because the representation is not <span class="literal code">null</span>. A union type can unmarshal a value from an untyped representation if there is exactly one dictionary, list or record alternative to choose from. Standard type <span class="code">Text</span> specifies one list alternative. If the inferred type is <span class="code">Text</span>, the untyped representation <span class="literal code">[]</span> preserves list type <span class="code">[string]</span>.
     </p>
     <h2>Field annotations</h2>
     <p>
-A record field is annotated to specify additional field information. Annotations are nonessential field decorations. Although the meaning of an annotation is not defined by the type system, a field value must obey the rules of the field type, regardless what the annotations specify. It doesn't matter what the <span class="code">@drive</span> annotation in the next example means, a value from field <span class="code">foo</span> is always a basic number.
+A record field is annotated to specify additional field information. Annotations are nonessential field decorations. The meaning of an annotation is not defined by the type system, but a field value must obey the rules of the field type, regardless what the annotations specify. It doesn't matter what the <span class="code">@drive</span> annotation in the next example means, a value from field <span class="code">foo</span> is always a basic number.
     </p>
 <pre>Example: {
   foo: number @drive=improbability
@@ -858,7 +861,7 @@ Record type <span class="code">Example</span> is the type of a hypothetical root
   baz: boolean
 }</pre>
     <p>
-The next figure depicts a record of type <span class="code">Example</span> as a tree structure where leaf nodes are basic values and other nodes are composed values. A composed value expresses its type inside the value node.
+The next figure depicts a record of type <span class="code">Example</span> as a tree structure where leaf nodes are basic values and other nodes are composed values. A composed value expresses its concrete type inside the value node.
     </p>
     <figure>
     <span class="internal node">Example</span><br/>
@@ -881,7 +884,7 @@ Record fields are annotated to specify characteristics of record values in sessi
   foo: number
 }</pre>
     <p>
-An <span class="code">@event</span> annotation specifies an <dfn>event field</dfn>. The annotation value is <span class="code">client</span> or <span class="code">server</span>. Event fields are not marshalled or unmarshalled. The JSON representation of a record value only includes data fields. Values of event fields are represented in the communicated event occurences of a delta message. In the next example, field <span class="code">foo</span> is a server event field. The server side reports an occurence of this event in a delta response. Field type <span class="code">none</span> implies an occurence is unstructured. The client side is informed about an occurence, but the reported event does not provide any additional information.
+An <span class="code">@event</span> annotation specifies an <dfn>event field</dfn>. The annotation value is <span class="code">client</span> or <span class="code">server</span>. Event fields are not marshalled or unmarshalled. The JSON representation of a record value only includes data fields. Values of event fields are communicated as event occurences in a delta message. In the next example, field <span class="code">foo</span> is a server event field. The server side reports an occurence of this event in a delta response. Field type <span class="code">none</span> implies an occurence is unstructured. The client side is informed about an occurence, but the reported event does not provide any additional information.
     </p>
 <pre>Example: {
   foo: none @event=server 
@@ -905,7 +908,7 @@ The client side buffers an occurence of event field <span class="code">foo</span
   foo: boolean @event=client @delay=flush
 }</pre>
     <p>
-The server side is not interested in the occurence of event field <span class="code">foo</span> in the next example. It expects the client to delay occurences indefinitely. The server can modify meta field <span class="code">@foo</span> if it wants to be informed about occurences. Apart from the predefined type and value, a meta field is a regular data field of a record value, which the server side can target with delta actions.
+The server side is not interested in the occurence of event field <span class="code">foo</span> in the next example. It expects the client to delay occurences indefinitely. The server can modify meta field <span class="code">@foo</span> if it wants to be informed about occurences. Apart from the predefined type and the default value from the field definition, a meta field is a regular data field of a record value, which the server side can target with delta actions.
     </p>
 <pre>Example: {
   foo: boolean @event=client @delay=forever
